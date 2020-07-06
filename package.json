@@ -10,12 +10,16 @@
   "author": "John",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "moment": "^2.27.0",
+    "node-media-server": "^2.1.9",
     "socket.io": "^2.3.0"
   },
   "devDependencies": {
     "eslint": "^7.4.0",
-    "eslint-config-google": "^0.14.0"
+    "eslint-config-google": "^0.14.0",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12"
   }
 }

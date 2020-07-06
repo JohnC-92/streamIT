@@ -1,10 +1,12 @@
+require('dotenv').config();
 const path = require('path');
 const express = require('express');
 const http = require('http');
 const socketio = require('socket.io');
 const formatMessage = require('./utils/messages');
 const {userJoin, getCurrentUser, userLeave, getRoomUsers} = require('./utils/users');
-const { isBoolean } = require('util');
+const PORT = process.env.PORT || 3000;
+const nodeMediaServer = require('./server/media_server');
 
 const app = express();
 const server = http.createServer(app);
@@ -23,7 +25,7 @@ io.on('connection', (socket) => {
     socket.join(user.room);
 
     // Welcome current user
-    socket.emit('message', formatMessage(botName, 'Welcome to ChatCord'));
+    socket.emit('message', formatMessage(botName, 'Welcome to Twitch Chat'));
 
     // Broadcast when a user connects
     socket.broadcast
@@ -66,8 +68,8 @@ io.on('connection', (socket) => {
   // io.emit();
 });
 
-const PORT = process.env.PORT || 3000;
-
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`)
 });
+
+nodeMediaServer.run();
