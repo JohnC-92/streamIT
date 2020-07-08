@@ -1,4 +1,20 @@
+const moment = require('moment');
 const users = [];
+// const usersCount = {};
+
+/**
+ * Function to return user text with sent time
+ * @param {*} username
+ * @param {*} text
+ * @return {*} Message Obj with sent time
+ */
+function formatMessage(username, text) {
+  return {
+    username,
+    text,
+    time: moment().format('h:mm a'),
+  };
+}
 
 // Join user to chat
 /**
@@ -12,6 +28,7 @@ function userJoin(id, username, room) {
   const user = {id, username, room};
 
   users.push(user);
+  // userCount[room] = userCount[room] + 1 || 1;
 
   return user;
 }
@@ -36,21 +53,26 @@ function userLeave(id) {
   const index = users.findIndex((user) => user.id === id);
 
   if (index !== -1) {
+    // const user = users.splice(index, 1)[0];
+    // userCount[user.room] = userCount[user.room] - 1;
     return users.splice(index, 1)[0];
   }
 }
 
 // Get room users
 /**
- * Function to get all users that are in same room
+ * Function to get all users and users length that are in same room
  * @param {*} room
- * @return {*} Return users in the same room
+ * @return {*} Return users and users length in the same room
  */
 function getRoomUsers(room) {
-  return users.filter((user) => user.room === room);
+  const userList = users.filter((user) => user.room === room);
+  const userCount = userList.length;
+  return [userList, userCount];
 }
 
 module.exports = {
+  formatMessage,
   userJoin,
   getCurrentUser,
   userLeave,

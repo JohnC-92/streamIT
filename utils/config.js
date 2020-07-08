@@ -2,6 +2,7 @@ const config = {
   server: {
     secret: 'kjVkuti2xAyF3JGCzSZTk0YWM5JhI9mgQW4rytXc',
   },
+
   rtmp_server: {
     rtmp: {
       port: 1935,
@@ -10,11 +11,13 @@ const config = {
       ping: 60,
       ping_timeout: 30,
     },
+
     http: {
       port: 8888,
       mediaroot: '../server/media',
       allow_origin: '*',
     },
+
     trans: {
       ffmpeg: 'D:/AppWorks/videoStream/twitch/utils/ffmpeg.exe',
       tasks: [
@@ -27,6 +30,7 @@ const config = {
         },
       ],
     },
+
   },
 };
 
