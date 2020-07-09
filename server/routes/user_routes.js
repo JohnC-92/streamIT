@@ -17,8 +17,14 @@ router.post('/user/signup',
 router.post('/user/signin',
     wrapAsync(signIn));
 
-// router.get('/user/profile',
-//     wrapAsync(getUserProfile));
+router.get('/user/profile',
+    wrapAsync(getUserProfile));
+
+// update profile route
+
+// update followers route
+
+// update subscriber route
 
 // router.get('/user/profile/:category',
 //     wrapAsync(getSubFollow));

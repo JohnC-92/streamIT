@@ -9,4 +9,5 @@ const wrapAsync = (fn) => {
 
 module.exports = {
   wrapAsync,
-}
+};
+

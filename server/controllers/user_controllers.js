@@ -1,7 +1,6 @@
 require('dotenv').config();
 const validator = require('validator');
 const User = require('../models/user_model');
-const {nativeSignIn, facebookSignIn} = require('../models/user_model');
 const expire = process.env.TOKEN_EXPIRE;
 
 const signUp = async (req, res) => {
@@ -10,12 +9,12 @@ const signUp = async (req, res) => {
 
   // check if user provided name, password, email
   if (!name || !password || !email) {
-    return res.status(400).send('Name, password and email required');
+    return res.status(400).send({error: 'Name, password and email required'});
   }
 
   // check if email is valid
   if (!validator.isEmail(email)) {
-    return res.status(400).send('Invalid email format');
+    return res.status(400).send({error: 'Invalid email format'});
   }
 
   // escape name to prevent malicious input
@@ -30,6 +29,7 @@ const signUp = async (req, res) => {
     return res.status(500).send({error: 'Database Query Error'});
   }
 
+  res.cookie('access_token', accessToken);
   res.send({
     data: {
       accessToken: accessToken,
@@ -47,18 +47,28 @@ const signUp = async (req, res) => {
 };
 
 const signIn = async (req, res) => {
-  const {name, password} = req.query;
-  
-  // native sign in part
+  const {provider} = req.query;
 
-  // check if user provided name, password
-  if (!name || !password) {
-    return res.status(400).send('Name and password required');
+  let result;
+  switch (provider) {
+    // native login
+    case 'native':
+      const {name, password} = req.query;
+      result = await nativeSignIn(name, password);
+      break;
+    // facebook login
+    case 'facebook':
+      const {token} = req.query;
+      // const token = process.env.ACCESS_TOKEN;
+      result = await facebookSignIn(token);
+      break;
+    default:
+      result = {error: 'Wrong Request'};
   }
 
-  const result = await User.nativeSignIn(name, password, expire);
   if (result.error) {
-    return res.status(403).send(result.error);
+    const statusCode = result.status ? result.status: 403;
+    return res.status(statusCode).send({error: result.error});
   }
 
   const {accessToken, loginAt, user} = result;
@@ -66,6 +76,7 @@ const signIn = async (req, res) => {
     return res.status(500).send({error: 'Database Query Error'});
   }
 
+  res.cookie('access_token', accessToken);
   res.send({
     data: {
       accessToken: accessToken,
@@ -80,48 +91,70 @@ const signIn = async (req, res) => {
       },
     },
   });
-
-//   switch (data.provider) {
-//     case 'native':
-//       await nativeSignIn(data.name, data.password);
-//       break;
-//     case 'facebook':
-//       await facebookSignIn();
-//       break;
-//     default:
-//   }
-
 };
 
 const getUserProfile = async (req, res) => {
+  let token = req.header('Authorization');
+  if (!token) {
+    return res.status(400).send({error: 'Token required'});
+  } else {
+    token = token.replace('Bearer ', '');
+  }
+  const result = await User.getUserProfile(token);
+  if (result.error) {
+    return res.status(403).send(result.error);
+  }
 
+  res.send({
+    data: {
+      id: result.id,
+      provider: result.provider,
+      email: result.email,
+      name: result.name,
+      picture: result.picture,
+    },
+  });
 };
 
 const getSubFollow = async (req, res) => {
   // category = subscriber || followers
 
-
 };
 
-// const nativeSignIn = async (name, password) => {
-//   const {name, password} = req.body;
+const nativeSignIn = async (name, password) => {
+  try {
+    // check if user provided name, password
+    if (!name || !password) {
+      return {error: 'Name and password required', status: 400};
+    }
 
-//   if (!name || !password) {
-//     return {error:'Name and password required', status: 400};
-//   }
+    const result = await User.nativeSignIn(name, password, expire);
+    if (result.error) {
+      return {error: result.error};
+    }
+    return result;
+  } catch (err) {
+    return {error: err};
+  }
+};
 
-//   try {
-//     return await User.nativeSignIn(name, password);
-//   } catch (err) {
-//     return {err};
-//   }
-  
-  
-// }
+const facebookSignIn = async (token) => {
+  try {
+    // check if user provided facebook token
+    if (!token) {
+      return {error: 'Facebook token required', status: 400};
+    }
 
-// const facebookSignIn = async () => {
+    const result = await User.facebookSignIn(token, expire);
+    if (result.error) {
+      return {error: result.error};
+    }
 
-// }
+    return result;
+  } catch (err) {
+    return {error: err};
+  }
+};
 
 module.exports = {
   signUp,
