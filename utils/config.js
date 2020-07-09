@@ -1,8 +1,4 @@
 const config = {
-  server: {
-    secret: 'kjVkuti2xAyF3JGCzSZTk0YWM5JhI9mgQW4rytXc',
-  },
-
   rtmp_server: {
     rtmp: {
       port: 1935,
@@ -19,7 +15,7 @@ const config = {
     },
 
     trans: {
-      ffmpeg: 'D:/AppWorks/videoStream/twitch/utils/ffmpeg.exe',
+      ffmpeg: 'D:/AppWorks/videoStream/streamit/utils/ffmpeg.exe',
       tasks: [
         {
           app: 'live',

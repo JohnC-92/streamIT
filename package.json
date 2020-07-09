@@ -10,13 +10,16 @@
   "author": "John",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
     "moment": "^2.27.0",
     "mysql": "^2.18.1",
     "node-media-server": "^2.1.9",
     "socket.io": "^2.3.0",
-    "util": "^0.12.3"
+    "util": "^0.12.3",
+    "validator": "^13.1.1"
   },
   "devDependencies": {
     "eslint": "^7.4.0",
