@@ -4,8 +4,8 @@ const User = require('../models/user_model');
 const expire = process.env.TOKEN_EXPIRE;
 
 const signUp = async (req, res) => {
-  let {name} = req.query;
-  const {password, email} = req.query;
+  let {name} = req.body;
+  const {password, email} = req.body;
 
   // check if user provided name, password, email
   if (!name || !password || !email) {
@@ -47,18 +47,18 @@ const signUp = async (req, res) => {
 };
 
 const signIn = async (req, res) => {
-  const {provider} = req.query;
+  const {provider} = req.body;
 
   let result;
   switch (provider) {
     // native login
     case 'native':
-      const {name, password} = req.query;
+      const {name, password} = req.body;
       result = await nativeSignIn(name, password);
       break;
     // facebook login
     case 'facebook':
-      const {token} = req.query;
+      const {token} = req.body;
       // const token = process.env.ACCESS_TOKEN;
       result = await facebookSignIn(token);
       break;
