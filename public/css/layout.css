@@ -479,19 +479,8 @@ a {
   z-index: 1;
   top: 0;
   left: 250px;
-  width: calc(100% - 500px);
+  width: 100%;
   background: rgba(0, 0, 0, 0.2);
-}
-
-/* socketBody */
-.socketBody {
-  height: 100%;
-  position: absolute;
-  z-index: 2;
-  top: 0;
-  left: 850px;
-  width: 250px;
-  background: rgba(0, 0, 0, 0.1);
 }
 
 

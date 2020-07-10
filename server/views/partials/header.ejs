@@ -1,0 +1,129 @@
+<div class="header-nav">
+  
+  <a href="#">
+    <img class="logo" src="assets/logo.png" alt="StreamIT" href="#">
+  </a>
+  
+  <div class="menu">
+    <a class="menu-1" href="#">瀏覽</a> 
+    <a class="menu-2" href="#">電競</a>          
+    <a class="menu-3" href="#">音樂</a>
+    <a class="menu-4" href="#">更多</a>
+  </div>
+
+  <div class="searchbox">
+    <form class="searchForm" action="#">
+      <input id="searchbox" name="keyword" type="text" placeholder="搜尋">
+      <button type="submit">
+        <img class="searchImg" src="assets/searchTrans.png" alt="search" href="#">
+      </button>
+    </form>
+  </div>
+
+  <div class="member">
+    <div class="signinDiv">
+      <span class="signinText">登入</span>              
+    </div>
+    <div class="signupDiv">
+      <span class="signupText">註冊</span>
+    </div>
+    <a class="memberLink" href="#">
+      <img src="assets/member.png" class="memberImg" alt="member">
+    </a>
+  </div>
+
+</div>
+
+<div class="header-btm">
+
+</div>
+
+<div class="loginForm">
+  <div class="wrapper">
+    <div id="loginformContent">
+      <div class="divCloseBtn">
+        <span class="loginCloseBtn">&times;</span>    
+      </div>
+
+      <div class="formTitle">
+        <img class="logo" src="assets/logo.png" alt="StreamIT">
+        <div class="title">
+          <span class="titleCh">登入 </span>
+          <span class="titleEng">StreamIT</span>
+        </div>
+      </div>
+
+      <!-- Tabs Titles -->
+      <div class="signDiv">
+        <h2 id="signIn" class="active"> 登入 </h2>
+        <h2 id="signUp" class="inactive"> 註冊 </h2>
+      </div>
+  
+      <!-- Sign In Form -->
+      <div id="signinForm" class="signinForm">
+
+        <div class="row">
+          <div class="info">使用者名稱</div>
+          <input type="text" id="nameIn" class="" name="login">
+        </div>
+
+        <div class="row">
+          <div class="info">密碼</div>
+          <div class="passContainer">
+            <input type="password" id="passwordIn" name="login">
+            <img src="assets/eyeTrans.png" class="showPass" alt="">
+          </div>
+        </div>
+
+        <div class="rowSubmit">
+          <input type="submit" class="signinBtn" value="登入" onclick="signIn()">
+        </div>
+
+        <div class="rowLine">
+          <div class="line"></div>
+          <div>或者</div>
+          <div class="line"></div>
+        </div>
+
+        <div class="rowFb">
+          <span class="fbButton">Facebook登入</span>
+        </div>
+        
+      </div>
+      
+      <!-- Sign Up Form -->
+      <div id="signupForm" class="signoutForm hide">
+
+        <div class="row">
+          <div class="info">使用者名稱</div>
+          <input type="text" id="nameUp" name="login">
+        </div>
+
+        <div class="row">
+          <div class="info">密碼</div>
+          <div class="passContainer">
+            <input type="password" id="passwordUp" name="login">
+            <img src="assets/eyeTrans.png" class="showPass" alt="">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="info">確認密碼</div>
+          <div class="passContainer">
+            <input type="password" id="passwordUp2">
+            <img src="assets/eyeTrans.png" class="showPass" alt="">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="info">電子郵件</div>
+          <input type="text" id="emailUp" class="fadeIn" name="login">
+        </div>
+        
+        <div class="rowSubmit">
+          <input type="submit" class="signupBtn" value="註冊" onclick="signUp();">       
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

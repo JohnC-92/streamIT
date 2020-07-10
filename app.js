@@ -26,7 +26,11 @@ app.use(require('./server/routes/user_routes'));
 
 app.get('/layout', (req, res) => {
   res.render('layout');
-})
+});
+
+app.get('/index', (req, res) => {
+  res.render('index');
+});
 
 // Error Handling Middleware
 app.use((err, req, res, next) => {

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="css/layout.css">
+    <script src="https://cdn.bootcss.com/flv.js/1.4.2/flv.min.js"></script>
+    <title>Live Streaming</title>
+  </head>
+
+  <body>
+    <header class="header">
+      <%- include('partials/header'); %>
+    </header>
+
+    <div class="bodyContainer">
+      <%- include('partials/sidebar'); %>
+  
+      <div class="contentBody">
+        
+      </div>
+
+      <div class="socketBody">
+        
+      </div>
+    </div>
+
+    <!-- <div class="videoBody">
+
+        <video width="840" height="600" controls id="video"></video>      
+        
+        <div class="chat-container">
+            <h3 class="room">Room Name: <span id="room-name"></span></h3>
+            <h3 class="room">Room UserCount: <span id="usersCount"></span></h3>
+            <h3 class="room">Room Users: <span id="users"></span></h3>
+            <main class="chat-main">
+
+            <div class="chat-messages">
+            </div>
+            </main>
+
+            <div class="chat-form-container">
+            <form id="chat-form">
+                <input
+                id="msg"
+                type="text"
+                placeholder="Enter Message"
+                required
+                autocomplete="off"
+                />
+                <button class="btn"><i class="fas fa-paper-plane"></i> Send</button>
+            </form>
+            </div>
+            
+        </div>
+
+    </div>
+    
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.4/qs.min.js" integrity="sha512-BHtomM5XDcUy7tDNcrcX1Eh0RogdWiMdXl3wJcKB3PFekXb3l5aDzymaTher61u6vEZySnoC/SAj2Y/p918Y3w==" crossorigin="anonymous"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="js/socketClient.js"></script>
+  <script>
+    if (flvjs.isSupported()) {
+        const video = document.getElementById('video');
+        const flvPlayer = flvjs.createPlayer({
+          type: 'flv',
+          url: `http://localhost:8888/live/fzfsqnTtd.flv`,
+        });
+        flvPlayer.attachMediaElement(video);
+        flvPlayer.load();
+        flvPlayer.play();
+      };
+  </script> -->
+
+    <script src="js/headerForm.js"></script>
+    <script src="js/getProfile.js"></script>
+  </body>
+
+
+</html>
