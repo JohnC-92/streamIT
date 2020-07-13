@@ -1,5 +1,6 @@
 require('dotenv').config();
 const bcrypt = require('bcrypt');
+const shortid = require('shortid');
 const jwt = require('jsonwebtoken');
 const {query, transaction, commit, rollback} = require('../../utils/mysqlcon');
 const secret = process.env.SECRET;
@@ -45,10 +46,12 @@ const signUp = async (name, password, email, expire) => {
       name: name,
       // picture: null,
       picture: 'https://www.dlf.pt/dfpng/middlepng/2-23802_meme-faces-happy-png-transparent-png.png',
+      // picture: 'https://i0.wp.com/pinkupost.com/wp-content/uploads/2019/06/%E6%9C%A8%E6%9D%91%E6%8B%93%E5%93%89_%E9%95%B7%E5%B2%A1%E5%BC%98%E6%A8%B9_%E6%95%99%E5%A0%B4_2020%E5%B9%B4%E7%89%B9%E5%88%A5%E5%8A%87_%E5%AF%8C%E5%A3%AB%E9%9B%BB%E8%A6%96%E5%8F%B0_%E5%B0%8F%E8%AA%AA%E7%9C%9F%E4%BA%BA%E5%8C%96%E6%97%A5%E5%8A%87-2-1.jpg?resize=640%2C792',
       description: '',
       access_token: token,
       access_expired: expire,
       login_at: loginAt,
+      stream_key: shortid.generate(),
     };
 
     // Insert into user info into database
@@ -138,6 +141,7 @@ const facebookSignIn = async (accessToken, expire) => {
       access_token: accessToken,
       access_expired: expire,
       login_at: loginAt,
+      stream_key: shortid.generate(),
     };
 
     // create user if user doesnt exist
@@ -161,16 +165,25 @@ const facebookSignIn = async (accessToken, expire) => {
 };
 
 const getUserProfile = async (token) => {
-  try {
-    const user = await query('SELECT * FROM users WHERE access_token = ?', [token]);
-    if (user.length === 0) {
-      return {error: 'No matching token found'};
-    }
-    return user[0];
-  } catch (err) {
-    return {error: err};
-  }
+  return new Promise((resolve, reject) => {
+    // verify if JWT token is valid by comparing secretKey and endTime
+    jwt.verify(token, secret, async (err) => {
+      if (err) {
+        reject({error: 'Token invalid/ token expired'});
+      }
+      const user = await query('SELECT * FROM users WHERE access_token = ?', [token]);
+      if (user.length === 0) {
+        reject({error: 'No matching token found'});
+      }
+      resolve(user[0]);
+    });
+  });
 };
+
+const getUserKeys = async () => {
+  const result = await query('SELECT name, stream_key FROM users', []);
+  return result;
+}
 
 const getFollowers = async () => {
 
@@ -185,6 +198,7 @@ module.exports = {
   nativeSignIn,
   facebookSignIn,
   getUserProfile,
+  getUserKeys,
   getFollowers,
   getSubscribers,
 };

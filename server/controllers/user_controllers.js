@@ -93,27 +93,62 @@ const signIn = async (req, res) => {
   });
 };
 
-const getUserProfile = async (req, res) => {
-  let token = req.header('Authorization');
-  if (!token) {
-    return res.status(400).send({error: 'Token required'});
-  } else {
-    token = token.replace('Bearer ', '');
-  }
-  const result = await User.getUserProfile(token);
-  if (result.error) {
-    return res.status(403).send(result.error);
-  }
+// const getUserProfile = async (req, res) => {
+//   let token = req.header('Authorization');
+//   if (!token) {
+//     return res.status(400).send({error: 'Token required'});
+//   } else {
+//     token = token.replace('Bearer ', '');
+//   }
+//   const result = await User.getUserProfile(token);
+//   if (result.error) {
+//     return res.status(403).send(result.error);
+//   }
 
-  res.send({
-    data: {
-      id: result.id,
-      provider: result.provider,
-      email: result.email,
-      name: result.name,
-      picture: result.picture,
-    },
+//   res.send({
+//     data: {
+//       id: result.id,
+//       provider: result.provider,
+//       email: result.email,
+//       name: result.name,
+//       picture: result.picture,
+//     },
+//   });
+// };
+
+const getUserProfile = async (req, res) => {
+  try {
+    // if header authorization, check if provided token is valid
+    if (req.header('Authorization')) {
+      let token = req.header('Authorization');
+      token = token.replace('Bearer ', '');
+
+      const result = await User.getUserProfile(token);
+      res.send({
+        data: {
+          id: result.id,
+          provider: result.provider,
+          email: result.email,
+          name: result.name,
+          picture: result.picture,
+          streamKey: result.stream_key,
+        },
+      });
+    } else {
+      return res.status(400).send({error: 'Token required'});
+    };
+  } catch (err) {
+    return res.status(403).send({error: 'Token Invalid'});
+  }
+};
+
+const getUserKeys = async(req, res) => {
+  const result = await User.getUserKeys();
+  const resObj = {};
+  result.map((res) => {
+    resObj[res.stream_key] = res.name;
   });
+  return res.send(resObj);
 };
 
 const getSubFollow = async (req, res) => {
@@ -127,7 +162,6 @@ const nativeSignIn = async (name, password) => {
     if (!name || !password) {
       return {error: 'Name and password required', status: 400};
     }
-
     const result = await User.nativeSignIn(name, password, expire);
     if (result.error) {
       return {error: result.error};
@@ -160,6 +194,7 @@ module.exports = {
   signUp,
   signIn,
   getUserProfile,
+  getUserKeys,
   getSubFollow,
 };
 

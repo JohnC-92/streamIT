@@ -17,7 +17,7 @@ function initSocket(server) {
       socket.join(user.room);
 
       // Welcome current user
-      socket.emit('message', formatMessage(botName, 'Welcome to Twitch Chat'));
+      socket.emit('message', formatMessage(botName, 'Welcome to StreamIT Chat'));
 
       // Broadcast when a user connects
       socket.broadcast

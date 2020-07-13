@@ -11,6 +11,7 @@ const signinBtn = document.querySelector('.signinDiv');
 const signupBtn = document.querySelector('.signupDiv');
 const showPass = document.querySelectorAll('.showPass');
 const titleCh = document.querySelector('.titleCh');
+const member = document.querySelector('.memberLink');
 
 // form related events
 loginCloseBtn.addEventListener('click', () => {
@@ -46,6 +47,15 @@ for (let i = 0; i < showPass.length; i++) {
     }
   });
 }
+
+member.addEventListener('click', () => {
+  if (!document.cookie) {
+    alert('Please sign in');
+  //   window.location.href(
+  //       // window.location.protocol+'//' +window.location.hostname+':3000/index');
+  //       // 'http://localhost:3000/index')
+  };
+});
 
 /* -----Elements function logic------- */
 

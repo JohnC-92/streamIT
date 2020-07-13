@@ -5,6 +5,7 @@ const http = require('http');
 const bodyParser = require('body-parser');
 const PORT = process.env.PORT || 3000;
 const nodeMediaServer = require('./server/media_server');
+const thumbnailGenerator = require('./utils/util').job;
 
 const app = express();
 const server = http.createServer(app);
@@ -20,6 +21,16 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 // Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'server')));
+
+// CORS Control
+app.use('/', function(req, res, next) {
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Headers', 'Origin, Content-Type, Accept, Authorization');
+  res.set('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
+  res.set('Access-Control-Allow-Credentials', 'true');
+  next();
+});
 
 // Routes Defining
 app.use(require('./server/routes/user_routes'));
@@ -30,6 +41,14 @@ app.get('/layout', (req, res) => {
 
 app.get('/index', (req, res) => {
   res.render('index');
+});
+
+app.get('/video', (req, res) => {
+  res.render('video');
+});
+
+app.get('/profile', (req, res) => {
+  res.render('profile');
 });
 
 // Error Handling Middleware
@@ -47,3 +66,6 @@ nodeMediaServer.run();
 
 // Start Socket Server
 initSocket(server);
+
+// Cron Job to generate thumbnails every 5 seconds
+thumbnailGenerator.start();

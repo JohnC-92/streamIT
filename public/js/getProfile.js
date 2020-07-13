@@ -5,18 +5,18 @@ if (document.cookie) {
   getProfile(token);
 }
 
-// set global user
-let user = {};
+// // set global user
+// let user = {};
 
-/**
- *
- * @param {*} res AJAX respond from server
- */
-function getUser(res) {
-  user = {};
-  user.name = res.name;
-  user.email = res.email;
-}
+// /**
+//  *
+//  * @param {*} res AJAX respond from server
+//  */
+// function getUser(res) {
+//   user = {};
+//   user.name = res.name;
+//   user.email = res.email;
+// }
 
 /**
  * Function to check if token cookie exist and get user profile
@@ -28,28 +28,25 @@ async function getProfile(token) {
       method: 'GET',
       headers: {
         authorization: token,
+        // authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYSIsImlhdCI6MTU5NDYwOTM5MCwiZXhwIjoxNTk0NjEyOTkwfQ.m7nXwDjo4qqkJ02eJ6kj4bPbYTCv9MWevIAyJm_74bg',
       },
     }).then((res) => {
       return res.json();
     }).then((res) => {
-      console.log(res);
-      if (!res.expiredAt) {
-        getUser(res.data);
-
+      if (!res.error) {
         // get show profile divs
-        const loginformContent = document.getElementById('loginformContent');
-        const profile = document.getElementById('profileformContent');
-        const welcome = document.getElementById('welcome');
-        const image = document.getElementById('image');
-        const name = document.getElementById('name');
-        const email = document.getElementById('email');
+        const image = document.querySelector('.profileImg-Img');
+        const name = document.querySelector('.profileName');
+        const email = document.querySelector('.profileEmail');
+        const streamKey = document.querySelector('.profileKey');
 
-        loginformContent.setAttribute('class', 'hide');
-        profile.setAttribute('class', '');
-        welcome.textContent = `Welcome to Stylish`;
         image.src = res.data.picture;
-        name.textContent = `Name: ${res.data.name}`;
-        email.textContent = `Email: ${res.data.email}`;
+        name.value = res.data.name;
+        email.value = res.data.email;
+        streamKey.value = res.data.streamKey;
+      } else {
+        alert('Token Invalid, Please sign in again');
+        signOut();
       }
     });
   } catch (err) {
@@ -82,7 +79,6 @@ async function signIn() {
       return res.json();
     }).then((res) => {
       console.log(res);
-      getUser(res.data.user);
       alert(`Signed in Successful`);
       window.location.reload();
     });

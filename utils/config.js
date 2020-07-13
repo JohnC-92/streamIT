@@ -1,4 +1,9 @@
 const config = {
+  host: {
+    local: 'http://127.0.0.1',
+    cloud: 'http://15.165.218.32',
+  },
+
   rtmp_server: {
     rtmp: {
       port: 1935,

@@ -29,19 +29,43 @@ a {
 	text-decoration: none;
 }
 
-/* Chat Page */
+/* Video & Chat Page */
+.videoBody {
+	display: flex;
+}
+
+.videoPlayer {
+  /* width: 1000px; */
+  position: relative;
+}
+
+.streamliveText{
+  position: absolute;
+  top: 115px;
+  left: 35px;
+  padding: 2px;
+  color: white;
+  background: red;
+  width: 80px;
+  font-size: 30px;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.playerTitle {
+  font-size: 30px;
+  text-align: center;
+}
 
 .chat-container {
-	max-width: 1100px;
-	width: 800px;
+  width: 550px;
 	background: #fff;
-	margin: 30px auto;
 	overflow: hidden;
 }
 
 .chat-messages {
 	padding: 30px;
-	height: 460px;
+	height: 700px;
 	overflow-y: scroll;
 }
 
@@ -249,12 +273,6 @@ a {
 .rowFb {
   margin: 14px 0;
   text-align: center;
-}
-
-/* Body */
-
-.videoBody {
-	display: flex;
 }
 
 /* Login / Sign Up form */
@@ -472,17 +490,206 @@ a {
   align-items: center;
 }
 
-/* contentBody */
-.contentBody {
+.sideTitle {
+  margin-top: 10px;
+}
+
+/* Content Container */
+
+.contentContainer {
   height: 100%;
   position: absolute;
   z-index: 1;
   top: 0;
   left: 250px;
   width: 100%;
-  background: rgba(0, 0, 0, 0.2);
 }
 
+/* INDEX PAGE VIDEO */
+.liveContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 30px;
+  background: rgba(0, 0, 0, 0.05);
+  height: 100%;
+}
+
+.liveTitle,
+.liveType {
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.liveChannels {
+  display: flex;
+  font-size: 20px;
+  flex-wrap: wrap;
+}
+
+.streams {
+  margin: 0 20px 20px;
+}
+
+.streamThumbnail {
+  position: relative;
+}
+
+.thumbnails {
+  width: 350px;
+}
+
+.streamliveLabel {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  padding: 2px;
+  color: white;
+  background: red;
+  width: 40px;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.streamcountLabel {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  padding: 2px;
+  color: white;
+  background: black;
+  opacity: 0.8;
+  width: 120px;  
+  border-radius: 5px;
+  font-size: 18px;
+}
+
+.streamTitle {
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: 2px;
+  margin-bottom: 5px;
+}
+
+.streamType {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 70%;
+  width: 100px;
+  padding: 5px 10px;
+  text-align: center;
+  margin-top: 5px;
+}
+
+/* PROFILE PAGE */
+.profileContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 30px;
+  background: rgba(0, 0, 0, 0.05);
+  height: 100%;
+}
+
+.profileTitle {
+  font-size: 40px;
+  font-weight: 900;
+  margin-bottom: 10px;
+}
+
+.profileTabs {
+  font-size: 25px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  margin-bottom: 10px;
+}
+
+.profileSubTitle {
+  font-size: 25px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.profileRow {
+  background: white;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  max-width: 1000px;
+  display: flex;
+  margin-bottom: 35px;
+}
+
+.profileImg-Desc {
+  margin-left: 35px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.profileImg-Txt {
+  font-weight: 600;
+}
+
+.profileImg-Img {
+  width: 120px;
+  border-radius: 50%;
+}
+
+.profileImg-Btn {
+  background: rgba(0, 0, 0, 0.2);
+  width: 140px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  margin-bottom: 14px;
+}
+
+.profileImg-Btn:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.profileInfoContainer {
+  background: white;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  max-width: 1000px;
+  display: flex;
+  margin-bottom: 35px;
+  flex-wrap: wrap;
+}
+
+.profileRowInfo {
+  background: white;
+  padding: 10px;
+  width: 1000px;
+  display: flex;
+  font-size: 16px;
+}
+
+.profileInfo-Desc {
+  width: 250px;
+}
+
+.profileInput {
+  background: rgba(0, 0, 0, 0.1);
+  border: none;
+  border-radius: 4px;
+  width: 100%;
+  padding: 10px 15px;
+}
+
+.profileInput:focus {
+  border-color: black;
+  background: white;
+}
+
+.profileInfo-Txt {
+  width: 100%;
+  padding-left: 15px;
+}
 
 /* FORM TYPOGRAPHY*/
 

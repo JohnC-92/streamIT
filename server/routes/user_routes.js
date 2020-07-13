@@ -5,6 +5,7 @@ const {
   signUp,
   signIn,
   getUserProfile,
+  getUserKeys,
   getSubFollow,
 } = require('../controllers/user_controllers');
 
@@ -19,6 +20,9 @@ router.post('/user/signin',
 
 router.get('/user/profile',
     wrapAsync(getUserProfile));
+
+router.get('/user/keys',
+    wrapAsync(getUserKeys));
 
 // update profile route
 

@@ -9,6 +9,7 @@ const {username, room} = Qs.parse(location.search, {
   ignoreQueryPrefix: true,
 });
 
+
 const socket = io();
 
 // Join chatroom
@@ -18,7 +19,7 @@ socket.emit('joinRoom', {username, room});
 socket.on('roomUsers', ({room, users, usersCount}) => {
   outputRoomName(room);
   outputUsersCount(usersCount);
-  outputUsers(users);
+  // outputUsers(users);
 });
 
 // Message from server
