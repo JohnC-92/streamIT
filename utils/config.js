@@ -4,7 +4,7 @@ const config = {
 
   host: {
     local: 'http://127.0.0.1',
-    cloud: 'http://15.165.218.32',
+    cloud: 'https://15.165.218.32',
   },
 
   rtmp_server: {
@@ -17,8 +17,16 @@ const config = {
     },
 
     http: {
+      port: 8000,
+      mediaroot: './server/media',
+      allow_origin: '*',
+    },
+
+    https: {
       port: 8888,
       mediaroot: './server/media',
+      key: './private.pem',
+      cert: './certChain.crt',
       allow_origin: '*',
     },
 
