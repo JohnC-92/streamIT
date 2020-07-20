@@ -18,7 +18,7 @@ const config = {
 
     http: {
       port: 8888,
-      mediaroot: '../server/media',
+      mediaroot: './server/media',
       allow_origin: '*',
     },
 
@@ -43,8 +43,6 @@ const config = {
     url: process.env.AWS_S3_URL,
   },
 
-  port: process.env.PORT,
-
   tokenExpire: process.env.TOKEN_EXPIRE,
 
   salt: process.env.BCRYPT_SALT,
@@ -62,6 +60,10 @@ const config = {
   db: process.env.DATABASE,
 
   dbTest: process.env.DATABASE_TEST,
+
+  stripePK: process.env.STRIPE_PUBLISHABLE_KEY,
+
+  stripeSK: process.env.STRIPE_SECRET_KEY,
 
 };
 

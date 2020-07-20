@@ -18,10 +18,32 @@ nms.on('prePublish', async (id, StreamPath, args) => {
   }
 });
 
+nms.on('donePublish', (id, StreamPath, args) => {
+  console.log('[NodeEvent on donePublish]', `id=${id} StreamPath=${StreamPath} args=${JSON.stringify(args)}`);
+  console.log('--------------------DONE PUBLISHING---------------------------')
+});
+
+nms.on('prePlay', (id, StreamPath, args) => {
+  console.log('[NodeEvent on prePlay]', `id=${id} StreamPath=${StreamPath} args=${JSON.stringify(args)}`);
+  console.log('-------------------------PRE PLAY-----------------------------------')
+  // let session = nms.getSession(id);
+  // session.reject();
+});
+
+// nms.on('doneConnect', (id, args) => {
+//   if(!args.streamPath) {
+
+//   }
+// });
+
 // parse stream key from stream path
 const getStreamKeyFromStreamPath = (path) => {
   const parts = path.split('/');
   return parts[parts.length - 1];
 };
+
+const saveStreamVideo = (stream) => {
+
+}
 
 module.exports = nms;

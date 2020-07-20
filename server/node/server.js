@@ -6,85 +6,81 @@ const env = require("dotenv").config({ path: "./.env" });
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 app.use(express.static(process.env.STATIC_DIR));
-app.use(
-  express.json({
-    // We need the raw body to verify webhook signatures.
-    // Let's compute it only when hitting the Stripe webhook endpoint.
-    verify: function(req, res, buf) {
-      if (req.originalUrl.startsWith("/webhook")) {
-        req.rawBody = buf.toString();
-      }
-    }
-  })
-);
+app.use(express.json());
 
-app.get("/checkout", (req, res) => {
+app.get("/", (req, res) => {
   // Display checkout page
-  const path = resolve(process.env.STATIC_DIR + "/index.html");
+  const path = resolve(process.env.STATIC_DIR + "/donate.html");
   res.sendFile(path);
+});
+
+app.get("/stripe-key", (req, res) => {
+  res.send({ publishableKey: process.env.STRIPE_PUBLISHABLE_KEY });
 });
 
 const calculateOrderAmount = items => {
   // Replace this constant with a calculation of the order's amount
-  // Calculate the order total on the server to prevent
+  // You should always calculate the order total on the server to prevent
   // people from directly manipulating the amount on the client
   return 1400;
 };
 
-app.post("/create-payment-intent", async (req, res) => {
-  const { items, currency } = req.body;
-  // Create a PaymentIntent with the order amount and currency
-  const paymentIntent = await stripe.paymentIntents.create({
-    amount: calculateOrderAmount(items),
-    currency: currency
-  });
+app.post("/pay", async (req, res) => {
+  const { paymentMethodId, paymentIntentId, items, currency, useStripeSdk } = req.body;
 
-  // Send publishable key and PaymentIntent details to client
-  res.send({
-    publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
-    clientSecret: paymentIntent.client_secret
-  });
-});
+  const orderAmount = calculateOrderAmount(items);
 
-// Expose a endpoint as a webhook handler for asynchronous events.
-// Configure your webhook in the stripe developer dashboard
-// https://dashboard.stripe.com/test/webhooks
-app.post("/webhook", async (req, res) => {
-  let data, eventType;
-
-  // Check if webhook signing is configured.
-  if (process.env.STRIPE_WEBHOOK_SECRET) {
-    // Retrieve the event by verifying the signature using the raw body and secret.
-    let event;
-    let signature = req.headers["stripe-signature"];
-    try {
-      event = stripe.webhooks.constructEvent(
-        req.rawBody,
-        signature,
-        process.env.STRIPE_WEBHOOK_SECRET
-      );
-    } catch (err) {
-      console.log(`⚠️  Webhook signature verification failed.`);
-      return res.sendStatus(400);
+  try {
+    let intent;
+    if (paymentMethodId) {
+      // Create new PaymentIntent with a PaymentMethod ID from the client.
+      intent = await stripe.paymentIntents.create({
+        amount: orderAmount,
+        currency: currency,
+        payment_method: paymentMethodId,
+        confirmation_method: "manual",
+        confirm: true,
+        // If a mobile client passes `useStripeSdk`, set `use_stripe_sdk=true`
+        // to take advantage of new authentication features in mobile SDKs
+        use_stripe_sdk: useStripeSdk,
+      });
+      // After create, if the PaymentIntent's status is succeeded, fulfill the order.
+    } else if (paymentIntentId) {
+      // Confirm the PaymentIntent to finalize payment after handling a required action
+      // on the client.
+      intent = await stripe.paymentIntents.confirm(paymentIntentId);
+      // After confirm, if the PaymentIntent's status is succeeded, fulfill the order.
     }
-    data = event.data;
-    eventType = event.type;
-  } else {
-    // Webhook signing is recommended, but if the secret is not configured in `config.js`,
-    // we can retrieve the event data directly from the request body.
-    data = req.body.data;
-    eventType = req.body.type;
+    res.send(generateResponse(intent));
+  } catch (e) {
+    // Handle "hard declines" e.g. insufficient funds, expired card, etc
+    // See https://stripe.com/docs/declines/codes for more
+    res.send({ error: e.message });
   }
-
-  if (eventType === "payment_intent.succeeded") {
-    // Funds have been captured
-    // Fulfill any orders, e-mail receipts, etc
-    // To cancel the payment after capture you will need to issue a Refund (https://stripe.com/docs/api/refunds)
-    console.log("💰 Payment captured!");
-  } else if (eventType === "payment_intent.payment_failed") {
-    console.log("❌ Payment failed.");
-  }
-  res.sendStatus(200);
 });
+
+const generateResponse = intent => {
+  // Generate a response based on the intent's status
+  switch (intent.status) {
+    case "requires_action":
+    case "requires_source_action":
+      // Card requires authentication
+      return {
+        requiresAction: true,
+        clientSecret: intent.client_secret
+      };
+    case "requires_payment_method":
+    case "requires_source":
+      // Card was not properly authenticated, suggest a new payment method
+      return {
+        error: "Your card was denied, please provide a new payment method"
+      };
+    case "succeeded":
+      // Payment is complete, authentication not required
+      // To cancel the payment after capture you will need to issue a Refund (https://stripe.com/docs/api/refunds)
+      console.log("💰 Payment received!");
+      return { clientSecret: intent.client_secret };
+  }
+};
 
 app.listen(4242, () => console.log(`Node server listening on port ${4242}!`));
