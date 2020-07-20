@@ -42,7 +42,7 @@ const wrapAsync = (fn) => {
 
 // function to update thumbnails every 5s
 const options = {
-  uri: 'http://127.0.0.1:8888/api/streams',
+  uri: host + ':8888/api/streams',
   headers: {
     'User-Agent': 'Request-Promise',
   },
