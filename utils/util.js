@@ -46,6 +46,7 @@ const options = {
   headers: {
     'User-Agent': 'Request-Promise',
   },
+  rejectUnauthorized: false,
   json: true, // Automatically parses the JSON string in the response
 };
 
