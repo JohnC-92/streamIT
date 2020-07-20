@@ -1,4 +1,7 @@
+require('dotenv').config();
+
 const config = {
+
   host: {
     local: 'http://127.0.0.1',
     cloud: 'http://15.165.218.32',
@@ -21,6 +24,7 @@ const config = {
 
     trans: {
       ffmpeg: 'D:/AppWorks/videoStream/streamit/utils/ffmpeg.exe',
+      // ffmpeg: '/usr/bin/ffmpeg',
       tasks: [
         {
           app: 'live',
@@ -31,8 +35,34 @@ const config = {
         },
       ],
     },
-
   },
+
+  s3: {
+    accessKey: process.env.AWS_ACCESS_KEY_ID,
+    secretKey: process.env.AWS_SECRET_ACCESS_KEY,
+    url: process.env.AWS_S3_URL,
+  },
+
+  port: process.env.PORT,
+
+  tokenExpire: process.env.TOKEN_EXPIRE,
+
+  salt: process.env.BCRYPT_SALT,
+
+  secret: process.env.SECRET,
+
+  nodeEnv: process.env.NODE_ENV,
+
+  dbhost: process.env.dbHOST,
+
+  dbUser: process.env.dbUSERNAME,
+
+  dbPass: process.env.dbPASSWORD,
+
+  db: process.env.DATABASE,
+
+  dbTest: process.env.DATABASE_TEST,
+
 };
 
 module.exports = config;

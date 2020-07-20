@@ -1,7 +1,7 @@
-require('dotenv').config();
 const validator = require('validator');
 const User = require('../models/user_model');
-const expire = process.env.TOKEN_EXPIRE;
+const {tokenExpire, s3} = require('../../utils/config');
+const expire = tokenExpire;
 
 const signUp = async (req, res) => {
   let {name} = req.body;
@@ -21,7 +21,7 @@ const signUp = async (req, res) => {
   name = validator.escape(name);
   const result = await User.signUp(name, password, email, expire);
   if (result.error) {
-    return res.status(403).send(result.error);
+    return res.status(403).send({error: result.error});
   }
 
   const {accessToken, loginAt, user} = result;
@@ -53,8 +53,8 @@ const signIn = async (req, res) => {
   switch (provider) {
     // native login
     case 'native':
-      const {name, password} = req.body;
-      result = await nativeSignIn(name, password);
+      const {email, password} = req.body;
+      result = await nativeSignIn(email, password);
       break;
     // facebook login
     case 'facebook':
@@ -132,6 +132,8 @@ const getUserProfile = async (req, res) => {
           name: result.name,
           picture: result.picture,
           streamKey: result.stream_key,
+          streamTitle: result.stream_title,
+          streamType: result.stream_type,
         },
       });
     } else {
@@ -144,25 +146,70 @@ const getUserProfile = async (req, res) => {
 
 const getUserKeys = async(req, res) => {
   const result = await User.getUserKeys();
+
   const resObj = {};
   result.map((res) => {
     resObj[res.stream_key] = res.name;
   });
+
   return res.send(resObj);
 };
 
-const getSubFollow = async (req, res) => {
-  // category = subscriber || followers
+const updateUserImg = async(req, res) => {
+  console.log(req.body);
+  const {email} = req.body;
+  const fileName = email.split('.').join('-');
 
+  const ext = req.files.profileImg[0].originalname.split('.').pop();
+  const imgUrl = `${s3.url}/profileImg/${fileName}.${ext}`;
+
+  const result = await User.updateUserImg(email, imgUrl);
+  return res.send(result);
 };
 
-const nativeSignIn = async (name, password) => {
+const updateUserProfile = async(req, res) => {
+  const {name, email, streamTitle, streamType} = req.body;
+  const result = await User.updateUserProfile(name, email, streamTitle, streamType);
+  return res.send(result);
+};
+
+const deleteUserProfile = async(req, res) => {
+  const {email} = req.body;
+  const result = await User.deleteUserProfile(email);
+  return res.send(result);
+};
+
+const getFollowers = async (req, res) => {
+  const id = req.query.id;
+  const result = User.getFollowers(id);
+  return res.send(result);
+};
+
+const updateFollowers = async (req, res) => {
+  const {follow} = req.body;
+  if (follow) {
+    const {fromId, fromName, toId, toName} = req.body;
+    const followedAt = new Date();
+    const result = await User.addfollowUser(fromId, fromName, toId, toName, followedAt);
+    return res.send(result);
+  } else {
+    const {fromId, toId} = req.body;
+    const result = await User.removefollowUser(fromId, toId);
+    return res.send(result);
+  }
+};
+
+const getSubFollow = async(req, res) => {
+   
+};
+
+const nativeSignIn = async (email, password) => {
   try {
     // check if user provided name, password
-    if (!name || !password) {
-      return {error: 'Name and password required', status: 400};
+    if (!email || !password) {
+      return {error: 'Email and password required', status: 400};
     }
-    const result = await User.nativeSignIn(name, password, expire);
+    const result = await User.nativeSignIn(email, password, expire);
     if (result.error) {
       return {error: result.error};
     }
@@ -195,6 +242,11 @@ module.exports = {
   signIn,
   getUserProfile,
   getUserKeys,
+  updateUserImg,
+  updateUserProfile,
+  deleteUserProfile,
+  getFollowers,
+  updateFollowers,
   getSubFollow,
 };
 

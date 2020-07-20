@@ -1,23 +1,23 @@
-require('dotenv').config();
 const path = require('path');
 const express = require('express');
 const http = require('http');
 const bodyParser = require('body-parser');
-const PORT = process.env.PORT || 3000;
+const servePort = require('./utils/config').port;
+const PORT = servePort || 3000;
 const nodeMediaServer = require('./server/media_server');
 const thumbnailGenerator = require('./utils/util').job;
+const initSocket = require('./utils/socket');
 
 const app = express();
 const server = http.createServer(app);
-const initSocket = require('./utils/socket');
 
 // Set views engine and views engine files folder
 app.set('views', './server/views');
 app.set('view engine', 'ejs');
 
 // Set body parser
-app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 
 // Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
@@ -49,6 +49,10 @@ app.get('/video', (req, res) => {
 
 app.get('/profile', (req, res) => {
   res.render('profile');
+});
+
+app.get('/donate', (req, res) => {
+  res.render('donate');
 });
 
 // Error Handling Middleware

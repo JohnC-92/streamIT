@@ -1,31 +1,30 @@
-require('dotenv').config();
 const mysql = require('mysql');
 const {promisify} = require('util');
-const env = process.env.NODE_ENV || 'production';
-const multipleStatements = (process.env.NODE_ENV === 'test');
-const {HOST, dbUSERNAME, dbPASSWORD, DATABASE, DATABASE_TEST} = process.env;
+const {nodeEnv, dbhost, dbUser, dbPass, db, dbTest} = require('./config');
+const env = nodeEnv || 'production';
+const multipleStatements = (nodeEnv === 'test');
 
 const mysqlConfig = {
   // for EC2 machine
   production: {
-    host: HOST,
-    user: dbUSERNAME,
-    password: dbPASSWORD,
-    database: DATABASE,
+    host: dbhost,
+    user: dbUser,
+    password: dbPass,
+    database: db,
   },
   // for localhost development
   development: {
-    host: HOST,
-    user: dbUSERNAME,
-    password: dbPASSWORD,
-    database: DATABASE,
+    host: dbhost,
+    user: dbUser,
+    password: dbPass,
+    database: db,
   },
   // for automation testing
   test: {
-    host: HOST,
-    user: dbUSERNAME,
-    password: dbPASSWORD,
-    database: DATABASE_TEST,
+    host: dbhost,
+    user: dbUser,
+    password: dbPass,
+    database: dbTest,
   },
 };
 

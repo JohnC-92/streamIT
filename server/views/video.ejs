@@ -26,6 +26,12 @@
             <video width="1080" height="765" controls id="video"></video>      
             <span class="streamliveText">live</span>
             <div class="playerTitle">Welcome To StreamIT World</div>
+            <div class="followBtn">
+              Follow
+            </div>
+            <div class="donateBtn">
+              Donate
+            </div>
           </div>          
 
           <div class="chat-container">
@@ -62,14 +68,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.4/qs.min.js" integrity="sha512-BHtomM5XDcUy7tDNcrcX1Eh0RogdWiMdXl3wJcKB3PFekXb3l5aDzymaTher61u6vEZySnoC/SAj2Y/p918Y3w==" crossorigin="anonymous"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="js/socketClient.js"></script>
-    <script src="js/headerForm.js"></script>
-    <script src="js/getProfile.js"></script>
+    <script src="js/header.js"></script>
+    <script src="js/donate.js"></script>
+    <!-- <script src="js/getProfile.js"></script> -->
     <script>
         if (flvjs.isSupported()) {
             const video = document.getElementById('video');
             const flvPlayer = flvjs.createPlayer({
-            type: 'flv',
-            url: 'http://127.0.0.1:8888/live/'+window.location.href.split('=')[1].split('&')[0]+'.flv',
+              type: 'flv',
+              url: 'http://127.0.0.1:8888/live/'+window.location.href.split('=')[1].split('&')[0]+'.flv',
+              // url: 'http://15.165.218.32:8888/live/'+window.location.href.split('=')[1].split('&')[0]+'.flv',
+              // url: 'http://mirrors.standaloneinstaller.com/video-sample/Panasonic_HDC_TM_700_P_50i.flv',
             });
             flvPlayer.attachMediaElement(video);
             flvPlayer.load();

@@ -28,79 +28,119 @@
 
           <div class="profileTabs">
 
-            <div class="profileInfo">
+            <div class="profileInfo profileActive">
               個人檔案
             </div>
 
-            <!-- <div class="profileVideo">
-              頻道和影片
-            </div> -->
-
-          </div>
-
-          <div class="profileSubTitle">
-            大頭貼
-          </div>
-
-          <div class="profileRow">
-            <div class="profileImg">
-              <img class="profileImg-Img" src="https://i0.wp.com/pinkupost.com/wp-content/uploads/2019/06/%E6%9C%A8%E6%9D%91%E6%8B%93%E5%93%89_%E9%95%B7%E5%B2%A1%E5%BC%98%E6%A8%B9_%E6%95%99%E5%A0%B4_2020%E5%B9%B4%E7%89%B9%E5%88%A5%E5%8A%87_%E5%AF%8C%E5%A3%AB%E9%9B%BB%E8%A6%96%E5%8F%B0_%E5%B0%8F%E8%AA%AA%E7%9C%9F%E4%BA%BA%E5%8C%96%E6%97%A5%E5%8A%87-2-1.jpg?resize=640%2C792" alt="">
+            <div class="profileVideo">
+              歷史影片
             </div>
-            <div class="profileImg-Desc">
-              <div class="profileImg-Btn">
-                新增大頭貼
+
+            <div class="profileFollower">
+              追蹤名單
+            </div>
+
+            <div class="profileStripe">
+              匯款記錄
+            </div>
+
+          </div>
+
+          <div class="profileInfoTab">
+            <div class="profileSubTitle">
+              大頭貼
+            </div>
+
+            <div class="profileRow">
+              <div class="profileImg">
+                <!-- <img class="profileImg-Img" src="https://i0.wp.com/pinkupost.com/wp-content/uploads/2019/06/%E6%9C%A8%E6%9D%91%E6%8B%93%E5%93%89_%E9%95%B7%E5%B2%A1%E5%BC%98%E6%A8%B9_%E6%95%99%E5%A0%B4_2020%E5%B9%B4%E7%89%B9%E5%88%A5%E5%8A%87_%E5%AF%8C%E5%A3%AB%E9%9B%BB%E8%A6%96%E5%8F%B0_%E5%B0%8F%E8%AA%AA%E7%9C%9F%E4%BA%BA%E5%8C%96%E6%97%A5%E5%8A%87-2-1.jpg?resize=640%2C792" alt=""> -->
+                <!-- <img class="profileImg-Img" src="https://www.dlf.pt/dfpng/middlepng/2-23802_meme-faces-happy-png-transparent-png.png" alt=""> -->
+                <img class="profileImg-Img" src="" alt="">
               </div>
-              <div class="profileImg-Txt">
-                必須是JPEG、PNG檔案，且不能超過 10MB。
+              <div class="profileImg-Desc">
+                <form class="profileForm" action="/user/updateImg" method="POST" enctype="multipart/form-data">
+                  <div class="profileImg-Input">
+                    <input type="text" id="profileImg-Email" name="email" hidden="hidden" />
+                    <input type="file" id="profileImg-InputBtn" name="profileImg" hidden="hidden" />
+                    <input type="submit" id="profileImg-SubmitBtn" hidden="hidden" />
+                    <div class="profileImg-Btn">
+                      新增大頭貼
+                    </div>
+                  </div>  
+                </form>
+                <div class="profileImg-Txt">
+                  必須是JPEG、PNG檔案，且不能超過 10MB。
+                </div>
               </div>
+            </div>
+
+            <div class="profileSubTitle">
+              個人檔案設定
+            </div>
+            <div class="profileInfoContainer">
+              <div class="profileRowInfo">
+                <div class="profileInfo-Desc">
+                  使用者名稱
+                </div>              
+                <input type="text" class="profileInput profileName" maxlength="25"> 
+                
+              </div>
+              <div class="profileRowInfo">
+                <div class="profileInfo-Desc">
+                  電子郵件
+                </div>
+                <input type="text" class="profileInput profileEmail" readonly>             
+                
+              </div>
+              <div class="profileRowInfo">
+                <div class="profileInfo-Desc">
+                  直播金鑰
+                </div>
+                <input type="text" class="profileInput profileKey" readonly>             
+              </div>
+              <div class="profileRowInfo">
+                <div class="profileInfo-Desc">
+                  直播標題
+                </div>
+                <input type="text" class="profileInput profileStreamTitle" maxlength="25">
+              </div>
+              <div class="profileRowInfo">
+                <div class="profileInfo-Desc">
+                  直播分類
+                </div>
+                <select class="profileInput profileStreamType">
+                  <option value="" selected disabled hidden>選擇直播分類</option>
+                  <option value="Gaming">Gaming</option>
+                  <option value="Musical">Musical</option>
+                  <option value="TalkShow">TalkShow</option>
+                </select>
+              </div>
+              <div class="profileNote">
+                注：只有使用者名稱/直播標題/直播分類可被修改
+              </div>
+              <div class="profileInfo-Btn">
+                更新資料
+              </div>
+            </div>
+
+            <div class="profileSubTitle">
+              停用您的 StreamIT 賬號
+            </div>
+
+            <div class="profileInfoContainer">
+              <div class="profileRowInfo">
+                <div class="profileInfo-Desc">
+                  停用您的 StreamIT 賬號
+                </div>              
+                <div class="profileInfo-Txt">
+                  若想要停用您的 StreamIT 帳號，您可以點擊 <span class="deleteAccount">停用</span> 按鈕進行相關作業。
+                </div>      
+              </div>
+
             </div>
           </div>
 
-          <div class="profileSubTitle">
-            個人檔案設定
-          </div>
-          <div class="profileInfoContainer">
-            <div class="profileRowInfo">
-              <div class="profileInfo-Desc">
-                使用者名稱
-              </div>              
-              <input type="text" class="profileInput profileName" readonly> 
-              
-            </div>
-            <div class="profileRowInfo">
-              <div class="profileInfo-Desc">
-                電子郵件
-              </div>
-              <input type="text" class="profileInput profileEmail" readonly>             
-              
-            </div>
-            <div class="profileRowInfo">
-              <div class="profileInfo-Desc">
-                直播金鑰
-              </div>
-              <input type="text" class="profileInput profileKey" readonly>             
-            </div>
-            <div class="profileRowInfo">
-              <div class="profileInfo-Desc">
-                自我介紹
-              </div>
-              <textarea class="profileInput profileDesc" rows="4"></textarea>
-            </div>
-          </div>
-
-          <div class="profileSubTitle">
-            停用您的 StreamIT 賬號
-          </div>
-
-          <div class="profileInfoContainer">
-            <div class="profileRowInfo">
-              <div class="profileInfo-Desc">
-                停用您的 StreamIT 賬號
-              </div>              
-              <div class="profileInfo-Txt">
-                若想要停用您的 StreamIT 帳號，您可以從停用帳號頁面進行相關作業。
-              </div>      
-            </div>
+          <div class="profileVODTab">
 
           </div>
           
@@ -111,57 +151,13 @@
 
     </div>
 
-    <!-- <div class="videoBody">
-
-        <video width="840" height="600" controls id="video"></video>      
-        
-        <div class="chat-container">
-            <h3 class="room">Room Name: <span id="room-name"></span></h3>
-            <h3 class="room">Room UserCount: <span id="usersCount"></span></h3>
-            <h3 class="room">Room Users: <span id="users"></span></h3>
-            <main class="chat-main">
-
-            <div class="chat-messages">
-            </div>
-            </main>
-
-            <div class="chat-form-container">
-            <form id="chat-form">
-                <input
-                id="msg"
-                type="text"
-                placeholder="Enter Message"
-                required
-                autocomplete="off"
-                />
-                <button class="btn"><i class="fas fa-paper-plane"></i> Send</button>
-            </form>
-            </div>
-            
-        </div>
-
-    </div>
-    
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.4/qs.min.js" integrity="sha512-BHtomM5XDcUy7tDNcrcX1Eh0RogdWiMdXl3wJcKB3PFekXb3l5aDzymaTher61u6vEZySnoC/SAj2Y/p918Y3w==" crossorigin="anonymous"></script>
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="js/socketClient.js"></script>
-  <script>
-    if (flvjs.isSupported()) {
-        const video = document.getElementById('video');
-        const flvPlayer = flvjs.createPlayer({
-          type: 'flv',
-          url: `http://localhost:8888/live/fzfsqnTtd.flv`,
-        });
-        flvPlayer.attachMediaElement(video);
-        flvPlayer.load();
-        flvPlayer.play();
-      };
-  </script> -->
-
-    <script src="js/headerForm.js"></script>
-    <script src="js/getProfile.js"></script>
-    <script src="js/render.js"></script>
+    <script src="js/header.js"></script>
+    <script src="js/profile.js"></script>
+    <script>
+      if (token) {
+        getProfile(token);
+      }
+    </script>
   </body>
 
 

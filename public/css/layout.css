@@ -57,6 +57,25 @@ a {
   text-align: center;
 }
 
+.followBtn,
+.donateBtn {
+  background: black;
+  color: white;
+  width: 60px;
+  height: 35px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.followBtn:hover,
+.donateBtn:hover {
+  background: rgba(0, 0, 0, 0.80);
+}
+
+/* Chat Container */
+
 .chat-container {
   width: 550px;
 	background: #fff;
@@ -503,6 +522,7 @@ a {
   top: 0;
   left: 250px;
   width: 100%;
+  max-width: 1650px;
 }
 
 /* INDEX PAGE VIDEO */
@@ -512,6 +532,14 @@ a {
   padding: 20px 30px;
   background: rgba(0, 0, 0, 0.05);
   height: 100%;
+}
+
+.slidingLiveStream {
+  display: flex;
+}
+
+.slideStream {
+  margin:0 10px;
 }
 
 .liveTitle,
@@ -546,7 +574,7 @@ a {
   padding: 2px;
   color: white;
   background: red;
-  width: 40px;
+  width: 50px;
   text-align: center;
   border-radius: 5px;
 }
@@ -596,9 +624,21 @@ a {
 }
 
 .profileTabs {
+  display: flex;
   font-size: 25px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   margin-bottom: 10px;
+}
+
+.profileActive {
+  color: purple;
+  border-bottom: 4px solid purple;
+}
+
+.profileVideo,
+.profileFollower,
+.profileStripe {
+  margin-left: 50px;
 }
 
 .profileSubTitle {
@@ -633,9 +673,13 @@ a {
   border-radius: 50%;
 }
 
+.profileImg-Input {
+  display: flex;
+}
+
 .profileImg-Btn {
   background: rgba(0, 0, 0, 0.2);
-  width: 140px;
+  width: 110px;
   height: 35px;
   display: flex;
   justify-content: center;
@@ -644,9 +688,29 @@ a {
   padding: 10px 20px;
   font-size: 14px;
   margin-bottom: 14px;
+  cursor: pointer;
 }
 
 .profileImg-Btn:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.profileInfo-Btn {
+  background: rgba(0, 0, 0, 0.2);
+  width: 100px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: flex-end;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.profileInfo-Btn:hover {
   background: rgba(0, 0, 0, 0.3);
 }
 
@@ -658,13 +722,14 @@ a {
   max-width: 1000px;
   display: flex;
   margin-bottom: 35px;
+  flex-direction: column;
   flex-wrap: wrap;
 }
 
 .profileRowInfo {
   background: white;
   padding: 10px;
-  width: 1000px;
+  width: 980px;
   display: flex;
   font-size: 16px;
 }
@@ -689,6 +754,32 @@ a {
 .profileInfo-Txt {
   width: 100%;
   padding-left: 15px;
+}
+
+.profileNote {
+  margin: 5px 0 10px 10px;
+  font-weight: 700;
+  align-self: flex-end;
+}
+
+.profileStreamType {
+  padding-left: 10px;
+}
+
+.deleteAccount {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  background: black;
+  color: white;
+  width: 55px;
+  height: 25px;
+  border-radius: 5px;
+}
+
+.deleteAccount:hover {
+  background: rgba(0, 0, 0, 0.8);
+  cursor: pointer;
 }
 
 /* FORM TYPOGRAPHY*/

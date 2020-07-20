@@ -23,6 +23,7 @@ function renderStreams() {
     }
   };
   request.open('GET', 'http://127.0.0.1:8888/api/streams');
+  // request.open('GET', 'http://15.165.218.329:8888/api/streams');
   request.send();
 }
 
@@ -48,7 +49,7 @@ function createStreamDIV(key, name) {
 
   const spanLive = document.createElement('span');
   spanLive.setAttribute('class', 'streamliveLabel');
-  spanLive.innerText = 'live';
+  spanLive.innerText = 'LIVE';
 
   const spanCount = document.createElement('span');
   spanCount.setAttribute('class', 'streamcountLabel');
@@ -66,11 +67,20 @@ function createStreamDIV(key, name) {
   streamType.setAttribute('class', 'streamType');
   streamType.innerText = 'Musical';
 
-  url.appendChild(img);
-  streamThumbnail.appendChild(url);
+  // url.appendChild(img);
+  // streamThumbnail.appendChild(url);
+  // streamThumbnail.appendChild(spanLive);
+  // streamThumbnail.appendChild(spanCount);
+  // streams.appendChild(streamThumbnail);
+  // streams.appendChild(streamTitle);
+  // streams.appendChild(streamName);
+  // streams.appendChild(streamType);
+
+  streamThumbnail.appendChild(img);
   streamThumbnail.appendChild(spanLive);
   streamThumbnail.appendChild(spanCount);
-  streams.appendChild(streamThumbnail);
+  url.appendChild(streamThumbnail);
+  streams.appendChild(url);
   streams.appendChild(streamTitle);
   streams.appendChild(streamName);
   streams.appendChild(streamType);

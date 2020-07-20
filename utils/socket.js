@@ -1,12 +1,13 @@
 const socketio = require('socket.io');
-const {formatMessage, userJoin, getCurrentUser, userLeave, getRoomUsers} = require('./socketUtils');
+const {formatMessage, userJoin, getCurrentUser, userLeave, getRoomUsers, returnUsersCount} = require('./socketUtils');
+const CronJob = require('cron').CronJob;
 
 /**
  * Function to initialize server side socket
  * @param {*} server Pass in http server
  */
 function initSocket(server) {
-  const botName = 'Bot Lee';
+  const botName = 'Bot StreamIT';
   const io = socketio(server);
 
   // Run when client connects
@@ -58,9 +59,16 @@ function initSocket(server) {
         });
       };
     });
-
-    // io.emit();
   });
+
+  // Runs every few seconds to update frontend users count
+  const job = new CronJob('*/10 * * * * *', () => {
+    // console.log('Running socket cronjob woohoo!!!');
+    io.emit('usersCount', {
+      usersCount: returnUsersCount(),
+    });
+  }, null, true);
+  job.start();
 }
 
 module.exports = initSocket;

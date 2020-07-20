@@ -1,6 +1,6 @@
 const moment = require('moment');
 const users = [];
-// const usersCount = {};
+const usersCount = {};
 
 /**
  * Function to return user text with sent time
@@ -68,7 +68,19 @@ function userLeave(id) {
 function getRoomUsers(room) {
   const userList = users.filter((user) => user.room === room);
   const userCount = userList.length;
+
+  // add users count to userCount Object everytime someone enters or leave the room
+  usersCount[room] = userCount;
+
   return [userList, userCount];
+}
+
+/**
+ * Function to return all room users count object for index and sidebar use
+ * @return {*} return usersCount object
+ */
+function returnUsersCount() {
+  return usersCount;
 }
 
 module.exports = {
@@ -77,4 +89,5 @@ module.exports = {
   getCurrentUser,
   userLeave,
   getRoomUsers,
+  returnUsersCount,
 };

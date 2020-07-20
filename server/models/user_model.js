@@ -1,21 +1,20 @@
-require('dotenv').config();
 const bcrypt = require('bcrypt');
 const shortid = require('shortid');
 const jwt = require('jsonwebtoken');
 const {query, transaction, commit, rollback} = require('../../utils/mysqlcon');
-const secret = process.env.SECRET;
-const saltRounds = parseInt(process.env.BCRYPT_SALT);
+const {secret, salt} = require('../../utils/config');
+const saltRounds = parseInt(salt);
 const requestPromise = require('request-promise');
 
 const signUp = async (name, password, email, expire) => {
   try {
     await transaction();
-    // Check if name exists
-    const nameQuery = await query('SELECT * FROM users WHERE name = ? FOR UPDATE', [name]);
-    if (nameQuery.length > 0) {
-      await commit();
-      return {error: 'Name already exists'};
-    }
+    // // Check if name exists
+    // const nameQuery = await query('SELECT * FROM users WHERE name = ? FOR UPDATE', [name]);
+    // if (nameQuery.length > 0) {
+    //   await commit();
+    //   return {error: 'Name already exists'};
+    // }
 
     // Check if email exists
     const emailQuery = await query('SELECT * FROM users WHERE email = ? FOR UPDATE', [email]);
@@ -47,7 +46,6 @@ const signUp = async (name, password, email, expire) => {
       // picture: null,
       picture: 'https://www.dlf.pt/dfpng/middlepng/2-23802_meme-faces-happy-png-transparent-png.png',
       // picture: 'https://i0.wp.com/pinkupost.com/wp-content/uploads/2019/06/%E6%9C%A8%E6%9D%91%E6%8B%93%E5%93%89_%E9%95%B7%E5%B2%A1%E5%BC%98%E6%A8%B9_%E6%95%99%E5%A0%B4_2020%E5%B9%B4%E7%89%B9%E5%88%A5%E5%8A%87_%E5%AF%8C%E5%A3%AB%E9%9B%BB%E8%A6%96%E5%8F%B0_%E5%B0%8F%E8%AA%AA%E7%9C%9F%E4%BA%BA%E5%8C%96%E6%97%A5%E5%8A%87-2-1.jpg?resize=640%2C792',
-      description: '',
       access_token: token,
       access_expired: expire,
       login_at: loginAt,
@@ -73,14 +71,14 @@ const signUp = async (name, password, email, expire) => {
   }
 };
 
-const nativeSignIn = async (name, password, expire) => {
+const nativeSignIn = async (email, password, expire) => {
   try {
     await transaction();
 
     // check if username exists
-    const user = await query('SELECT * FROM users WHERE name = ?', [name]);
+    const user = await query('SELECT * FROM users WHERE email = ?', [email]);
     if (user.length === 0) {
-      return {error: 'Invalid User'};
+      return {error: 'Invalid Email'};
     };
 
     // check if password is correct
@@ -183,15 +181,48 @@ const getUserProfile = async (token) => {
 const getUserKeys = async () => {
   const result = await query('SELECT name, stream_key FROM users', []);
   return result;
-}
+};
 
-const getFollowers = async () => {
+const updateUserImg = async (email, imgUrl) => {
+  const result = await query('UPDATE users SET picture = ? WHERE email = ?', [imgUrl, email]);
+  return result;
+};
 
-}
+const updateUserProfile = async (name, email, streamTitle, streamType) => {
+  const result = await query('UPDATE users SET name = ?, stream_title = ?, stream_type = ? WHERE email = ?', [name, streamTitle, streamType, email]);
+  return result;
+};
+
+const deleteUserProfile = async (email) => {
+  const result = await query('DELETE FROM users WHERE email = ?', [email]);
+  return result;
+};
+
+const getFollowers = async (id) => {
+  const result = await query('SELECT * FROM followers WHERE to_id = ?', [id]);
+  return result;
+};
+
+const addfollowUser = async (fromId, fromName, toId, toName, followedAt) => {
+  const followObj = {
+    from_id: fromId,
+    from_name: fromName,
+    to_id: toId,
+    to_name: toName,
+    followed_at: followedAt,
+  };
+  const result = await query('INSERT INTO followers SET ?', [followObj]);
+  return result;
+};
+
+const removefollowUser = async (fromId, toId) => {
+  const result = await query('DELETE FROM followers WHERE from_id = ? AND to_id = ?', [fromId, toId]);
+  return result;
+};
 
 const getSubscribers = async () => {
   
-}
+};
 
 module.exports = {
   signUp,
@@ -199,6 +230,11 @@ module.exports = {
   facebookSignIn,
   getUserProfile,
   getUserKeys,
+  updateUserImg,
+  updateUserProfile,
+  deleteUserProfile,
+  addfollowUser,
+  removefollowUser,
   getFollowers,
   getSubscribers,
 };

@@ -1,23 +1,3 @@
-// set global token, get token cookie from browser
-let token = '';
-if (document.cookie) {
-  token = decodeURIComponent(document.cookie).split('=')[1];
-  getProfile(token);
-}
-
-// // set global user
-// let user = {};
-
-// /**
-//  *
-//  * @param {*} res AJAX respond from server
-//  */
-// function getUser(res) {
-//   user = {};
-//   user.name = res.name;
-//   user.email = res.email;
-// }
-
 /**
  * Function to check if token cookie exist and get user profile
  * @param {*} token access token given by server
@@ -37,13 +17,17 @@ async function getProfile(token) {
         // get show profile divs
         const image = document.querySelector('.profileImg-Img');
         const name = document.querySelector('.profileName');
+        const profileImgName = document.getElementById('profileImg-Username');
         const email = document.querySelector('.profileEmail');
         const streamKey = document.querySelector('.profileKey');
+        const profileStreamTitle = document.querySelector('.profileStreamTitle');
 
         image.src = res.data.picture;
         name.value = res.data.name;
+        profileImgName.value = res.data.name;
         email.value = res.data.email;
         streamKey.value = res.data.streamKey;
+        profileStreamTitle.value = res.data.streamTitle || `Welcome to ${res.data.name}'s world`;
       } else {
         alert('Token Invalid, Please sign in again');
         signOut();
@@ -75,6 +59,7 @@ async function signIn() {
     }).then((res) => {
       if (res.status === 403) {
         alert('Invalid User/Password!');
+        throw err;
       }
       return res.json();
     }).then((res) => {
@@ -110,41 +95,51 @@ async function signUp() {
         'Content-Type': 'application/json',
       },
     }).then((res) => {
-      if (res.status === 403) {
-        alert('Email already exist!');
-      }
       return res.json();
     }).then((res) => {
-      console.log(res);
-      getUser(res.data.user);
+      console.log(res)
+      if (res.error) {
+        alert(res.error);
+        return;
+      }
       alert(`Signed up Successful`);
       window.location.reload();
     });
   } catch (err) {
+    console.log(err)
     alert('Sign Up Failed!');
   }
 };
 
 /**
- * Function to sign out
- * Clear cookie and reload page
+ * Function to update profile
  */
-function signOut() {
-  // document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT';
-  deleteAllCookies();
-  window.location.reload();
-};
+async function updateProfile() {
+  try {
+    data = {
+      name: document.querySelector('.profileName').value,
+      streamTitle: document.querySelector('.profileStreamTitle').value,
+    };
 
-/**
- * Function to delete all cookies
- */
-function deleteAllCookies() {
-  const cookies = document.cookie.split(';');
-
-  for (let i = 0; i < cookies.length; i++) {
-    const cookie = cookies[i];
-    const eqPos = cookie.indexOf('=');
-    const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-    document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    await fetch('/user/updateProfile', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then((res) => {
+      return res.json();
+    }).then((res) => {
+      if (res.error) {
+        alert(res.error);
+        return;
+      }
+      alert(`Update Successful`);
+      window.location.reload();
+    });
+  } catch (err) {
+    console.log(err)
+    alert('Update Failed!');
   }
 };
+
