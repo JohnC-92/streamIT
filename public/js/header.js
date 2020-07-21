@@ -3,7 +3,7 @@
 // set global token, get token cookie from browser
 let token = '';
 if (document.cookie) {
-  token = decodeURIComponent(document.cookie).split('=')[1];
+  token = decodeURIComponent(document.cookie).split('access_token=')[1];
   const signinText = document.querySelector('.signinText');
   signinText.innerText = '登出';
 }

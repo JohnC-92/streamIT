@@ -163,7 +163,7 @@ httpsServer.listen(httpsPort, () => {
 nodeMediaServer.run();
 
 // Start Socket Server
-initSocket(httpsServer);
+initSocket(httpServer);
 
 // Cron Job to generate thumbnails every 5 seconds
 thumbnailGenerator.start();

@@ -12,6 +12,10 @@ function initSocket(server) {
 
   // Run when client connects
   io.on('connection', (socket) => {
+    io.emit('usersCount', {
+      usersCount: returnUsersCount(),
+    });
+
     socket.on('joinRoom', ({username, room}) => {
       const user = userJoin(socket.id, username, room);
 
@@ -62,7 +66,7 @@ function initSocket(server) {
   });
 
   // Runs every few seconds to update frontend users count
-  const job = new CronJob('*/10 * * * * *', () => {
+  const job = new CronJob('*/5 * * * * *', () => {
     // console.log('Running socket cronjob woohoo!!!');
     io.emit('usersCount', {
       usersCount: returnUsersCount(),

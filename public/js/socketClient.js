@@ -3,6 +3,11 @@ const chatMessages = document.querySelector('.chat-messages');
 const roomName = document.getElementById('room-name');
 const userCount = document.getElementById('usersCount');
 const userList = document.getElementById('users');
+const streamerKey = window.location.href.split('key=')[1].split('&')[0];
+const streamerName = window.location.href.split('room=')[1].split('&')[0];
+streamerName.replace('#', '');
+
+let users = {};
 
 // Get username and room from URL
 const {username, room} = Qs.parse(location.search, {
@@ -88,3 +93,45 @@ function outputUsers(users) {
     ${users.map((user) => `<li>${user.username}</li>`).join('')}
   `;
 };
+
+// Get room and users
+socket.on('usersCount', ({usersCount}) => {
+  users = usersCount;
+  console.log(usersCount);
+
+  if (Object.keys(users).length > 0) {
+    getViewers(users);
+    getStreamViewers();
+  };
+});
+
+/**
+ * Function to input viewers
+ * @param {*} users
+ */
+function getViewers(users) {
+  Object.keys(users).forEach((key) => {
+    const viewers = users[key];
+
+    const sideclassName = '.side'+key;
+    const sideViewCount = document.querySelector(sideclassName);
+
+    if (sideViewCount !== null) {
+      sideViewCount.innerText = viewers;
+    }
+ });
+}
+
+/**
+ * Function to input specific stream viewers
+ * @param {*} users
+ */
+function getStreamViewers() {
+  const viewers = users[streamerName];
+  console.log(streamerName);
+  console.log(users);
+  console.log(viewers);
+  const playerclassName = '.playerViewers';
+  const playerViewCount = document.querySelector(playerclassName);
+  playerViewCount.innerText = '觀看人數： '+viewers;
+}

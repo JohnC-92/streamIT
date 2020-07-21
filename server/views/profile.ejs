@@ -153,10 +153,14 @@
 
     <script src="js/header.js"></script>
     <script src="js/profile.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/socketCount.js"></script>
+    <script src="js/renderSidebar.js"></script>
     <script>
       if (token) {
         getProfile(token);
       }
+      renderSidebar();
     </script>
   </body>
 

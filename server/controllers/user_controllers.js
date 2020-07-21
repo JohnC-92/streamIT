@@ -149,11 +149,19 @@ const getUserKeys = async(req, res) => {
 
   const resObj = {};
   result.map((res) => {
-    resObj[res.stream_key] = res.name;
+    resObj[res.stream_key + '1'] = res.name;
+    resObj[res.stream_key + '2'] = res.stream_title;
+    resObj[res.stream_key + '3'] = res.picture;
   });
 
   return res.send(resObj);
 };
+
+const getSingleUserKey = async (req, res) => {
+  const {key} = req.params;
+  const result = await User.getSingleUserKey(key);
+  return res.send(result);
+}
 
 const updateUserImg = async(req, res) => {
   console.log(req.body);
@@ -242,6 +250,7 @@ module.exports = {
   signIn,
   getUserProfile,
   getUserKeys,
+  getSingleUserKey,
   updateUserImg,
   updateUserProfile,
   deleteUserProfile,

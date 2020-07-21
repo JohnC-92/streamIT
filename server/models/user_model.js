@@ -179,9 +179,14 @@ const getUserProfile = async (token) => {
 };
 
 const getUserKeys = async () => {
-  const result = await query('SELECT name, stream_key FROM users', []);
+  const result = await query('SELECT name, stream_key, stream_title, picture FROM users', []);
   return result;
 };
+
+const getSingleUserKey = async (key) => {
+  const result = await query('SELECT name, stream_key, stream_title, picture FROM users WHERE stream_key = ?', [key]);
+  return result;
+}
 
 const updateUserImg = async (email, imgUrl) => {
   const result = await query('UPDATE users SET picture = ? WHERE email = ?', [imgUrl, email]);
@@ -230,6 +235,7 @@ module.exports = {
   facebookSignIn,
   getUserProfile,
   getUserKeys,
+  getSingleUserKey,
   updateUserImg,
   updateUserProfile,
   deleteUserProfile,

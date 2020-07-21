@@ -17,18 +17,19 @@ const config = {
     },
 
     http: {
-      port: 8000,
+      // port: 8000,
+      port: 8888,
       mediaroot: './server/media',
       allow_origin: '*',
     },
 
-    https: {
-      port: 8888,
-      mediaroot: './server/media',
-      key: './private.pem',
-      cert: './certChain.crt',
-      allow_origin: '*',
-    },
+    // https: {
+    //   port: 8888,
+    //   mediaroot: './server/media',
+    //   key: './private.pem',
+    //   cert: './certChain.crt',
+    //   allow_origin: '*',
+    // },
 
     trans: {
       ffmpeg: 'D:/AppWorks/videoStream/streamit/utils/ffmpeg.exe',

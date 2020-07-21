@@ -52,9 +52,35 @@ a {
   border-radius: 5px;
 }
 
+.playerDesc {
+  display: flex;
+  margin-top: 15px;
+}
+
+.playerImg {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin: 0 20px;
+}
+
+.playerTitleName {
+  margin-right: auto;
+}
+
 .playerTitle {
   font-size: 30px;
-  text-align: center;
+  font-weight: 700;
+  /* text-align: center; */
+}
+
+.playerName {
+  font-size: 25px;
+}
+
+.playerViewers {
+  font-size: 22px;
+  margin-right: 15px;
 }
 
 .followBtn,
@@ -67,6 +93,7 @@ a {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-right: 15px;
 }
 
 .followBtn:hover,
@@ -506,11 +533,55 @@ a {
   background: rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
 .sideTitle {
-  margin-top: 10px;
+  font-size: 20px;
+  font-weight: bolder;
+  margin: 10px 0 10px 70px;
+}
+
+.sideStream {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.sideImg {
+  width: 40px;
+  height: 40px;
+  margin: 0 20px 0 15px;
+}
+
+.sideTitleName {
+  margin-right: 10px;
+  width:110px;
+}
+
+.sideStreamTitle {
+  font-weight: bolder;
+  font-size: 15px;
+}
+
+.sideName {
+  font-size: 13px;
+}
+
+.sideDot {
+  background: red;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin: 0 5px;
+}
+
+.sideViewers {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Content Container */
@@ -547,6 +618,7 @@ a {
   font-size: 30px;
   font-weight: bold;
   margin-bottom: 10px;
+  margin-left: 16px;
 }
 
 .liveChannels {
@@ -592,6 +664,18 @@ a {
   font-size: 18px;
 }
 
+.streamDesc {
+  display: flex;
+}
+
+.streamImg {
+  border-radius: 50%;
+  width: 55px;
+  height: 55px;
+  background: white;
+  margin-right: 12px;
+}
+
 .streamTitle {
   font-weight: 700;
   font-size: 22px;
@@ -605,14 +689,15 @@ a {
   width: 100px;
   padding: 5px 10px;
   text-align: center;
-  margin-top: 5px;
+  margin-top: 10px;
+  margin-left: 60px;
 }
 
 /* PROFILE PAGE */
 .profileContainer {
   display: flex;
   flex-direction: column;
-  padding: 20px 30px;
+  padding: 20px 40px;
   background: rgba(0, 0, 0, 0.05);
   height: 100%;
 }

@@ -7,6 +7,7 @@ const {
   signIn,
   getUserProfile,
   getUserKeys,
+  getSingleUserKey,
   updateUserImg,
   updateUserProfile,
   deleteUserProfile,
@@ -29,6 +30,9 @@ router.get('/user/profile',
 
 router.get('/user/keys',
     wrapAsync(getUserKeys));
+
+router.get('/user/keys/:key',
+    wrapAsync(getSingleUserKey));
 
 // update profile img route
 router.post('/user/updateImg', fileType,
