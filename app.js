@@ -5,7 +5,7 @@ const fs = require('fs');
 const {stripePK, stripeSK} = require('./utils/config');
 const stripe = require('stripe')(stripeSK);
 const nodeMediaServer = require('./server/media_server');
-const thumbnailGenerator = require('./utils/util').job;
+// const thumbnailGenerator = require('./utils/util').job;
 const initSocket = require('./utils/socket');
 
 const http = require('http');
@@ -63,9 +63,6 @@ app.get('/profile', (req, res) => {
 });
 
 // -------------------------STRIPE-------------------------
-// app.get('/donate', (req, res) => {
-//   res.render('donate');
-// });
 
 app.get('/donate', (req, res) => {
   res.sendFile('web/donate.html');
@@ -166,4 +163,4 @@ nodeMediaServer.run();
 initSocket(httpServer);
 
 // Cron Job to generate thumbnails every 5 seconds
-thumbnailGenerator.start();
+// thumbnailGenerator.start();

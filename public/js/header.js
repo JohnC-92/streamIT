@@ -3,9 +3,12 @@
 // set global token, get token cookie from browser
 let token = '';
 if (document.cookie) {
-  token = decodeURIComponent(document.cookie).split('access_token=')[1];
-  const signinText = document.querySelector('.signinText');
-  signinText.innerText = '登出';
+  const cookie = decodeURIComponent(document.cookie).split('access_token=')[1];
+  if (cookie !== undefined) {
+    token = cookie.split(';')[0];
+    const signinText = document.querySelector('.signinText');
+    signinText.innerText = '登出';
+  };
 }
 
 // form related and buttons

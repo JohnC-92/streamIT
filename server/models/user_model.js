@@ -9,12 +9,6 @@ const requestPromise = require('request-promise');
 const signUp = async (name, password, email, expire) => {
   try {
     await transaction();
-    // // Check if name exists
-    // const nameQuery = await query('SELECT * FROM users WHERE name = ? FOR UPDATE', [name]);
-    // if (nameQuery.length > 0) {
-    //   await commit();
-    //   return {error: 'Name already exists'};
-    // }
 
     // Check if email exists
     const emailQuery = await query('SELECT * FROM users WHERE email = ? FOR UPDATE', [email]);
@@ -179,50 +173,82 @@ const getUserProfile = async (token) => {
 };
 
 const getUserKeys = async () => {
-  const result = await query('SELECT name, stream_key, stream_title, picture FROM users', []);
-  return result;
+  try {
+    const result = await query('SELECT name, stream_key, stream_title, picture FROM users', []);
+    return result;
+  } catch (err) {
+    return {error: err};
+  }
 };
 
 const getSingleUserKey = async (key) => {
-  const result = await query('SELECT name, stream_key, stream_title, picture FROM users WHERE stream_key = ?', [key]);
-  return result;
-}
+  try {
+    const result = await query('SELECT name, stream_key, stream_title, picture FROM users WHERE stream_key = ?', [key]);
+    return result;
+  } catch (err) {
+    return {error: err};
+  }
+};
 
 const updateUserImg = async (email, imgUrl) => {
-  const result = await query('UPDATE users SET picture = ? WHERE email = ?', [imgUrl, email]);
-  return result;
+  try {
+    const result = await query('UPDATE users SET picture = ? WHERE email = ?', [imgUrl, email]);
+    return result;
+  } catch (err) {
+    return {error: err};
+  }
 };
 
 const updateUserProfile = async (name, email, streamTitle, streamType) => {
-  const result = await query('UPDATE users SET name = ?, stream_title = ?, stream_type = ? WHERE email = ?', [name, streamTitle, streamType, email]);
-  return result;
+  try {
+    const result = await query('UPDATE users SET name = ?, stream_title = ?, stream_type = ? WHERE email = ?', [name, streamTitle, streamType, email]);
+    return result;
+  } catch (err) {
+    return {error: err};
+  }
 };
 
 const deleteUserProfile = async (email) => {
-  const result = await query('DELETE FROM users WHERE email = ?', [email]);
-  return result;
+  try {
+    const result = await query('DELETE FROM users WHERE email = ?', [email]);
+    return result;
+  } catch (err) {
+    return {error: err};
+  }
 };
 
 const getFollowers = async (id) => {
-  const result = await query('SELECT * FROM followers WHERE to_id = ?', [id]);
-  return result;
+  try {
+    const result = await query('SELECT * FROM followers WHERE to_id = ?', [id]);
+    return result;
+  } catch (err) {
+    return {error: err};
+  }
 };
 
 const addfollowUser = async (fromId, fromName, toId, toName, followedAt) => {
-  const followObj = {
-    from_id: fromId,
-    from_name: fromName,
-    to_id: toId,
-    to_name: toName,
-    followed_at: followedAt,
-  };
-  const result = await query('INSERT INTO followers SET ?', [followObj]);
-  return result;
+  try {
+    const followObj = {
+      from_id: fromId,
+      from_name: fromName,
+      to_id: toId,
+      to_name: toName,
+      followed_at: followedAt,
+    };
+    const result = await query('INSERT INTO followers SET ?', [followObj]);
+    return result;
+  } catch (err) {
+    return {error: err};
+  }
 };
 
 const removefollowUser = async (fromId, toId) => {
-  const result = await query('DELETE FROM followers WHERE from_id = ? AND to_id = ?', [fromId, toId]);
-  return result;
+  try {
+    const result = await query('DELETE FROM followers WHERE from_id = ? AND to_id = ?', [fromId, toId]);
+    return result;
+  } catch (err) {
+    return {error: err};
+  }
 };
 
 const getSubscribers = async () => {
