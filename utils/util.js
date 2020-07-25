@@ -37,11 +37,17 @@ const generateResizedVideo = (streamPath) => {
 
   const filePath = 'server/media' + streamPath + '/';
   fs.readdir(filePath, (err, files) => {
+    if (err) {
+      throw err;
+    }
+    let numProcess = 0;
     files.forEach((filename) => {
       if (filename.indexOf('resized') === -1) {
         const name = filename.split('.')[0]+'-resized.mp4';
         if (!files.includes(name)) {
-          console.log('Inside Condition');
+          numProcess += 1;
+          console.log('process number start: ', numProcess);
+
           const args = [
             '-i', filePath + filename,
             '-s', '1280x720',
@@ -51,10 +57,29 @@ const generateResizedVideo = (streamPath) => {
             filePath+name,
           ];
 
-          spawn(ffmpeg, args, {
-            detached: true,
-            stdio: 'ignore',
-          }).unref();
+          const ffmpegProcess = spawn(ffmpeg, args);
+
+          // ls.stdout.on('data', (data) => {
+          //   console.log(`stdout: ${data}`);
+          //   data=data.toString();
+          //   scriptOutput+=data;
+          // });
+
+          // ls.stderr.setEncoding('utf8');
+          // ls.stderr.on('data', (data) => {
+          //   console.error(`stderr: ${data}`);
+          //   data=data.toString();
+          //   scriptOutput+=data;
+          // });
+
+          ffmpegProcess.on('close', (code) => {
+            console.log(`ffmpeg process exited with code ${code}`);
+            console.log('process number end: ', numProcess);
+            numProcess -= 1;
+            if (numProcess === 0) {
+              console.log('All ffmpeg process done!');
+            }
+          });
         }
       }
     });

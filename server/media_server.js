@@ -3,6 +3,8 @@ const rtmpConfig = require('../utils/config').rtmp_server;
 const {query} = require('../utils/mysqlcon');
 const {generateStreamThumbnail, generateResizedVideo, uploadFile} = require('../utils/util');
 
+const rp = require('request-promise');
+
 nms = new NodeMediaServer(rtmpConfig);
 
 nms.on('prePublish', async (id, StreamPath, args) => {
@@ -20,15 +22,35 @@ nms.on('prePublish', async (id, StreamPath, args) => {
 
 nms.on('donePublish', (id, StreamPath, args) => {
   console.log('[NodeEvent on donePublish]', `id=${id} StreamPath=${StreamPath} args=${JSON.stringify(args)}`);
+
   // resized video
   generateResizedVideo(StreamPath);
 
   // delete video file
   // fs.unlink()
 
-  // upload video file
-  const streamKey = getStreamKeyFromStreamPath(StreamPath);
-  uploadFile(streamKey, '123');
+  // // upload video file
+  // const streamKey = getStreamKeyFromStreamPath(StreamPath);
+  // uploadFile(streamKey, '123');
+
+  // // function to update thumbnails every 5s
+  // const options = {
+  //   uri: 'http://localhost:4000/resize',
+  //   headers: {
+  //     'User-Agent': 'Request-Promise',
+  //   },
+  //   rejectUnauthorized: false,
+  //   json: true, // Automatically parses the JSON string in the response
+  // };
+
+  // rp(options)
+  //     .then((res) => {
+  //       console.log('Request promising!')
+  //       console.log(res);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
 });
 
 // const generateResizedVideo = (StreamPath) => {
