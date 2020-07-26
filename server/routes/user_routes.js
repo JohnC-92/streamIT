@@ -53,8 +53,6 @@ router.get('/user/getFollowers',
 router.post('/user/updateFollowers',
     wrapAsync(updateFollowers));
 
-// update subscriber route
-
 // router.get('/user/profile/:category',
 //     wrapAsync(getSubFollow));
 
