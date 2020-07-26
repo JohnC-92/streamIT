@@ -32,35 +32,12 @@ const generateStreamThumbnail = (streamKey) => {
   }).unref();
 };
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+
 // make generated video smaller
-<<<<<<< HEAD
-const generateResizedVideo = (streamPath) => {
-  console.log('--------Generating Resized Video--------')
-||||||| constructed merge base
-// make generated video smaller
-const processVideo = (streamKey, streamPath) => {
-  console.log('--------Generating Resized Video--------');
-=======
 // resize video, delete video, upload video,
 // upload video thumbnails, update video info to db
 const processVideo = (streamKey, streamPath) => {
   console.log('--------Generating Resized Video--------');
->>>>>>> Stashed changes
-||||||| 8f4c983
-const generateResizedVideo = (streamPath) => {
-  console.log('--------Generating Resized Video--------')
-=======
-||||||| constructed merge base
-// make generated video smaller
-=======
-// resize video, delete video, upload video,
-// upload video thumbnails, update video info to db
->>>>>>> Stashed changes
-const processVideo = (streamKey, streamPath) => {
-  console.log('--------Generating Resized Video--------');
->>>>>>> videoProcessing
 
   const filePath = 'server/media' + streamPath + '/';
   fs.readdir(filePath, (err, files) => {
@@ -100,89 +77,7 @@ const processVideo = (streamKey, streamPath) => {
       }
     });
   });
-<<<<<<< Updated upstream
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-||||||| constructed merge base
 
-  // fs.readdir(filePath, (err, files) => {
-  //   if (err) {
-  //     throw err;
-  //   }
-
-  //   let numProcess = 0;
-  //   files.forEach((filename) => {
-  //     if (filename.indexOf('resized') === -1) {
-  //       const name = filename.split('.')[0]+'-resized.mp4';
-  //       if (!files.includes(name)) {
-  //         numProcess += 1;
-  //         console.log('process number start: ', numProcess);
-
-  //         const args = [
-  //           '-i', filePath + filename,
-  //           '-s', '1280x720',
-  //           '-ss', '00:00:04',
-  //           '-vframes', '600',
-  //           '-max_muxing_queue_size', '1024',
-  //           filePath+name,
-  //         ];
-
-  //         const ffmpegProcess = spawn(ffmpeg, args);
-
-  //         ffmpegProcess.on('close', (code) => {
-  //           console.log(`ffmpeg process exited with code ${code}`);
-  //           console.log('process number end: ', numProcess);
-  //           numProcess -= 1;
-  //           if (numProcess === 0) {
-  //             console.log('All ffmpeg process done!');
-  //             removeFiles(filePath, files);
-  //           }
-  //         });
-  //       }
-  //     }
-  //   });
-  // });
-||||||| constructed merge base
-
-  // fs.readdir(filePath, (err, files) => {
-  //   if (err) {
-  //     throw err;
-  //   }
-
-  //   let numProcess = 0;
-  //   files.forEach((filename) => {
-  //     if (filename.indexOf('resized') === -1) {
-  //       const name = filename.split('.')[0]+'-resized.mp4';
-  //       if (!files.includes(name)) {
-  //         numProcess += 1;
-  //         console.log('process number start: ', numProcess);
-
-  //         const args = [
-  //           '-i', filePath + filename,
-  //           '-s', '1280x720',
-  //           '-ss', '00:00:04',
-  //           '-vframes', '600',
-  //           '-max_muxing_queue_size', '1024',
-  //           filePath+name,
-  //         ];
-
-  //         const ffmpegProcess = spawn(ffmpeg, args);
-
-  //         ffmpegProcess.on('close', (code) => {
-  //           console.log(`ffmpeg process exited with code ${code}`);
-  //           console.log('process number end: ', numProcess);
-  //           numProcess -= 1;
-  //           if (numProcess === 0) {
-  //             console.log('All ffmpeg process done!');
-  //             removeFiles(filePath, files);
-  //           }
-  //         });
-  //       }
-  //     }
-  //   });
-  // });
-=======
->>>>>>> Stashed changes
 };
 
 const removeAndUploadFiles = (streamKey, filePath) => {
@@ -209,101 +104,6 @@ const removeAndUploadFiles = (streamKey, filePath) => {
       }
     });
   });
-=======
-};
-
-const removeAndUploadFiles = (streamKey, filePath) => {
-  fs.readdir(filePath, (err, files) => {
-    if (err) {
-      throw err;
-    }
-
-    files.forEach((fileName) => {
-      if (fileName.indexOf('resized') === -1) {
-        fs.unlink(filePath+fileName, (err) => {
-          if (err) {
-            throw err;
-          }
-          console.log(fileName, ' removed');
-        });
-      } else {
-        // upload video file and video thumbnail
-        uploadFile(streamKey, filePath, fileName);
-
-        const videoURL = config.s3.url+`/media/${streamKey}/${fileName}`;
-        const thumbnailURL = config.s3.url+`/media/${streamKey}/${fileName.split('.')[0]+'.png'}`;
-        query('INSERT INTO videos (stream_key, video_url, img_url) VALUES (?, ?, ?)', [streamKey, videoURL, thumbnailURL]);
-      }
-    });
-  });
->>>>>>> Stashed changes
-||||||| 8f4c983
-=======
-
-  // fs.readdir(filePath, (err, files) => {
-  //   if (err) {
-  //     throw err;
-  //   }
-
-  //   let numProcess = 0;
-  //   files.forEach((filename) => {
-  //     if (filename.indexOf('resized') === -1) {
-  //       const name = filename.split('.')[0]+'-resized.mp4';
-  //       if (!files.includes(name)) {
-  //         numProcess += 1;
-  //         console.log('process number start: ', numProcess);
-
-  //         const args = [
-  //           '-i', filePath + filename,
-  //           '-s', '1280x720',
-  //           '-ss', '00:00:04',
-  //           '-vframes', '600',
-  //           '-max_muxing_queue_size', '1024',
-  //           filePath+name,
-  //         ];
-
-  //         const ffmpegProcess = spawn(ffmpeg, args);
-
-  //         ffmpegProcess.on('close', (code) => {
-  //           console.log(`ffmpeg process exited with code ${code}`);
-  //           console.log('process number end: ', numProcess);
-  //           numProcess -= 1;
-  //           if (numProcess === 0) {
-  //             console.log('All ffmpeg process done!');
-  //             removeFiles(filePath, files);
-  //           }
-  //         });
-  //       }
-  //     }
-  //   });
-  // });
-};
-
-const removeAndUploadFiles = (streamKey, filePath) => {
-  fs.readdir(filePath, (err, files) => {
-    if (err) {
-      throw err;
-    }
-
-    files.forEach((fileName) => {
-      if (fileName.indexOf('resized') === -1) {
-        fs.unlink(filePath+fileName, (err) => {
-          if (err) {
-            throw err;
-          }
-          console.log(fileName, ' removed');
-        });
-      } else {
-        // upload video file and video thumbnail
-        uploadFile(streamKey, filePath, fileName);
-
-        const videoURL = config.s3.url+`/media/${streamKey}/${fileName}`;
-        const thumbnailURL = config.s3.url+`/media/${streamKey}/${fileName.split('.')[0]+'.png'}`;
-        query('INSERT INTO videos (stream_key, video_url, img_url) VALUES (?, ?, ?)', [streamKey, videoURL, thumbnailURL]);
-      }
-    });
-  });
->>>>>>> videoProcessing
 };
 
 // function to catch error
@@ -370,75 +170,17 @@ const fileType = upload.fields(
 );
 
 // uploading a file to S3
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-const uploadFile = (key, fileName) => {
-  // const fileContent = fs.readFileSync(fileName);
-||||||| 8f4c983
-const uploadFile = (key, fileName) => {
-  // const fileContent = fs.readFileSync(fileName);
-=======
-const uploadFile = (streamKey, filePath, fileName) => {
-  const fileContent = fs.readFileSync(filePath+fileName);
->>>>>>> videoProcessing
 
-  // const name = 'D:/AppWorks/videoStream/streamit/server/media/live/CVRbgD9gy/2020-07-24-12-14-resized.mp4';
-  // const content = fs.readFileSync(name);
+const uploadFile = (streamKey, filePath, fileName) => {
+  const fileContent = fs.readFileSync(filePath+fileName);
 
-<<<<<<< HEAD
-  // s3 upload parameters
-  const params = {
-||||||| constructed merge base
-const uploadFile = (streamKey, filePath, fileName) => {
-  // s3 video upload parameters
-  const fileContent = fs.readFileSync(filePath+fileName);
-  const videoFile = {
-=======
-const uploadFile = (streamKey, filePath, fileName) => {
-  // s3 video upload parameters
-  const fileContent = fs.readFileSync(filePath+fileName);
-  const videoFile = {
->>>>>>> Stashed changes
-||||||| 8f4c983
-  // s3 upload parameters
-  const params = {
-=======
   // s3 video upload parameters
   const videoFile = {
->>>>>>> videoProcessing
     Bucket: 'streamit-tw',
-<<<<<<< HEAD
-<<<<<<< Updated upstream
+    Key: `media/${streamKey}/${fileName}`,
+    Body: fileContent,
     // Key: `${key}/${fileName}`,
     // Body: fileContent,
-    Key: 'media/CVRbgD9gy/2020-07-24-12-14-resized.mp4',
-    Body: content,
-||||||| constructed merge base
-    Key: `media/${streamKey}/${fileName}`,
-    Body: fileContent,
-    // Key: 'media/CVRbgD9gy/2020-07-24-12-14-resized.mp4',
-    // Body: content,
-=======
-    Key: `media/${streamKey}/${fileName}`,
-    Body: fileContent,
->>>>>>> Stashed changes
-||||||| 8f4c983
-    // Key: `${key}/${fileName}`,
-    // Body: fileContent,
-    Key: 'media/CVRbgD9gy/2020-07-24-12-14-resized.mp4',
-    Body: content,
-=======
-    Key: `media/${streamKey}/${fileName}`,
-    Body: fileContent,
-<<<<<<< Updated upstream
-    // Key: 'media/CVRbgD9gy/2020-07-24-12-14-resized.mp4',
-    // Body: content,
->>>>>>> videoProcessing
-||||||| constructed merge base
-    // Key: 'media/CVRbgD9gy/2020-07-24-12-14-resized.mp4',
-    // Body: content,
-=======
->>>>>>> Stashed changes
   };
 
   s3.upload(videoFile, (err, data) => {

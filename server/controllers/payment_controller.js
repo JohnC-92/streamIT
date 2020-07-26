@@ -10,13 +10,15 @@ const getStripeKey = async (req, res) => {
 const makePayment = async(req, res) => {
   const {paymentMethodId, paymentIntentId, orderAmount, currency, useStripeSdk} = req.body;
   console.log(req.body);
+  // const orderAmount = 1400;
 
   try {
     let intent;
     if (paymentMethodId) {
       // Create new PaymentIntent with a PaymentMethod ID from the client.
       intent = await stripe.paymentIntents.create({
-        amount: orderAmount,
+        // amount: orderAmount,
+        amount: 5200,
         currency: currency,
         payment_method: paymentMethodId,
         confirmation_method: 'manual',
@@ -59,7 +61,10 @@ const generateResponse = (intent) => {
     case 'succeeded':
       // Payment is complete, authentication not required
       // To cancel the payment after capture you will need to issue a Refund (https://stripe.com/docs/api/refunds)
-      // Payment.makePayment();
+      // const result = Payment.makePayment(from_id, to_id, message, amount);
+      // if (result.error) {
+      //   return {error: 'Payment insertion error'};
+      // }
       console.log('💰 Payment received!');
       return {clientSecret: intent.client_secret};
   }
