@@ -4,7 +4,7 @@ const config = {
 
   host: {
     local: 'http://127.0.0.1',
-    cloud: 'https://15.165.218.32',
+    cloud: 'https://streamit.website',
   },
 
   rtmp_server: {

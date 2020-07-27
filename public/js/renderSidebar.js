@@ -23,7 +23,7 @@ function renderSidebar() {
     }
   };
   request.open('GET', 'http://127.0.0.1:8888/api/streams');
-  // request.open('GET', 'https://15.165.218.32:8888/api/streams');
+  // request.open('GET', 'https://streamit.website:8888/api/streams');
   request.send();
 }
 
