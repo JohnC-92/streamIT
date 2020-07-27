@@ -24,27 +24,6 @@
 
           <div class="videoPlayer">
             <video width="1080" height="765" controls id="video"></video>
-            <video width="1080" height="765" controls>
-<<<<<<< Updated upstream
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-              <source src="https://d2mc5bx7b8vbwh.cloudfront.net/CVRbgD9gy/2020-07-24-12-14-resized.mp4" type='video/mp4'/> 
-||||||| constructed merge base
-              <source src="https://streamit-tw.s3.ap-northeast-2.amazonaws.com/media/CVRbgD9gy/2020-07-25-15-48-resized.mp4" type='video/mp4'/> 
-=======
-              <source src="https://streamit-tw.s3.ap-northeast-2.amazonaws.com/media/CVRbgD9gy/2020-07-25-16-42-resized.mp4" type='video/mp4'/> 
->>>>>>> Stashed changes
-||||||| 8f4c983
-              <source src="https://d2mc5bx7b8vbwh.cloudfront.net/CVRbgD9gy/2020-07-24-12-14-resized.mp4" type='video/mp4'/> 
-=======
-              <source src="https://streamit-tw.s3.ap-northeast-2.amazonaws.com/media/CVRbgD9gy/2020-07-25-15-48-resized.mp4" type='video/mp4'/> 
->>>>>>> videoProcessing
-||||||| constructed merge base
-              <source src="https://streamit-tw.s3.ap-northeast-2.amazonaws.com/media/CVRbgD9gy/2020-07-25-15-48-resized.mp4" type='video/mp4'/> 
-=======
-              <source src="https://streamit-tw.s3.ap-northeast-2.amazonaws.com/media/CVRbgD9gy/2020-07-25-16-42-resized.mp4" type='video/mp4'/> 
->>>>>>> Stashed changes
-            </video>      
             <span class="streamliveText">live</span>
             <div class="playerDesc">
               <div>
@@ -115,8 +94,7 @@
           const flvPlayer = flvjs.createPlayer({
             type: 'flv',
             url: 'http://127.0.0.1:8888/live/'+window.location.href.split('=')[1].split('&')[0]+'.flv',
-            // url: 'https://15.165.218.32:8888/live/'+window.location.href.split('=')[1].split('&')[0]+'.flv',
-            // url: 'http://mirrors.standaloneinstaller.com/video-sample/Panasonic_HDC_TM_700_P_50i.flv',
+            // url: 'https://streamit.website:8888/live/'+window.location.href.split('=')[1].split('&')[0]+'.flv',
           });
           flvPlayer.attachMediaElement(video);
           flvPlayer.load();

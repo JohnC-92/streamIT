@@ -64,13 +64,25 @@ const processVideo = (streamKey, streamPath) => {
 
           const ffmpegProcess = spawn(ffmpeg, args);
 
+          ffmpegProcess.stdout.on('data', (data) => {
+            console.log(`stdout: ${data}`);
+          });
+
+          ffmpegProcess.stderr.on('data', (data) => {
+            console.error(`stderr: ${data}`);
+          });
+
+          ffmpegProcess.on('close', (code) => {
+            console.log(`child process exited with code ${code}`);
+          });
+
           ffmpegProcess.on('close', (code) => {
             console.log(`ffmpeg process exited with code ${code}`);
             console.log('--------process number end: ', numProcess, '--------');
             numProcess -= 1;
             if (numProcess === 0) {
               console.log('All ffmpeg process done!');
-              removeAndUploadFiles(streamKey, filePath);
+              // removeAndUploadFiles(streamKey, filePath);
             }
           });
         }
