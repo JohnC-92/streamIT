@@ -524,17 +524,23 @@ a {
 }
 
 .bodyContainer {
-  position: relative;
+  /* position: relative; */
+  content: "";
+  display: table;
+  clear: both;
+  width: 100%;
   height: 100vh;
 }
 
 /* Side Bar */
 .sideBar {
   height: 100%;
-  position: absolute;
+  float: left;
+  /* width: 20%; */
+  /* position: absolute; */
   z-index: 1;
-  top: 0;
-  left: 0;
+  /* top: 0; */
+  /* left: 0; */
   width: 250px;
   background: rgba(0, 0, 0, 0.07);
   display: flex;
@@ -621,12 +627,13 @@ a {
 
 .contentContainer {
   height: 100%;
-  position: absolute;
+  float: left;
+  width: calc(100% - 250px);
   z-index: 1;
-  top: 0;
-  left: 250px;
-  width: 100%;
-  max-width: 1650px;
+  background: rgba(0, 0, 0, 0.04);
+  /* position: absolute; */
+  /* width: 100%; */
+  /* min-width: 1650px; */
 }
 
 /* INDEX PAGE VIDEO */
@@ -634,7 +641,7 @@ a {
   display: flex;
   flex-direction: column;
   padding: 20px 30px;
-  background: rgba(0, 0, 0, 0.05);
+  background: rgba(0, 0, 0, 0.001);
   height: 100%;
 }
 
@@ -646,15 +653,70 @@ a {
   margin:0 10px;
 }
 
+.liveType {
+  display: flex;
+}
+
+.liveGaming,
+.liveMusical,
+.liveTalk {
+  display: flex;
+  transition: box-shadow .2s ease;
+  transition: transform .3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.liveGaming:hover,
+.liveMusical:hover,
+.liveTalk:hover {
+  /* position: relative;
+  top: -2px;
+  left: 2px; */
+  -webkit-box-shadow: -10px 15px 5px 0px rgba(0,0,0,0.2);
+  -moz-box-shadow: -10px 15px 5px 0px rgba(0,0,0,0.2);
+  box-shadow: -10px 15px 5px 0px rgba(0,0,0,0.2);
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+.liveCategoryImg {
+  width: 380px;
+}
+
+.liveGamingDesc,
+.liveMusicalDesc,
+.liveTalkDesc {
+  display: flex;
+  flex-direction: column;
+  width: 150px;
+  background: white;
+  padding: 15px 20px;
+  margin-right: 10px;
+}
+
+.typeTitle {
+  color: rgba(127, 41, 255, 1);
+  font-size: 24px;
+  font-weight: bold;
+  /* text-align: center; */
+}
+
+.typeList {
+  font-size: 22px;
+  font-weight: normal;
+}
+
 .liveTitle,
 .liveType {
-  font-size: 30px;
+  font-size: 26px;
   font-weight: bold;
   margin-bottom: 10px;
   margin-left: 16px;
+  margin-top: 5px;
 }
 
-.liveChannels {
+.liveChannels,
+.hotChannels {
   display: flex;
   font-size: 20px;
   flex-wrap: wrap;
@@ -743,25 +805,25 @@ a {
 
 .streamType {
   background: rgba(0, 0, 0, 0.05);
-  border-radius: 70%;
+  border-radius: 50%;
   width: 100px;
   padding: 5px 10px;
   text-align: center;
   margin-top: 10px;
-  margin-left: 60px;
+  /* margin-left: 60px; */
+  font-size: 15px;
 }
 
 /* PROFILE PAGE */
 .profileContainer {
   display: flex;
   flex-direction: column;
-  padding: 20px 40px;
-  background: rgba(0, 0, 0, 0.05);
-  height: 100%;
+  padding: 15px 35px;  
+  /* height: 100vh; */
 }
 
 .profileTitle {
-  font-size: 40px;
+  font-size: 37px;
   font-weight: 900;
   margin-bottom: 10px;
 }
@@ -774,8 +836,9 @@ a {
 }
 
 .profileActive {
-  color: purple;
-  border-bottom: 4px solid purple;
+  color: rgba(127, 41, 255, 0.7);
+  border-bottom: 1px solid rgba(127, 41, 255, 0.7);
+  /* font-weight: bold; */
 }
 
 .profileVideo,
@@ -878,7 +941,7 @@ a {
 }
 
 .profileInfo-Desc {
-  width: 250px;
+  width: 200px;
 }
 
 .profileInput {
@@ -924,6 +987,52 @@ a {
   background: rgba(0, 0, 0, 0.8);
   cursor: pointer;
 }
+
+/* Profile VOD Tab */
+.profileVideoRow {
+  background: white;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  width: 100%;
+  /* max-width: 1250px; */
+  display: flex;
+  flex-wrap: wrap;
+  padding: 15px;
+  height: 65vh;
+}
+
+.streamTime {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  padding: 2px;
+  color: white;
+  background: black;
+  opacity: 0.8;
+  padding: 0 5px;
+  /* width: 120px;   */
+  border-radius: 5px;
+  font-size: 18px;
+}
+
+.profileVod {
+  margin: 0 20px 20px;
+  /* transition: box-shadow 200ms ease; */
+}
+
+.profileVod:hover {
+  position: relative;
+  top: -2px;
+  left: 2px;
+  /* -webkit-box-shadow: -10px 15px 5px 0px rgba(0,0,0,0.2);
+  -moz-box-shadow: -10px 15px 5px 0px rgba(0,0,0,0.2);
+  box-shadow: -10px 15px 5px 0px rgba(0,0,0,0.2); */
+}
+
+/* Profile Following Tab */
+
+/* Profile Stripe Tab */
 
 /* FORM TYPOGRAPHY*/
 

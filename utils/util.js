@@ -82,7 +82,7 @@ const processVideo = (streamKey, streamPath) => {
             numProcess -= 1;
             if (numProcess === 0) {
               console.log('All ffmpeg process done!');
-              // removeAndUploadFiles(streamKey, filePath);
+              removeAndUploadFiles(streamKey, filePath);
             }
           });
         }
@@ -112,7 +112,14 @@ const removeAndUploadFiles = (streamKey, filePath) => {
 
         const videoURL = config.s3.url+`/media/${streamKey}/${fileName}`;
         const thumbnailURL = config.s3.url+`/media/${streamKey}/${fileName.split('.')[0]+'.png'}`;
-        query('INSERT INTO videos (stream_key, video_url, img_url) VALUES (?, ?, ?)', [streamKey, videoURL, thumbnailURL]);
+
+        const videoObj = {
+          stream_key: streamKey,
+          video_url: videoURL,
+          img_url: thumbnailURL,
+          time_created: new Date(),
+        };
+        query('INSERT INTO videos SET ?', [videoObj]);
       }
     });
   });
@@ -168,7 +175,8 @@ const storage = multerS3({
   bucket: 'streamit-tw',
   key: function(req, file, cb) {
     console.log(file);
-    const fileName = req.body.email.split('.').join('-');
+    let fileName = req.body.email.split('.').join('-');
+    fileName = fileName.replace('@', '-');
     const fileExt = file.originalname.split('.').pop();
     cb(null, 'profileImg/' + fileName + '.' + fileExt);
   },

@@ -9,6 +9,16 @@ const getUserVOD = async (streamKey) => {
   }
 };
 
+const getUserOneVOD = async (id) => {
+  try {
+    const vods = await query('SELECT * FROM videos WHERE id = ?', [id]);
+    return vods;
+  } catch (err) {
+    return {error: err};
+  }
+};
+
 module.exports = {
   getUserVOD,
+  getUserOneVOD,
 }

@@ -33,16 +33,23 @@ function renderSidebar() {
  * @param {*} name
  * @param {*} title
  * @param {*} picture
+ * @param {*} type
  * @return {*} return sidebar DIV
  */
-function createSidebarDIV(key, name, title, picture) {
+function createSidebarDIV(key, name, title, picture, type) {
+  const sideStream = document.createElement('div');
+  if (type) {
+    type = type.toLowerCase();
+    sideStream.setAttribute('class', 'sideStream '+type);
+  } else {
+    sideStream.setAttribute('class', 'sideStream gaming');
+  }
+
   const url = document.createElement('a');
   url.setAttribute('href', '/video?key='+key+'&room='+name);
 
-  const sideStream = document.createElement('sideStream');
-  sideStream.setAttribute('class', 'sideStream');
-
   const div = document.createElement('div');
+  div.setAttribute('class', 'sideRow');
 
   const sideImg = document.createElement('img');
   sideImg.setAttribute('class', 'sideImg');
@@ -70,14 +77,14 @@ function createSidebarDIV(key, name, title, picture) {
     sideViewers.innerText = users[key];
   }
 
-  div.appendChild(sideImg);
   sideTitleName.appendChild(sideStreamTitle);
   sideTitleName.appendChild(sideName);
-  sideStream.appendChild(div);
-  sideStream.appendChild(sideTitleName);
-  sideStream.appendChild(sideDot);
-  sideStream.appendChild(sideViewers);
-  url.appendChild(sideStream);
+  div.appendChild(sideImg);
+  div.appendChild(sideTitleName);
+  div.appendChild(sideDot);
+  div.appendChild(sideViewers);
+  url.appendChild(div);
+  sideStream.appendChild(url);
 
-  return url;
+  return sideStream;
 };

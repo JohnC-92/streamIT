@@ -174,7 +174,7 @@ const getUserProfile = async (token) => {
 
 const getUserKeys = async () => {
   try {
-    const result = await query('SELECT name, stream_key, stream_title, picture FROM users', []);
+    const result = await query('SELECT name, stream_key, stream_title, picture, stream_type FROM users', []);
     return result;
   } catch (err) {
     return {error: err};

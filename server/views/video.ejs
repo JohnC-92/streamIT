@@ -50,8 +50,8 @@
           </div>          
 
           <div class="chat-container">
-              <h3 class="room">Room Name: <span id="room-name"></span></h3>
-              <h3 class="room">Room UserCount: <span id="usersCount"></span></h3>
+              <!-- <h3 class="room">Room Name: <span id="room-name"></span></h3>
+              <h3 class="room">Room UserCount: <span id="usersCount"></span></h3> -->
               <!-- <h3 class="room">Room Users: <span id="users"></span></h3> -->
               <main class="chat-main">
   
@@ -73,6 +73,10 @@
               </div>
               
           </div>
+
+          <!-- <div class="donateContainer hide">
+              
+          </div> -->
   
       </div>
 
@@ -89,17 +93,38 @@
     <script src="js/video.js"></script>
     <!-- <script src="js/getProfile.js"></script> -->
     <script>
-      if (flvjs.isSupported()) {
+      const getVideo = async() => {
+        if (window.location.href.indexOf('id=') !== -1) {
           const video = document.getElementById('video');
-          const flvPlayer = flvjs.createPlayer({
-            type: 'flv',
-            url: 'http://127.0.0.1:8888/live/'+window.location.href.split('=')[1].split('&')[0]+'.flv',
-            // url: 'https://streamit.website:8888/live/'+window.location.href.split('=')[1].split('&')[0]+'.flv',
-          });
-          flvPlayer.attachMediaElement(video);
-          flvPlayer.load();
-          flvPlayer.play();
-      };
+          const id = window.location.href.split('id=')[1];
+          await fetch('/vodOne/'+id, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          }).then((res) => {
+            return res.json();
+          }).then((res) => {
+            const source = document.createElement('source');
+            source.src = res[0].video_url;
+            source.type = "video/mp4";
+            video.appendChild(source)
+          })        
+        } else {
+          if (flvjs.isSupported()) {
+            const video = document.getElementById('video');
+            const flvPlayer = flvjs.createPlayer({
+              type: 'flv',
+              url: 'http://127.0.0.1:8888/live/'+window.location.href.split('=')[1].split('&')[0]+'.flv',
+              // url: 'https://streamit.website:8888/live/'+window.location.href.split('=')[1].split('&')[0]+'.flv',
+            });
+            flvPlayer.attachMediaElement(video);
+            flvPlayer.load();
+            flvPlayer.play();
+          };
+        }
+      }
+      getVideo();
       renderSidebar();  
       getSingleUserKey();
     </script>

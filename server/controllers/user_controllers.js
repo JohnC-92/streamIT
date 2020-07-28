@@ -152,6 +152,7 @@ const getUserKeys = async(req, res) => {
     resObj[res.stream_key + '1'] = res.name;
     resObj[res.stream_key + '2'] = res.stream_title;
     resObj[res.stream_key + '3'] = res.picture;
+    resObj[res.stream_key + '4'] = res.stream_type;
   });
 
   return res.send(resObj);
@@ -166,7 +167,10 @@ const getSingleUserKey = async (req, res) => {
 const updateUserImg = async(req, res) => {
   console.log(req.body);
   const {email} = req.body;
-  const fileName = email.split('.').join('-');
+  // const fileName = email.split('.').join('-');
+  let fileName = email.replace('.', '-');
+  fileName = fileName.replace('@', '-');
+  console.log(fileName);
 
   const ext = req.files.profileImg[0].originalname.split('.').pop();
   const imgUrl = `${s3.url}/profileImg/${fileName}.${ext}`;

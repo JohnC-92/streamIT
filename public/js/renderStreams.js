@@ -1,3 +1,19 @@
+const liveGaming = document.querySelector('.liveGaming');
+const liveMusical = document.querySelector('.liveMusical');
+const liveTalk = document.querySelector('.liveTalk');
+
+liveGaming.addEventListener('click', () => {
+  streamFilter('gaming');
+});
+
+liveMusical.addEventListener('click', () => {
+  streamFilter('musical');
+});
+
+liveTalk.addEventListener('click', () => {
+  streamFilter('talkshow');
+});
+
 /**
  * Function to render profile page
  */
@@ -18,10 +34,15 @@ function renderStreams() {
         keyObj = res;
       });
       for (let i = 0; i < keys.length; i++) {
-        const div = createStreamDIV(keys[i], keyObj[keys[i]+'1'], keyObj[keys[i]+'2'], keyObj[keys[i]+'3']);
+        const div = createStreamDIV(keys[i], keyObj[keys[i]+'1'], keyObj[keys[i]+'2'], keyObj[keys[i]+'3'], keyObj[keys[i]+'4']);
         liveChannels.appendChild(div);
-        const sideBarDiv = createSidebarDIV(keys[i], keyObj[keys[i]+'1'], keyObj[keys[i]+'2'], keyObj[keys[i]+'3']);
+        const sideBarDiv = createSidebarDIV(keys[i], keyObj[keys[i]+'1'], keyObj[keys[i]+'2'], keyObj[keys[i]+'3'], keyObj[keys[i]+'4']);
         sideBar.appendChild(sideBarDiv);
+      }
+
+      if (window.location.href.indexOf('category=') !== -1) {
+        const key = window.location.href.split('category=')[1];
+        streamFilter(key);
       }
     }
   };
@@ -36,11 +57,17 @@ function renderStreams() {
  * @param {*} name
  * @param {*} title
  * @param {*} picture
+ * @param {*} type
  * @return {*} return stream DIV
  */
-function createStreamDIV(key, name, title, picture) {
+function createStreamDIV(key, name, title, picture, type) {
   const streams = document.createElement('div');
-  streams.setAttribute('class', 'streams');
+  if (type) {
+    type = type.toLowerCase();
+    streams.setAttribute('class', 'streams '+type);
+  } else {
+    streams.setAttribute('class', 'streams gaming');
+  }
 
   const streamThumbnail = document.createElement('div');
   streamThumbnail.setAttribute('class', 'streamThumbnail');
@@ -100,23 +127,29 @@ function createStreamDIV(key, name, title, picture) {
   return streams;
 };
 
-
 /**
  * Function to create Sidebar DIV
  * @param {*} key
  * @param {*} name
  * @param {*} title
  * @param {*} picture
+ * @param {*} type
  * @return {*} return sidebar DIV
  */
-function createSidebarDIV(key, name, title, picture) {
+function createSidebarDIV(key, name, title, picture, type) {
+  const sideStream = document.createElement('div');
+  if (type) {
+    type = type.toLowerCase();
+    sideStream.setAttribute('class', 'sideStream '+type);
+  } else {
+    sideStream.setAttribute('class', 'sideStream gaming');
+  }
+
   const url = document.createElement('a');
   url.setAttribute('href', '/video?key='+key+'&room='+name);
 
-  const sideStream = document.createElement('sideStream');
-  sideStream.setAttribute('class', 'sideStream');
-
   const div = document.createElement('div');
+  div.setAttribute('class', 'sideRow');
 
   const sideImg = document.createElement('img');
   sideImg.setAttribute('class', 'sideImg');
@@ -144,14 +177,42 @@ function createSidebarDIV(key, name, title, picture) {
     sideViewers.innerText = users[key];
   }
 
-  div.appendChild(sideImg);
   sideTitleName.appendChild(sideStreamTitle);
   sideTitleName.appendChild(sideName);
-  sideStream.appendChild(div);
-  sideStream.appendChild(sideTitleName);
-  sideStream.appendChild(sideDot);
-  sideStream.appendChild(sideViewers);
-  url.appendChild(sideStream);
+  div.appendChild(sideImg);
+  div.appendChild(sideTitleName);
+  div.appendChild(sideDot);
+  div.appendChild(sideViewers);
+  url.appendChild(div);
+  sideStream.appendChild(url);
 
-  return url;
+  return sideStream;
 };
+
+/**
+ * Function to hide all streams and show certain streams
+ * @param {*} key
+ */
+function streamFilter(key) {
+  const className = '.' + key;
+  const streams = document.querySelectorAll(className);
+
+  const hideStreams = document.querySelectorAll('.streams');
+  const sideStreams = document.querySelectorAll('.sideStream');
+
+  for (let i = 0; i < hideStreams.length; i++) {
+    hideStreams[i].style.display = 'none';
+    sideStreams[i].style.display = 'none';
+  };
+
+  for (let i = 0; i < streams.length; i++) {
+    streams[i].style.display = 'block';
+  };
+
+  // const liveTitleCategory = document.querySelector('.liveTitleCategory');
+  // liveTitleCategory.style.display = 'none';
+  // liveGaming.style.display = 'none';
+  // liveMusical.style.display = 'none';
+  // liveTalk.style.display = 'none';
+};
+
