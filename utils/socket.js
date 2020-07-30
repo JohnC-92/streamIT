@@ -25,11 +25,11 @@ function initSocket(server) {
       socket.emit('message', formatMessage(botName, 'Welcome to StreamIT Chat'));
 
       // Broadcast when a user connects
-      socket.broadcast
-          .to(user.room)
-          .emit(
-              'message',
-              formatMessage(botName, `${user.username} has joined the chat`));
+      // socket.broadcast
+      //     .to(user.room)
+      //     .emit(
+      //         'message',
+      //         formatMessage(botName, `${user.username} has joined the chat`));
 
       // Send users and room info
       io.to(user.room).emit('roomUsers', {

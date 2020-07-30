@@ -1,16 +1,5 @@
 /* -----Element selection and definition------- */
 
-// set global token, get token cookie from browser
-let token = '';
-if (document.cookie) {
-  const cookie = decodeURIComponent(document.cookie).split('access_token=')[1];
-  if (cookie !== undefined) {
-    token = cookie.split(';')[0];
-    const signinText = document.querySelector('.signinText');
-    signinText.innerText = '登出';
-  };
-}
-
 // form related and buttons
 const loginForm = document.querySelector('.loginForm');
 const loginCloseBtn = document.querySelector('.loginCloseBtn');
@@ -23,6 +12,18 @@ const signupBtn = document.querySelector('.signupDiv');
 const showPass = document.querySelectorAll('.showPass');
 const titleCh = document.querySelector('.titleCh');
 const member = document.querySelector('.memberImg');
+
+// set global token, get token cookie from browser
+let token = '';
+if (document.cookie) {
+  const cookie = decodeURIComponent(document.cookie).split('access_token=')[1];
+  if (cookie !== undefined) {
+    token = cookie.split(';')[0];
+    const signinText = document.querySelector('.signinText');
+    signinText.innerText = '登出';
+    signupBtn.style.display = 'none';
+  };
+}
 
 // form related events
 loginCloseBtn.addEventListener('click', () => {
@@ -43,8 +44,9 @@ signinBtn.addEventListener('click', () => {
     loginForm.style.display = 'block';
     active(signinTab, signupTab, signinForm, signupForm);
   } else {
+    alert('成功登出');
+    localStorage.clear();
     signOut();
-    alert('成功登出')
     window.location.replace('/index');
   }
 });
@@ -194,3 +196,35 @@ async function signUp() {
   }
 };
 
+
+/**
+ * Function to check if token cookie exist and save profile info to localstorage
+ * @param {*} token access token given by server
+ */
+async function saveProfiletoLocal(token) {
+  try {
+    await fetch('/user/profile', {
+      method: 'GET',
+      headers: {
+        authorization: token,
+      },
+    }).then((res) => {
+      return res.json();
+    }).then((res) => {
+      if (!res.error) {
+        const user = {
+          id: res.data.id,
+          name: res.data.name,
+          email: res.data.email,
+          image: res.data.picture,
+          streamKey: res.data.streamKey,
+          streamTitle: res.data.streamTitle,
+          streamType: res.data.streamType,
+        };
+        localStorage.setItem('userInfo', JSON.stringify(user));
+      }
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};

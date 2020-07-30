@@ -3,7 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const nodeMediaServer = require('./server/media_server');
-// const thumbnailGenerator = require('./utils/util').job;
+const thumbnailGenerator = require('./utils/util').job;
 const initSocket = require('./utils/socket');
 
 const http = require('http');
@@ -68,4 +68,4 @@ nodeMediaServer.run();
 initSocket(httpServer);
 
 // Cron Job to generate thumbnails every 5 seconds
-// thumbnailGenerator.start();
+thumbnailGenerator.start();

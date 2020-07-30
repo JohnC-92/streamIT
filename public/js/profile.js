@@ -15,9 +15,10 @@ const profileVideoDiv = document.querySelector('.profileVODTab');
 const profileFollowerDiv = document.querySelector('.profileFollowerTab');
 const profileStripeDiv = document.querySelector('.profileStripeTab');
 
+profileInfoDiv.style.display = 'none';
 profileVideoDiv.style.display = 'none';
 profileFollowerDiv.style.display = 'none';
-profileStripeDiv.style.display = 'none';
+// profileStripeDiv.style.display = 'none';
 
 // Profile info tabs
 profileInfoTab.addEventListener('click', () => {
@@ -133,7 +134,7 @@ async function getProfile(token) {
         // fetch VODS
         fetchVODs(res.data.name, res.data.streamKey, res.data.picture);
       } else {
-        alert('Token Invalid, Please sign in again');
+        alert('Token Expired/Invalid, Please sign in again');
         signOut();
         window.location.replace('/index');
       }
@@ -177,7 +178,7 @@ async function updateProfile() {
       window.location.reload();
     });
   } catch (err) {
-    console.log(err)
+    console.log(err);
     alert('Update Profile Failed!');
   }
 };
@@ -276,7 +277,6 @@ function fetchVODs(streamerName, streamerKey, streamerPicture) {
  * @return {*} return VODs DIV
  */
 function createVodDIV(name, key, vod, picture) {
-
   const profileVod = document.createElement('div');
   profileVod.setAttribute('class', 'profileVod');
 

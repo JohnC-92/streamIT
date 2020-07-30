@@ -1,14 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100&display=swap');
 
-:root {
-	--dark-color-a: #667aff;
-	--dark-color-b: #7386ff;
-	--light-color: #e6e9ff;
-	--success-color: #5cb85c;
-	--error-color: #d9534f;
-}
-
 * {
 	box-sizing: border-box;
 	margin: 0;
@@ -31,12 +23,22 @@ a {
 
 /* Video & Chat Page */
 .videoBody {
-	display: flex;
+  display: flex;
+  height: 100%;
+}
+
+.videoDiv {
+  width: 100%;
+}
+
+.videoContent {
+  width: 100%;
 }
 
 .videoPlayer {
-  /* width: 1000px; */
+  width: 75%;
   position: relative;
+  height: 100%;
 }
 
 .streamliveText{
@@ -52,33 +54,33 @@ a {
   border-radius: 5px;
 }
 
-.playerDesc {
+.streamerDesc {
   display: flex;
   margin-top: 15px;
 }
 
-.playerImg {
+.streamerImg {
   width: 80px;
   height: 80px;
   border-radius: 50%;
   margin: 0 20px;
 }
 
-.playerTitleName {
+.streamerTitleName {
   margin-right: auto;
 }
 
-.playerTitle {
+.streamerTitle {
   font-size: 30px;
   font-weight: 700;
   /* text-align: center; */
 }
 
-.playerName {
+.streamerName {
   font-size: 25px;
 }
 
-.playerViewers {
+.streamerViewers {
   font-size: 22px;
   margin-right: 15px;
 }
@@ -99,33 +101,101 @@ a {
 .followBtn:hover,
 .donateBtn:hover {
   background: rgba(0, 0, 0, 0.80);
+  cursor: pointer;
 }
 
 /* Chat Container */
 
 .chat-container {
-  width: 550px;
+  width: 25%;
 	background: #fff;
-	overflow: hidden;
+  overflow: hidden;
+  height: 100%;
+}
+
+.chat-main {
+  height: 90%;
+  width: 100%;
+  position: relative;
+}
+
+.chat-title {
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+  padding: 10px 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.chat-users {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 10px;
+  right: 0;
+}
+
+.chat-users:hover {
+  cursor: pointer;
+}
+
+.chat-usersList {
+  border-radius: 8px;
+  position: absolute;
+  top: 0;
+  right: 0;   
+  width: 100%;
+  height: 300px;
+  text-align: center;
+  z-index: 10;
+  background: #F0F0F0;
+}
+
+.chat-userTitle {
+  padding: 5px 0;
+  background:	#E8E8E8;
+  color: black;
+  font-size: 20px;
+}
+
+.chatX {
+  position: absolute;
+  top: 2px;
+  left: 5px;
+  width: 20px;
+  height: 20px;
+  font-size: 22px;
+}
+
+.chatX:hover {
+  cursor: pointer;
+}
+
+.chat-user {
+  color: rgba(127, 41, 255, 0.95);
+  margin: 5px 0;
 }
 
 .chat-messages {
-	padding: 30px;
-	height: 700px;
-	overflow-y: scroll;
+  position: relative;
+  padding: 10px;
+  width: 100%;
+  height: 90%;
+  max-height: 850px;
+  overflow-y: scroll;
 }
 
 .chat-messages .message {
-	padding: 10px;
-	margin-bottom: 15px;
-	/* background-color: var(--light-color); */
+  overflow-wrap: break-word;
+  padding: 10px;
 	border-radius: 5px;
 }
 
 .chat-messages .message .meta {
 	font-size: 15px;
 	font-weight: bold;
-	color: var(--dark-color-b);
+	color: blue;
 	opacity: 0.7;
 	margin-bottom: 7px;
 }
@@ -135,19 +205,44 @@ a {
 }
 
 .chat-form-container {
-	padding: 20px 30px;
-	background-color: var(--dark-color-a);
+  height: 10%;
 }
 
 .chat-form-container form {
-	display: flex;
+  display: flex;
+  flex-direction: column;
+  margin: 10px 10px 0;
 }
 
 .chat-form-container input[type='text'] {
-	font-size: 16px;
-	padding: 5px;
+	font-size: 14px;
+	padding: 5px 15px;
 	height: 40px;
-	flex: 1;
+  /* flex: 1; */
+  background: rgba(0, 0, 0, 0.1);
+  border: none;
+  border-radius: 6px;
+}
+
+.chat-form-container input[type='text']:focus {
+  background: white;
+  border: black;
+}
+
+.chat-form-container button {
+  margin-top: 5px;
+  color: white;
+  align-self: flex-end;
+  border: none;
+  border-radius: 6px;
+  background: rgba(127, 41, 255, 0.95);
+  padding: 5px;
+  width: 70px;
+  height: 40px;
+}
+
+.chat-form-container button:hover {
+  cursor: pointer;
 }
 
 .room {
@@ -529,7 +624,7 @@ a {
   display: table;
   clear: both;
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 3.5rem);
 }
 
 /* Side Bar */
@@ -858,13 +953,14 @@ a {
   padding: 10px;
   border-radius: 6px;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  max-width: 1000px;
+  /* max-width: 1000px; */
+  max-width: 1200px;
   display: flex;
   margin-bottom: 35px;
 }
 
 .profileImg-Desc {
-  margin-left: 35px;
+  margin-left: 55px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -877,6 +973,7 @@ a {
 .profileImg-Img {
   width: 120px;
   border-radius: 50%;
+  margin-left: 30px;
 }
 
 .profileImg-Input {
@@ -925,7 +1022,7 @@ a {
   padding: 10px;
   border-radius: 6px;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  max-width: 1000px;
+  max-width: 1200px;
   display: flex;
   margin-bottom: 35px;
   flex-direction: column;
@@ -935,7 +1032,8 @@ a {
 .profileRowInfo {
   background: white;
   padding: 10px;
-  width: 980px;
+  /* width: 980px; */
+  width: 100%;
   display: flex;
   font-size: 16px;
 }
@@ -944,11 +1042,15 @@ a {
   width: 200px;
 }
 
+.profileInfo-Desc-Stop {
+  width: 220px;
+}
+
 .profileInput {
   background: rgba(0, 0, 0, 0.1);
   border: none;
   border-radius: 4px;
-  width: 100%;
+  width: calc(100% - 200px);
   padding: 10px 15px;
 }
 
@@ -1032,7 +1134,89 @@ a {
 
 /* Profile Following Tab */
 
+.profileFollowerRow {
+  background: white;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  width: 100%;
+  /* max-width: 1250px; */
+  display: flex;
+  flex-wrap: wrap;
+  padding: 15px;
+  height: 35vh;
+  margin-bottom: 15px;
+}
+
+.user {
+  display: flex;
+  height: 80px;
+  align-items: center;
+  padding: 0 20px;
+  margin-right: 15px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.userEmail {
+  font-size: 12px;
+}
+
+.userImg {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: white;
+  margin-right: 10px;
+}
+
+.userDesc {
+  display: flex;
+  flex-direction: column;
+}
+
 /* Profile Stripe Tab */
+.profileStripeRow {
+  background: white;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  width: 100%;
+  /* max-width: 1250px; */
+  /* display: flex;
+  flex-wrap: wrap; */
+  padding: 15px;
+  height: 65vh;
+}
+
+.paymentDetails {
+  border-bottom: 1px solid grey;
+  display: flex;
+  font-size: 25px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.payment {
+  display: flex;
+  font-size: 22px;
+  margin-bottom: 20px;
+  /* background: grey; */
+}
+
+.paymentType {
+  margin-left: 15px;
+}
+
+.paymentType,
+.paymentAmount,
+.paymentFrom,
+.paymentTo {
+  width: 15%;
+}
+
+.paymentMsg {
+  width: 35%;
+}
 
 /* FORM TYPOGRAPHY*/
 

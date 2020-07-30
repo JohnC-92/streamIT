@@ -23,22 +23,24 @@
         <div class="videoBody">
 
           <div class="videoPlayer">
-            <video width="1080" height="765" controls id="video"></video>
+            <div class="videoDiv">
+              <video class="videoContent" width="1080" height="765" controls id="video"></video>
+            </div>
             <span class="streamliveText">live</span>
-            <div class="playerDesc">
+            <div class="streamerDesc">
               <div>
-                <img class="playerImg" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Doge.png/300px-Doge.png" alt="">
+                <img class="streamerImg" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Doge.png/300px-Doge.png" alt="">
               </div>
-              <div class="playerTitleName">
-                <div class="playerTitle">
-                  Testing123 Title
+              <div class="streamerTitleName">
+                <div class="streamerTitle">
+                  <!-- Testing123 Title -->
                 </div>
-                <div class="playerName">
-                  Test playerName
+                <div class="streamerName">
+                  <!-- Test playerName -->
                 </div>
               </div>
-              <div class="playerViewers">
-                觀看人數：0
+              <div class="streamerViewers">
+                <!-- 觀看人數：0 -->
               </div>
               <div class="followBtn">
                 Follow
@@ -55,8 +57,24 @@
               <!-- <h3 class="room">Room Users: <span id="users"></span></h3> -->
               <main class="chat-main">
   
-              <div class="chat-messages">
-              </div>
+                <div class="chat-title">
+                  實況聊天室
+                  <img class="chat-users" src="assets/users.png" alt="">
+                </div>
+
+                <div class="chat-messages">
+
+                  <div class="chat-usersList">
+                    <div class="chat-userTitle">
+                      <span class="chatX">x</span>
+                      聊天室中的使用者
+                    </div>
+                    <div id="chat-user">
+                    </div>
+                  </div>
+                  
+                </div>
+
               </main>
   
               <div class="chat-form-container">
@@ -64,19 +82,15 @@
                   <input
                   id="msg"
                   type="text"
-                  placeholder="Enter Message"
+                  placeholder="輸入訊息"
                   required
                   autocomplete="off"
                   />
-                  <button class="btn"><i class="fas fa-paper-plane"></i> Send</button>
+                  <button class="btn"><i class="fas fa-paper-plane"></i> 聊天</button>
               </form>
               </div>
               
           </div>
-
-          <!-- <div class="donateContainer hide">
-              
-          </div> -->
   
       </div>
 
@@ -86,47 +100,15 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.4/qs.min.js" integrity="sha512-BHtomM5XDcUy7tDNcrcX1Eh0RogdWiMdXl3wJcKB3PFekXb3l5aDzymaTher61u6vEZySnoC/SAj2Y/p918Y3w==" crossorigin="anonymous"></script>
     <script src="/socket.io/socket.io.js"></script>
+    <script src="js/header.js"></script>
     <script src="js/socketClient.js"></script>
     <script src="js/renderSidebar.js"></script>
-    <script src="js/header.js"></script>
-    <script src="js/donate.js"></script>
     <script src="js/video.js"></script>
-    <!-- <script src="js/getProfile.js"></script> -->
     <script>
-      const getVideo = async() => {
-        if (window.location.href.indexOf('id=') !== -1) {
-          const video = document.getElementById('video');
-          const id = window.location.href.split('id=')[1];
-          await fetch('/vodOne/'+id, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          }).then((res) => {
-            return res.json();
-          }).then((res) => {
-            const source = document.createElement('source');
-            source.src = res[0].video_url;
-            source.type = "video/mp4";
-            video.appendChild(source)
-          })        
-        } else {
-          if (flvjs.isSupported()) {
-            const video = document.getElementById('video');
-            const flvPlayer = flvjs.createPlayer({
-              type: 'flv',
-              url: 'http://127.0.0.1:8888/live/'+window.location.href.split('=')[1].split('&')[0]+'.flv',
-              // url: 'https://streamit.website:8888/live/'+window.location.href.split('=')[1].split('&')[0]+'.flv',
-            });
-            flvPlayer.attachMediaElement(video);
-            flvPlayer.load();
-            flvPlayer.play();
-          };
-        }
-      }
       getVideo();
       renderSidebar();  
       getSingleUserKey();
+      saveProfiletoLocal(token);
     </script>
   </body>
 

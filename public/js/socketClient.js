@@ -9,8 +9,15 @@ streamerName.replace('#', '');
 
 let users = {};
 
-// Get username and room from URL
-const {username, room} = Qs.parse(location.search, {
+// Get username and room
+let username;
+if (token) {
+  username = JSON.parse(localStorage.getItem('userInfo')).name;
+} else {
+  username = undefined;
+}
+
+const {room} = Qs.parse(location.search, {
   ignoreQueryPrefix: true,
 });
 
@@ -23,7 +30,7 @@ socket.emit('joinRoom', {username, room});
 socket.on('roomUsers', ({room, users, usersCount}) => {
   // outputRoomName(room);
   // outputUsersCount(usersCount);
-  // outputUsers(users);
+  outputUsers(users);
 });
 
 // Message from server
@@ -37,6 +44,11 @@ socket.on('message', (msg) => {
 // Message submit
 chatForm.addEventListener('submit', (e) => {
   e.preventDefault();
+
+  if (!token) {
+    alert('登入以繼續聊天');
+    return false;
+  }
 
   // Get message text
   const msg = e.target.elements.msg.value;
@@ -89,9 +101,16 @@ function outputUsersCount(usersCount) {
  * @param {*} users
  */
 function outputUsers(users) {
-  userList.innerHTML = `
-    ${users.map((user) => `<li>${user.username}</li>`).join('')}
-  `;
+  const usersDiv = document.getElementById('chat-user');
+  const userObj = {};
+  let userHTML = '';
+  users.map((user)=> {
+    if (!userObj[user]) {
+      userHTML += `<div class="chat-user">${user.username}</div>`;
+      userObj[user] = 1;
+    }
+  });
+  usersDiv.innerHTML = userHTML;
 };
 
 // Get room and users
@@ -131,7 +150,7 @@ function getStreamViewers() {
   console.log(streamerName);
   console.log(users);
   console.log(viewers);
-  const playerclassName = '.playerViewers';
-  const playerViewCount = document.querySelector(playerclassName);
-  playerViewCount.innerText = '觀看人數： '+viewers;
+  const streamerclassName = '.streamerViewers';
+  const streamerViewCount = document.querySelector(streamerclassName);
+  streamerViewCount.innerText = '觀看人數： '+viewers;
 }

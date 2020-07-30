@@ -145,21 +145,21 @@ const options = {
   json: true, // Automatically parses the JSON string in the response
 };
 
-// const job = new CronJob('*/5 * * * * *', () => {
-//   rp(options)
-//       .then((res) => {
-//         if (res) {
-//           const liveStreams = res.live;
-//           for (let stream in liveStreams) {
-//             if (!liveStreams.hasOwnProperty(stream)) continue;
-//             generateStreamThumbnail(stream);
-//           }
-//         }
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//       });
-// }, null, true);
+const job = new CronJob('*/20 * * * * *', () => {
+  rp(options)
+      .then((res) => {
+        if (res) {
+          const liveStreams = res.live;
+          for (let stream in liveStreams) {
+            if (!liveStreams.hasOwnProperty(stream)) continue;
+            generateStreamThumbnail(stream);
+          }
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+}, null, true);
 
 // accepting a file with multer S3 and upload file
 aws.config.update({
@@ -237,7 +237,7 @@ module.exports = {
   generateStreamThumbnail,
   processVideo,
   wrapAsync,
-  // job,
+  job,
   fileType,
   uploadFile,
 };

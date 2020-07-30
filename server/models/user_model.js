@@ -183,7 +183,7 @@ const getUserKeys = async () => {
 
 const getSingleUserKey = async (key) => {
   try {
-    const result = await query('SELECT name, stream_key, stream_title, picture FROM users WHERE stream_key = ?', [key]);
+    const result = await query('SELECT id, name, stream_key, stream_title, picture FROM users WHERE stream_key = ?', [key]);
     return result;
   } catch (err) {
     return {error: err};
