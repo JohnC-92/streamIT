@@ -22,7 +22,7 @@ function initSocket(server) {
       socket.join(user.room);
 
       // Welcome current user
-      socket.emit('message', formatMessage(botName, 'Welcome to StreamIT Chat'));
+      socket.emit('message', formatMessage(botName, '歡迎來到聊天室 :D'));
 
       // Broadcast when a user connects
       // socket.broadcast
@@ -51,9 +51,9 @@ function initSocket(server) {
       const user = userLeave(socket.id);
 
       if (user) {
-        io.to(user.room).emit(
-            'message',
-            formatMessage(botName, `${user.username} has left the chat`));
+        // io.to(user.room).emit(
+        //     'message',
+        //     formatMessage(botName, `${user.username} has left the chat`));
 
         // Send room info, users list and users count
         io.to(user.room).emit('roomUsers', {

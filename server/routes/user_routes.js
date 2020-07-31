@@ -7,13 +7,12 @@ const {
   signIn,
   getUserProfile,
   getUserKeys,
-  getSingleUserKey,
+  getStreamerProfile,
   updateUserImg,
   updateUserProfile,
   deleteUserProfile,
   getFollowers,
   updateFollowers,
-  getSubFollow,
 } = require('../controllers/user_controllers');
 
 router.get('/test',
@@ -31,8 +30,8 @@ router.get('/user/profile',
 router.get('/user/keys',
     wrapAsync(getUserKeys));
 
-router.get('/user/keys/:key',
-    wrapAsync(getSingleUserKey));
+router.get('/user/keys/:id',
+    wrapAsync(getStreamerProfile));
 
 // update profile img route
 router.post('/user/updateImg', fileType,
@@ -52,9 +51,6 @@ router.get('/user/getFollowers',
 
 router.post('/user/updateFollowers',
     wrapAsync(updateFollowers));
-
-// router.get('/user/profile/:category',
-//     wrapAsync(getSubFollow));
 
 module.exports = router;
 

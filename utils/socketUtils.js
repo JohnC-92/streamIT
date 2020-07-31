@@ -16,6 +16,10 @@ function formatMessage(username, text) {
   };
 }
 
+const randomInteger = (min, max) => {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 // Join user to chat
 /**
  * Function to add record of user details and room
@@ -25,10 +29,13 @@ function formatMessage(username, text) {
  * @return {*} returns user obj
  */
 function userJoin(id, username, room) {
+  if (username === undefined) {
+    username = 'Anonymous' + randomInteger(1,99999);
+  }
+
   const user = {id, username, room};
 
   users.push(user);
-  // userCount[room] = userCount[room] + 1 || 1;
 
   return user;
 }
@@ -81,7 +88,6 @@ function getRoomUsers(room) {
 
   // add users count to userCount Object everytime someone enters or leave the room
   usersCount[room] = userCount;
-
   return [userList, userCount];
 }
 
@@ -93,16 +99,16 @@ function returnUsersCount() {
   return usersCount;
 }
 
-/**
- * Function to get array value
- * @param {*} value current arr value
- * @param {*} index current arr index
- * @param {*} self whole array
- * @return {*} return unique value
- */
-function uniqueArray(value, index, self) {
-  return self.indexOf(value) === index;
-}
+// /**
+//  * Function to get array value
+//  * @param {*} value current arr value
+//  * @param {*} index current arr index
+//  * @param {*} self whole array
+//  * @return {*} return unique value
+//  */
+// function uniqueArray(value, index, self) {
+//   return self.indexOf(value) === index;
+// }
 
 module.exports = {
   formatMessage,

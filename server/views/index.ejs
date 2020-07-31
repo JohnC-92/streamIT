@@ -320,18 +320,22 @@
             </div>
   
             <div class="streams talkshow">
-              <a href="#">
+              <a href="/video">
                 <div class="streamThumbnail">
-                  <img class="thumbnails" src="assets/talkThumbnail4.png" alt="">
+                  <!-- <img class="thumbnails" src="assets/talkThumbnail4.png" alt=""> -->
+                  <img class="thumbnails" src="assets/joemanThumbnail.png" alt="">
                   <span class="streamliveLabel">LIVE</span>
                   <span class="streamcountLabel">觀看人數: 777</span>
                 </div>
               </a>
               <div class="streamDesc">
-                <img class="streamImg" src="assets/talk4.png" alt="">
+                <!-- <img class="streamImg" src="assets/talk4.png" alt=""> -->
+                <img class="streamImg" src="assets/joeman.jpg" alt="">
                 <div class="streamTitleName">
-                  <div class="streamTitle">Pizza from scratch</div>
-                  <div class="streamName">Grossie_Gore</div>
+                  <!-- <div class="streamTitle">Pizza from scratch</div>
+                  <div class="streamName">Grossie_Gore</div> -->
+                  <div class="streamTitle">開著特斯拉下墾丁</div>
+                  <div class="streamName">Joeman</div>
                 </div>
               </div>
               <!-- <div class="streamType">Musical</div> -->
@@ -356,7 +360,10 @@
     <script src="js/renderStreams.js"></script>
     <script>
       renderStreams();
-      saveProfiletoLocal(token);
+      renderSidebar();
+      if (token) {
+        saveProfiletoLocal(token);
+      }
     </script>
   </body>
 

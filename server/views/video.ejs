@@ -25,6 +25,9 @@
           <div class="videoPlayer">
             <div class="videoDiv">
               <video class="videoContent" width="1080" height="765" controls id="video"></video>
+              <!-- <iframe width="1080" height="765"
+              src="https://www.youtube.com/watch?v=e9bXkZNSDxk">
+              </iframe> -->
             </div>
             <span class="streamliveText">live</span>
             <div class="streamerDesc">
@@ -43,11 +46,12 @@
                 <!-- 觀看人數：0 -->
               </div>
               <div class="followBtn">
-                Follow
+                追蹤
               </div>
               <div class="donateBtn">
-                Donate
-              </div>
+                贊助
+              </div>      
+
             </div>
           </div>          
 
@@ -78,22 +82,95 @@
               </main>
   
               <div class="chat-form-container">
-              <form id="chat-form">
-                  <input
-                  id="msg"
-                  type="text"
-                  placeholder="輸入訊息"
-                  required
-                  autocomplete="off"
-                  />
-                  <button class="btn"><i class="fas fa-paper-plane"></i> 聊天</button>
-              </form>
+                <form id="chat-form">
+                    <input
+                    id="msg"
+                    type="text"
+                    placeholder="輸入訊息"
+                    required
+                    autocomplete="off"
+                    />
+                    <button class="btn"><i class="fas fa-paper-plane"></i> 聊天</button>
+                </form>
+              </div>
+
+              <!-- <div class="loginForm"> -->
+              <div class="donateForm">
+                
+                <!-- <div class="wrapper"> -->
+                <div class="donateWrapper">
+                  <!-- <div id="loginformContent"> -->
+                  <div id="donateformContent">
+                    <div class="divCloseBtn">
+                      <!-- <span class="loginCloseBtn">&times;</span>     -->
+                      <span class="donateCloseBtn">&times;</span>    
+                    </div>
+              
+                    <div class="formTitle">
+                      <img class="logo" src="assets/logo.png" alt="StreamIT">
+                      <div class="title">
+                        <span class="titleCh">贊助實況主 </span>
+                        <!-- <span class="titleEng">donateInfo</span> -->
+                      </div>
+                    </div>
+              
+                    <!-- <div id="signinForm" class="signinForm"> -->
+                    <div id="donateInfo" class="donateInfo">
+              
+                      <div class="row">
+                        <div class="info">贊助人</div>
+                        <input type="text" id="emailIn" class="" name="login">
+                      </div>
+
+                      <div class="row">
+                        <div class="info">實況主</div>
+                        <input type="text" id="emailIn" class="" name="login">
+                      </div>
+
+                      <div class="row">
+                        <div class="info">贊助金額</div>
+                        <input type="text" id="emailIn" class="" name="login">
+                      </div>
+
+                      <div class="row">
+                        <div class="info">想說的話</div>
+                        <!-- <input type="text" id="emailIn" class="" name="login"> -->
+                        <textarea name="login" rows="3"></textarea>
+                      </div>
+
+                      <div class="row">
+                        <div class="info">信用卡號</div>
+                        <input type="text" id="emailIn" class="" name="login">
+                      </div>
+              
+                      <div class="rowSubmit">
+                        <input type="submit" class="signinBtn" value="一鍵贊助" onclick="signIn()">
+                      </div>       
+<!--                       
+                      <form id="payment-form" class="sr-payment-form">
+                        <div class="sr-combo-inputs-row">
+                          <div class="sr-input sr-card-element" id="card-element"></div>
+                        </div>
+                        <div class="sr-field-eror" id="card-errors" role="alert"></div>
+                        <button id="submit">
+                          <div class="spinner hidden" id="spinner"></div>
+                          <span id="button-text">Pay</span><span id="order-amount"></span>
+                        </button>
+                      </form> -->
+                      <!-- <div class="sr-result hidden">
+                        <p>Payment completed<br /></p>
+                        <pre>
+                          <code></code>
+                        </pre>
+                      </div> -->
+                      
+                    </div>
+              
+                </div>
               </div>
               
           </div>
   
-      </div>
-
       </div>
 
     </div>
@@ -101,15 +178,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.4/qs.min.js" integrity="sha512-BHtomM5XDcUy7tDNcrcX1Eh0RogdWiMdXl3wJcKB3PFekXb3l5aDzymaTher61u6vEZySnoC/SAj2Y/p918Y3w==" crossorigin="anonymous"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="js/header.js"></script>
-    <script src="js/socketClient.js"></script>
-    <script src="js/renderSidebar.js"></script>
     <script src="js/video.js"></script>
+    <script src="js/socketClient.js"></script>
     <script>
-      getVideo();
+      getStreamerProfileandGetVideo();
       renderSidebar();  
-      getSingleUserKey();
-      saveProfiletoLocal(token);
+      if (token) {
+        saveProfiletoLocal(token);
+      }
     </script>
+
   </body>
 
 

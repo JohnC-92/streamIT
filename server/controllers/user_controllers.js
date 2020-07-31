@@ -153,16 +153,17 @@ const getUserKeys = async(req, res) => {
     resObj[res.stream_key + '2'] = res.stream_title;
     resObj[res.stream_key + '3'] = res.picture;
     resObj[res.stream_key + '4'] = res.stream_type;
+    resObj[res.stream_key + '5'] = res.id;
   });
 
   return res.send(resObj);
 };
 
-const getSingleUserKey = async (req, res) => {
-  const {key} = req.params;
-  const result = await User.getSingleUserKey(key);
+const getStreamerProfile = async (req, res) => {
+  const {id} = req.params;
+  const result = await User.getStreamerProfile(id);
   return res.send(result);
-}
+};
 
 const updateUserImg = async(req, res) => {
   console.log(req.body);
@@ -199,20 +200,17 @@ const getFollowers = async (req, res) => {
 
 const updateFollowers = async (req, res) => {
   const {follow} = req.body;
+  console.log(follow)
   if (follow) {
-    const {fromId, fromName, toId, toName} = req.body;
+    const {fromId, toId} = req.body;
     const followedAt = new Date();
-    const result = await User.addfollowUser(fromId, fromName, toId, toName, followedAt);
+    const result = await User.addfollowUser(fromId, toId, followedAt);
     return res.send(result);
   } else {
     const {fromId, toId} = req.body;
     const result = await User.removefollowUser(fromId, toId);
     return res.send(result);
   }
-};
-
-const getSubFollow = async(req, res) => {
-
 };
 
 const nativeSignIn = async (email, password) => {
@@ -254,12 +252,11 @@ module.exports = {
   signIn,
   getUserProfile,
   getUserKeys,
-  getSingleUserKey,
+  getStreamerProfile,
   updateUserImg,
   updateUserProfile,
   deleteUserProfile,
   getFollowers,
   updateFollowers,
-  getSubFollow,
 };
 

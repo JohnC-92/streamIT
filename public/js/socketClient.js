@@ -3,10 +3,6 @@ const chatMessages = document.querySelector('.chat-messages');
 const roomName = document.getElementById('room-name');
 const userCount = document.getElementById('usersCount');
 const userList = document.getElementById('users');
-const streamerKey = window.location.href.split('key=')[1].split('&')[0];
-const streamerName = window.location.href.split('room=')[1].split('&')[0];
-streamerName.replace('#', '');
-
 let users = {};
 
 // Get username and room
@@ -105,19 +101,19 @@ function outputUsers(users) {
   const userObj = {};
   let userHTML = '';
   users.map((user)=> {
-    if (!userObj[user]) {
+    if (!userObj[user.username]) {
       userHTML += `<div class="chat-user">${user.username}</div>`;
       userObj[user] = 1;
     }
   });
+  // console.log('----users: ', users)
+  // console.log('----usersHTML: ', userHTML)
   usersDiv.innerHTML = userHTML;
 };
 
 // Get room and users
 socket.on('usersCount', ({usersCount}) => {
   users = usersCount;
-  console.log(usersCount);
-
   if (Object.keys(users).length > 0) {
     getViewers(users);
     getStreamViewers();
@@ -146,10 +142,7 @@ function getViewers(users) {
  * @param {*} users
  */
 function getStreamViewers() {
-  const viewers = users[streamerName];
-  console.log(streamerName);
-  console.log(users);
-  console.log(viewers);
+  const viewers = users[room];
   const streamerclassName = '.streamerViewers';
   const streamerViewCount = document.querySelector(streamerclassName);
   streamerViewCount.innerText = '觀看人數： '+viewers;

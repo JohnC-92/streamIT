@@ -1,4 +1,14 @@
+let streamerId;
+if (window.location.href.split('streamerId=')[1]) {
+  streamerId = parseInt(window.location.href.split('streamerId=')[1].split('&')[0]);
+} else {
+  streamerId = 1;
+}
+let streamerKey;
+
+const donateForm = document.querySelector('.donateForm');
 const donateBtn = document.querySelector('.donateBtn');
+const donateCloseBtn = document.querySelector('.donateCloseBtn');
 const followBtn = document.querySelector('.followBtn');
 const chatX = document.querySelector('.chatX');
 const chatUsers = document.querySelector('.chat-users');
@@ -6,7 +16,18 @@ const chatUsersList = document.querySelector('.chat-usersList');
 chatUsersList.style.display = 'none';
 
 donateBtn.addEventListener('click', () => {
-  window.location.replace('web/donate.html');
+  if (token) {
+    if (JSON.parse(localStorage.getItem('userInfo')).id === streamerId) {
+      alert(`無法贊助自己`);
+      return;
+    }
+  }
+  // window.location.replace('web/donate.html');
+  donateForm.style.display = 'block';
+});
+
+donateCloseBtn.addEventListener('click', () => {
+  donateForm.style.display = 'none';
 });
 
 followBtn.addEventListener('click', () => {
@@ -14,6 +35,14 @@ followBtn.addEventListener('click', () => {
     alert('登入以追蹤實況主');
     return;
   }
+
+  if (token) {
+    if (JSON.parse(localStorage.getItem('userInfo')).id === streamerId) {
+      alert(`無法追蹤自己`);
+      return;
+    }
+  }
+
   followStreamer();
 });
 
@@ -29,10 +58,17 @@ chatUsers.addEventListener('click', () => {
   }
 });
 
-const followStreamer = async() => {
+const followStreamer = async () => {
+  let follow;
+  if (followBtn.innerText === '追蹤') {
+    follow = true;
+  } else {
+    follow = false;
+  }
   data = {
-    follow: true,
-    
+    follow: follow,
+    fromId: JSON.parse(localStorage.getItem('userInfo')).id,
+    toId: streamerId,
   };
   await fetch('/user/updateFollowers', {
     method: 'POST',
@@ -41,14 +77,48 @@ const followStreamer = async() => {
     },
     body: JSON.stringify(data),
   }).then((res) => {
-    console.log(res);
+    if (res.status === 200) {
+      if (followBtn.innerText === '追蹤') {
+        followBtn.innerText = '取消追蹤';
+      } else {
+        followBtn.innerText = '追蹤';
+      }
+    }
     return res.json();
-  }).then((res) => {
-    console.log(res);
   });
 };
 
-const getVideo = async() => {
+const getVideo = async () => {
+  // if (window.location.href.indexOf('id=') !== -1) {
+  //   const video = document.getElementById('video');
+  //   const id = window.location.href.split('id=')[1];
+  //   await fetch('/vodOne/'+id, {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   }).then((res) => {
+  //     return res.json();
+  //   }).then((res) => {
+  //     const source = document.createElement('source');
+  //     source.src = res[0].video_url;
+  //     source.type = 'video/mp4';
+  //     video.appendChild(source);
+  //   });
+  // } else {
+  //   if (flvjs.isSupported()) {
+  //     const video = document.getElementById('video');
+  //     const flvPlayer = flvjs.createPlayer({
+  //       type: 'flv',
+  //       url: 'http://127.0.0.1:8888/live/'+streamerKey+'.flv',
+  //       // url: 'https://streamit.website:8888/live/'+streamerKey+'.flv',
+  //     });
+  //     flvPlayer.attachMediaElement(video);
+  //     flvPlayer.load();
+  //     flvPlayer.play();
+  //   };
+  // }
+
   if (window.location.href.indexOf('id=') !== -1) {
     const video = document.getElementById('video');
     const id = window.location.href.split('id=')[1];
@@ -65,13 +135,16 @@ const getVideo = async() => {
       source.type = 'video/mp4';
       video.appendChild(source);
     });
+  } else if (window.location.href.split('video')[1]==='') {
+    let videoDiv = document.querySelector('.videoDiv');
+    videoDiv.innerHTML = `<iframe width="1080" height="765" src="https://www.youtube.com/embed/qeX4_MEnLLo?start=27&autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
   } else {
     if (flvjs.isSupported()) {
       const video = document.getElementById('video');
       const flvPlayer = flvjs.createPlayer({
         type: 'flv',
-        url: 'http://127.0.0.1:8888/live/'+window.location.href.split('=')[1].split('&')[0]+'.flv',
-        // url: 'https://streamit.website:8888/live/'+window.location.href.split('=')[1].split('&')[0]+'.flv',
+        url: 'http://127.0.0.1:8888/live/'+streamerKey+'.flv',
+        // url: 'https://streamit.website:8888/live/'+streamerKey+'.flv',
       });
       flvPlayer.attachMediaElement(video);
       flvPlayer.load();
@@ -80,23 +153,22 @@ const getVideo = async() => {
   }
 };
 
-let streamerId;
 /**
  * Function to get streamer profile in video page
  */
-function getSingleUserKey() {
+function getStreamerProfileandGetVideo() {
   const request = new XMLHttpRequest();
   request.onreadystatechange = async function() {
     if (request.readyState === 4) {
       const response =JSON.parse(request.response)[0];
 
-      streamerId = response.id;
+      streamerKey = response.stream_key;
 
       const streamerImg = document.querySelector('.streamerImg');
       streamerImg.setAttribute('src', response.picture);
 
       const streamerTitle = document.querySelector('.streamerTitle');
-      streamerTitle.innerText = response.stream_title;
+      streamerTitle.innerText = response.stream_title || 'Welcome to ' + response.name + `'s world`;
 
       const streamerName = document.querySelector('.streamerName');
       streamerName.innerText = response.name;
@@ -107,8 +179,9 @@ function getSingleUserKey() {
       } else {
         streamerViewers.innerText = '觀看人數： 1';
       }
+      getVideo();
     }
   };
-  request.open('GET', '/user/keys/'+streamerKey);
+  request.open('GET', '/user/keys/'+streamerId);
   request.send();
 }

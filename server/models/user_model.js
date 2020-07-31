@@ -134,6 +134,7 @@ const facebookSignIn = async (accessToken, expire) => {
       access_expired: expire,
       login_at: loginAt,
       stream_key: shortid.generate(),
+      stream_type: 'Gaming',
     };
 
     // create user if user doesnt exist
@@ -174,16 +175,16 @@ const getUserProfile = async (token) => {
 
 const getUserKeys = async () => {
   try {
-    const result = await query('SELECT name, stream_key, stream_title, picture, stream_type FROM users', []);
+    const result = await query('SELECT id, name, stream_key, stream_title, picture, stream_type FROM users', []);
     return result;
   } catch (err) {
     return {error: err};
   }
 };
 
-const getSingleUserKey = async (key) => {
+const getStreamerProfile = async (id) => {
   try {
-    const result = await query('SELECT id, name, stream_key, stream_title, picture FROM users WHERE stream_key = ?', [key]);
+    const result = await query('SELECT id, name, stream_key, stream_title, picture FROM users WHERE id = ?', [id]);
     return result;
   } catch (err) {
     return {error: err};
@@ -226,13 +227,11 @@ const getFollowers = async (id) => {
   }
 };
 
-const addfollowUser = async (fromId, fromName, toId, toName, followedAt) => {
+const addfollowUser = async (fromId, toId, followedAt) => {
   try {
     const followObj = {
       from_id: fromId,
-      from_name: fromName,
       to_id: toId,
-      to_name: toName,
       followed_at: followedAt,
     };
     const result = await query('INSERT INTO followers SET ?', [followObj]);
@@ -251,23 +250,18 @@ const removefollowUser = async (fromId, toId) => {
   }
 };
 
-const getSubscribers = async () => {
-  
-};
-
 module.exports = {
   signUp,
   nativeSignIn,
   facebookSignIn,
   getUserProfile,
   getUserKeys,
-  getSingleUserKey,
+  getStreamerProfile,
   updateUserImg,
   updateUserProfile,
   deleteUserProfile,
   addfollowUser,
   removefollowUser,
   getFollowers,
-  getSubscribers,
 };
 

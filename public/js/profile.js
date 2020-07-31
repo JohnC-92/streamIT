@@ -15,9 +15,9 @@ const profileVideoDiv = document.querySelector('.profileVODTab');
 const profileFollowerDiv = document.querySelector('.profileFollowerTab');
 const profileStripeDiv = document.querySelector('.profileStripeTab');
 
-profileInfoDiv.style.display = 'none';
-profileVideoDiv.style.display = 'none';
-profileFollowerDiv.style.display = 'none';
+// profileInfoDiv.style.display = 'none';
+// profileVideoDiv.style.display = 'none';
+// profileFollowerDiv.style.display = 'none';
 // profileStripeDiv.style.display = 'none';
 
 // Profile info tabs
@@ -133,6 +133,50 @@ async function getProfile(token) {
 
         // fetch VODS
         fetchVODs(res.data.name, res.data.streamKey, res.data.picture);
+      } else {
+        alert('Token Expired/Invalid, Please sign in again');
+        signOut();
+        window.location.replace('/index');
+      }
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+/**
+ * Function to get streamer profile info
+ * @param {*} streamerId streamerId provided when landing on profile page
+ */
+async function getProfileStreamer(streamerId) {
+  try {
+    await fetch('/user/keys/'+streamerId, {
+      method: 'GET',
+    }).then((res) => {
+      console.log(res);
+      return res.json();
+    }).then((res) => {
+      const data = res[0];
+      console.log(data)
+      console.log(data.name)
+      if (!res.error) {
+        // get show profile divs
+        const image = document.querySelector('.profileImg-Img');
+        const name = document.querySelector('.profileName');
+        const profileStreamTitle = document.querySelector('.profileStreamTitle');
+        const profileStreamType = document.querySelector('.profileStreamType');
+
+        image.src = data.picture;
+        name.value = data.name;
+        profileStreamTitle.value = data.streamTitle || `Welcome to ${data.name}'s world`;
+        profileStreamType.value = data.streamType;
+
+        // hide other tabs
+        profileFollowerTab.style.display = 'none';
+        profileStripeTab.style.display = 'none';
+
+        // fetch VODS
+        fetchVODs(data.name, data.streamKey, data.picture);
       } else {
         alert('Token Expired/Invalid, Please sign in again');
         signOut();

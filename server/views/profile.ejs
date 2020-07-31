@@ -201,45 +201,45 @@
                   <div class="userName">
                     John
                   </div>
-                  <div class="userEmail">
+                  <!-- <div class="userEmail">
                     john@hotmail.com
-                  </div>
+                  </div> -->
                 </div>
               </div>
 
               <div class="user">             
-                <img class="userImg" src="https://www.dlf.pt/dfpng/middlepng/2-23802_meme-faces-happy-png-transparent-png.png" alt="">
+                <img class="userImg" src="assets/summit.png" alt="">
                 <div class="userDesc">                 
                   <div class="userName">
-                    John
+                    summit1g
                   </div>
-                  <div class="userEmail">
+                  <!-- <div class="userEmail">
                     john@hotmail.com
-                  </div>
+                  </div> -->
                 </div>
               </div>
 
               <div class="user">             
-                <img class="userImg" src="https://www.dlf.pt/dfpng/middlepng/2-23802_meme-faces-happy-png-transparent-png.png" alt="">
+                <img class="userImg" src="assets/talk4.png" alt="">
                 <div class="userDesc">                 
                   <div class="userName">
-                    John
+                    Gross Gore
                   </div>
-                  <div class="userEmail">
+                  <!-- <div class="userEmail">
                     john@hotmail.com
-                  </div>
+                  </div> -->
                 </div>
               </div>
 
               <div class="user">             
-                <img class="userImg" src="https://www.dlf.pt/dfpng/middlepng/2-23802_meme-faces-happy-png-transparent-png.png" alt="">
+                <img class="userImg" src="assets/wayne.png" alt="">
                 <div class="userDesc">                 
                   <div class="userName">
-                    John
+                    WayneSC
                   </div>
-                  <div class="userEmail">
+                  <!-- <div class="userEmail">
                     john@hotmail.com
-                  </div>
+                  </div> -->
                 </div>
               </div>
 
@@ -252,50 +252,50 @@
             <div class="profileFollowerRow">
             
               <div class="user">             
-                <img class="userImg" src="https://www.dlf.pt/dfpng/middlepng/2-23802_meme-faces-happy-png-transparent-png.png" alt="">
+                <img class="userImg" src="assets/hafu.png" alt="">
                 <div class="userDesc">                 
                   <div class="userName">
-                    John
+                    Hafu
                   </div>
-                  <div class="userEmail">
+                  <!-- <div class="userEmail">
                     john@hotmail.com
-                  </div>
+                  </div> -->
                 </div>
               </div>
 
               <div class="user">             
-                <img class="userImg" src="https://www.dlf.pt/dfpng/middlepng/2-23802_meme-faces-happy-png-transparent-png.png" alt="">
+                <img class="userImg" src="assets/music2.png" alt="">
                 <div class="userDesc">                 
                   <div class="userName">
-                    John
+                    Mike Shinoda
                   </div>
-                  <div class="userEmail">
+                  <!-- <div class="userEmail">
                     john@hotmail.com
-                  </div>
+                  </div> -->
                 </div>
               </div>
 
               <div class="user">             
-                <img class="userImg" src="https://www.dlf.pt/dfpng/middlepng/2-23802_meme-faces-happy-png-transparent-png.png" alt="">
+                <img class="userImg" src="assets/talk1.png" alt="">
                 <div class="userDesc">                 
                   <div class="userName">
-                    John
+                    肉乙
                   </div>
-                  <div class="userEmail">
+                  <!-- <div class="userEmail">
                     john@hotmail.com
-                  </div>
+                  </div> -->
                 </div>
               </div>
 
               <div class="user">             
-                <img class="userImg" src="https://www.dlf.pt/dfpng/middlepng/2-23802_meme-faces-happy-png-transparent-png.png" alt="">
+                <img class="userImg" src="assets/talk2.png" alt="">
                 <div class="userDesc">                 
                   <div class="userName">
-                    John
+                    啾比りみつ
                   </div>
-                  <div class="userEmail">
+                  <!-- <div class="userEmail">
                     john@hotmail.com
-                  </div>
+                  </div> -->
                 </div>
               </div>
 
@@ -338,34 +338,16 @@
                   NTD. 1000
                 </div>
                 <div class="paymentFrom">
-                  Ben
+                  Kenny
                 </div>
                 <div class="paymentTo">
-                  John
+                  My Love
                 </div>
                 <div class="paymentMsg">
-                  This is the best day of my life. I never thought that someone like me would receive that much love. Thank you guys for lightening up my life.
+                  Best thing bout tonight is we're not fighting.
                 </div>
               </div>
 
-              <div class="payment">             
-                <div class="paymentType">
-                  匯入
-                </div>
-                <div class="paymentAmount">
-                  NTD. 1000
-                </div>
-                <div class="paymentFrom">
-                  John
-                </div>
-                <div class="paymentTo">
-                  Kenny
-                </div>
-                <div class="paymentMsg">
-                  When I'm young I'd listen to the radio, waiting for my favourite song
-                </div>
-              </div>
-              
               <div class="payment">             
                 <div class="paymentType">
                   匯出
@@ -401,7 +383,7 @@
                   When I'm young I'd listen to the radio, waiting for my favourite song
                 </div>
               </div>
-              
+                          
             </div>
 
           </div>
@@ -417,9 +399,11 @@
     <script src="js/profile.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="js/socketCount.js"></script>
-    <script src="js/renderSidebar.js"></script>
     <script>
-      if (token) {
+      if (window.location.href.indexOf('streamerId') !== -1) {
+        const streamerId = window.location.href.split('streamerId=')[1].split('&')[0];
+        getProfileStreamer(streamerId)
+      } else if (token) {
         getProfile(token);
       }
       renderSidebar();
