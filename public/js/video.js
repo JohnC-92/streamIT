@@ -143,8 +143,9 @@ const getVideo = async () => {
       const video = document.getElementById('video');
       const flvPlayer = flvjs.createPlayer({
         type: 'flv',
-        url: 'http://127.0.0.1:8888/live/'+streamerKey+'.flv',
-        // url: 'https://streamit.website:8888/live/'+streamerKey+'.flv',
+        // url: 'http://127.0.0.1:8888/live/'+streamerKey+'.flv',
+        url: 'https://streamit.website:8888/live/'+streamerKey+'.flv',
+        // url: 'https://dinay18pwoqyb.cloudfront.net/live/'+streamerKey+'.flv',
       });
       flvPlayer.attachMediaElement(video);
       flvPlayer.load();
