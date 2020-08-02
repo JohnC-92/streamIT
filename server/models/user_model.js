@@ -173,6 +173,15 @@ const getUserProfile = async (token) => {
   });
 };
 
+const getProfiles = async (ids) => {
+  try {
+    const result = await query('SELECT id, name, picture, stream_key, stream_title, stream_type FROM users WHERE id IN (?)', [ids]);
+    return result;
+  } catch (err) {
+    return {error: err};
+  }
+}
+
 const getUserKeys = async () => {
   try {
     const result = await query('SELECT id, name, stream_key, stream_title, picture, stream_type FROM users', []);
@@ -184,7 +193,7 @@ const getUserKeys = async () => {
 
 const getStreamerProfile = async (id) => {
   try {
-    const result = await query('SELECT id, name, stream_key, stream_title, picture FROM users WHERE id = ?', [id]);
+    const result = await query('SELECT id, name, stream_key, stream_title, stream_type, picture FROM users WHERE id = ?', [id]);
     return result;
   } catch (err) {
     return {error: err};
@@ -218,10 +227,15 @@ const deleteUserProfile = async (email) => {
   }
 };
 
-const getFollowers = async (id) => {
+const getFollowers = async (id, from) => {
   try {
-    const result = await query('SELECT * FROM followers WHERE to_id = ?', [id]);
-    return result;
+    if (from === true) {
+      const result = await query('SELECT to_id, followed_at FROM followers WHERE from_id = ?', [id]);
+      return result;
+    } else {
+      const result = await query('SELECT from_id, followed_at FROM followers WHERE to_id = ?', [id]);
+      return result;
+    }
   } catch (err) {
     return {error: err};
   }
@@ -255,6 +269,7 @@ module.exports = {
   nativeSignIn,
   facebookSignIn,
   getUserProfile,
+  getProfiles,
   getUserKeys,
   getStreamerProfile,
   updateUserImg,

@@ -16,9 +16,9 @@ const profileFollowerDiv = document.querySelector('.profileFollowerTab');
 const profileStripeDiv = document.querySelector('.profileStripeTab');
 
 // profileInfoDiv.style.display = 'none';
-// profileVideoDiv.style.display = 'none';
-// profileFollowerDiv.style.display = 'none';
-// profileStripeDiv.style.display = 'none';
+profileVideoDiv.style.display = 'none';
+profileFollowerDiv.style.display = 'none';
+profileStripeDiv.style.display = 'none';
 
 // Profile info tabs
 profileInfoTab.addEventListener('click', () => {
@@ -113,6 +113,7 @@ async function getProfile(token) {
     }).then((res) => {
       return res.json();
     }).then((res) => {
+      console.log('ProfileInfo: ', res)
       if (!res.error) {
         // get show profile divs
         const image = document.querySelector('.profileImg-Img');
@@ -129,10 +130,13 @@ async function getProfile(token) {
         email.value = res.data.email;
         streamKey.value = res.data.streamKey;
         profileStreamTitle.value = res.data.streamTitle || `Welcome to ${res.data.name}'s world`;
-        profileStreamType.value = res.data.streamType;
+        profileStreamType.value = res.data.streamType || `Gaming`;
 
         // fetch VODS
         fetchVODs(res.data.name, res.data.streamKey, res.data.picture);
+
+        // add followers/followed div       
+        createFollowDIV(res.data.followers, res.data.followersTime, res.data.followed, res.data.followedTime);
       } else {
         alert('Token Expired/Invalid, Please sign in again');
         signOut();
@@ -156,9 +160,11 @@ async function getProfileStreamer(streamerId) {
       console.log(res);
       return res.json();
     }).then((res) => {
-      const data = res[0];
-      console.log(data)
-      console.log(data.name)
+      console.log(res)
+      const data = res.data;
+      
+      // console.log(data)
+      // console.log(data.name)
       if (!res.error) {
         // get show profile divs
         const image = document.querySelector('.profileImg-Img');
@@ -169,14 +175,28 @@ async function getProfileStreamer(streamerId) {
         image.src = data.picture;
         name.value = data.name;
         profileStreamTitle.value = data.streamTitle || `Welcome to ${data.name}'s world`;
-        profileStreamType.value = data.streamType;
+        profileStreamType.value = data.streamType || `Gaming`;
 
-        // hide other tabs
-        profileFollowerTab.style.display = 'none';
+        // hide other tabs      
         profileStripeTab.style.display = 'none';
+        
+        // hide buttons
+        const profileImgDesc = document.querySelector('.profileImg-Desc');
+        const profileNote = document.querySelector('.profileNote');
+        profileImgDesc.style.display = 'none';
+        profileNote.style.display = 'none';
+        profileUpdateBtn.style.display = 'none';
+        
+        //make read only
+        document.querySelector('.profileName').readOnly = true;
+        document.querySelector('.profileStreamTitle').readOnly = true;
+        document.querySelector('.profileStreamType').readOnly = true;   
 
         // fetch VODS
         fetchVODs(data.name, data.streamKey, data.picture);
+
+        // add followers/followed div       
+        createFollowDIV(data.followers, data.followersTime, data.followed, data.followedTime);
       } else {
         alert('Token Expired/Invalid, Please sign in again');
         signOut();
@@ -300,7 +320,7 @@ function fetchVODs(streamerName, streamerKey, streamerPicture) {
     if (request.readyState === 4) {
       const profileVideoContainer = document.querySelector('.profileVideoRow');
       const VODs = JSON.parse(request.response);
-      console.log(VODs);
+      console.log('VODS: ', VODs);
 
       for (let i = 0; i < VODs.length; i++) {
         const div = createVodDIV(streamerName, streamerKey, VODs[i], streamerPicture);
@@ -336,7 +356,10 @@ function createVodDIV(name, key, vod, picture) {
 
   const spanTime = document.createElement('span');
   spanTime.setAttribute('class', 'streamTime');
-  spanTime.innerText = '5分鐘前';
+  // spanTime.innerText = '5分鐘前';
+  const currentTime = Date.parse((new Date()).toJSON()); 
+  const videoTime = currentTime - Date.parse(vod.time_created);
+  spanTime.innerText = secondsToDhms(followTime/1000) + '前';
 
   const streamDesc = document.createElement('div');
   streamDesc.setAttribute('class', 'streamDesc');
@@ -368,3 +391,122 @@ function createVodDIV(name, key, vod, picture) {
   // streams.appendChild(streamType);
   return profileVod;
 };
+
+/**
+ * Function to create followers/followed DIV
+ * @param {*} followers
+ * @param {*} followersTime
+ * @param {*} followed 
+ * @param {*} followedTime
+ */
+async function createFollowDIV(followers, followersTime, followed, followedTime) {
+  
+  const followerDiv = document.querySelector('.follower');
+  const followedDiv = document.querySelector('.followed');
+
+  const followersNum = document.querySelector('.followersNum');
+  const followedNum = document.querySelector('.followedNum');
+
+  // followersNum.innerText = followers.length + ' 位追蹤者';
+  // followedNum.innerText = followed.length + ' 位已追蹤';
+  if (!followers.error) {
+    followersNum.innerText = parseInt(followers.length+4).toString() + ' 位追蹤者';
+  } else {
+    followersNum.innerText = '0 位追蹤者';
+  }
+  if (!followed.error) {
+    followedNum.innerText = parseInt(followed.length+4).toString() + ' 位已追蹤';
+  } else {
+    followedNum.innerText = '0 位已追蹤';
+  }  
+
+  for (let i = 0; i < followers.length; i++) {
+    const url = document.createElement('a');
+    url.setAttribute('href', '/profile?streamerId='+followers[i].id);
+
+    const userDiv = document.createElement('div');
+    userDiv.setAttribute('class', 'user');
+
+    const userImg = document.createElement('img');
+    userImg.setAttribute('class', 'userImg');
+    userImg.setAttribute('src', followers[i].picture);
+
+    const userDesc = document.createElement('div');
+    userDesc.setAttribute('class', 'userDesc');
+
+    const userName = document.createElement('div');
+    userName.setAttribute('class', 'userName');
+    userName.innerText = followers[i].name;
+
+    const userfollowTime = document.createElement('div');
+    userfollowTime.setAttribute('class', 'userfollowTime');
+
+    const currentTime = Date.parse((new Date()).toJSON()); 
+    const followTime = currentTime - Date.parse(followersTime[i]);
+    userfollowTime.innerText = secondsToDhms(followTime/1000) + ' 前追蹤';
+    // userfollowTime.innerText = followTime;
+
+    userDesc.appendChild(userName);
+    userDesc.appendChild(userfollowTime);
+
+    userDiv.appendChild(userImg);
+    userDiv.appendChild(userDesc);
+
+    url.appendChild(userDiv);
+    
+    followerDiv.appendChild(url);
+  }
+  
+  for (let i = 0; i < followed.length; i++) {
+    const url = document.createElement('a');
+    url.setAttribute('href', '/profile?streamerId='+followed[i].id);
+
+    const userDiv = document.createElement('div');
+    userDiv.setAttribute('class', 'user');
+
+    const userImg = document.createElement('img');
+    userImg.setAttribute('class', 'userImg');
+    userImg.setAttribute('src', followed[i].picture);
+
+    const userDesc = document.createElement('div');
+    userDesc.setAttribute('class', 'userDesc');
+
+    const userName = document.createElement('div');
+    userName.setAttribute('class', 'userName');
+    userName.innerText = followed[i].name;
+
+    const userfollowTime = document.createElement('div');
+    userfollowTime.setAttribute('class', 'userfollowTime');
+
+    const currentTime = Date.parse((new Date()).toJSON()); 
+    const followTime = currentTime - Date.parse(followedTime[i]);
+    userfollowTime.innerText = secondsToDhms(followTime/1000) + ' 前追蹤';
+    // userfollowTime.innerText = followTime;
+
+    userDesc.appendChild(userName);
+    userDesc.appendChild(userfollowTime);
+
+    userDiv.appendChild(userImg);
+    userDiv.appendChild(userDesc);
+
+    url.appendChild(userDiv);
+    
+    followedDiv.appendChild(url);
+  }
+};
+
+const secondsToDhms = (seconds) => {
+  seconds = Number(seconds);
+  const d = Math.floor(seconds / (3600*24));
+  const h = Math.floor(seconds % (3600*24) / 3600);
+  const m = Math.floor(seconds % 3600 / 60);
+  const s = Math.floor(seconds % 60);
+  
+  const dDisplay = d > 0 ? d + (d == 1 ? " 天, " : " 天, ") : "";
+  const hDisplay = h > 0 ? h + (h == 1 ? " 小時, " : " 小時, ") : "";
+  // const mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " minutes, ") : "";
+  const mDisplay = m > 0 ? m + (m == 1 ? " 分鐘, " : " 分鐘 ") : "";
+  const sDisplay = s > 0 ? s + (s == 1 ? " 秒" : " 秒") : "";
+  // return dDisplay + hDisplay + mDisplay + sDisplay;
+  return dDisplay + hDisplay + mDisplay;
+}

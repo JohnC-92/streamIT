@@ -307,6 +307,12 @@ a {
   color: #8A2BE2;
 }
 
+.menu-2:hover, 
+.menu-3:hover,
+.menu-4:hover {
+  cursor: pointer;
+}
+
 .header-btm {
   height: 0.1rem;
   background-color: rgba(0, 0, 0, 0.2);
@@ -661,6 +667,13 @@ a {
   color: black;
 }
 
+.sideFollow {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 10px 0 10px 60px;
+  display: none;
+}
+
 .sideTitle {
   font-size: 18px;
   font-weight: 600;
@@ -961,6 +974,12 @@ a {
   margin-bottom: 15px;
 }
 
+.followersNum,
+.followedNum {
+  font-size: 14px;
+  padding-left: 18px;
+}
+
 .profileRow {
   background: white;
   padding: 10px;
@@ -1157,7 +1176,7 @@ a {
   display: flex;
   flex-wrap: wrap;
   padding: 15px;
-  height: 35vh;
+  /* height: 35vh; */
   margin-bottom: 15px;
 }
 
@@ -1168,11 +1187,12 @@ a {
   padding: 0 20px;
   margin-right: 15px;
   border-radius: 6px;
-  width: 180px;
+  width: 200px;
+  color: black;
 }
 
 .user:hover {
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.1);
 }
 
 .userEmail {
@@ -1190,6 +1210,14 @@ a {
 .userDesc {
   display: flex;
   flex-direction: column;
+}
+
+.userfollowTime {
+  font-size: 12px;
+}
+
+.user a:focus {
+  color:black;
 }
 
 /* Profile Stripe Tab */

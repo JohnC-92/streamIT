@@ -124,6 +124,8 @@ const getUserProfile = async (req, res) => {
       token = token.replace('Bearer ', '');
 
       const result = await User.getUserProfile(token);
+      const {followers, followersTime, followed, followedTime} = await followFunction(result.id);
+
       res.send({
         data: {
           id: result.id,
@@ -134,6 +136,10 @@ const getUserProfile = async (req, res) => {
           streamKey: result.stream_key,
           streamTitle: result.stream_title,
           streamType: result.stream_type,
+          followers: followers,
+          followersTime: followersTime,
+          followed: followed,
+          followedTime: followedTime,
         },
       });
     } else {
@@ -162,7 +168,22 @@ const getUserKeys = async(req, res) => {
 const getStreamerProfile = async (req, res) => {
   const {id} = req.params;
   const result = await User.getStreamerProfile(id);
-  return res.send(result);
+  const {followers, followersTime, followed, followedTime} = await followFunction([id]);
+  // return res.send(result);
+  res.send({
+    data: {
+      id: result[0].id,
+      name: result[0].name,
+      picture: result[0].picture,
+      streamKey: result[0].stream_key,
+      streamTitle: result[0].stream_title,
+      streamType: result[0].stream_type,
+      followers: followers,
+      followersTime: followersTime,
+      followed: followed,
+      followedTime: followedTime,
+    },
+  });
 };
 
 const updateUserImg = async(req, res) => {
@@ -193,8 +214,8 @@ const deleteUserProfile = async(req, res) => {
 };
 
 const getFollowers = async (req, res) => {
-  const id = req.query.id;
-  const result = User.getFollowers(id);
+  const {id, from} = req.body;
+  const result = User.getFollowers(id, from);
   return res.send(result);
 };
 
@@ -246,6 +267,33 @@ const facebookSignIn = async (token) => {
     return {error: err};
   }
 };
+
+const followFunction = async(id) => {
+  const followersResult = await User.getFollowers(id, false);
+  const followedResult = await User.getFollowers(id, true);
+
+  let followers = followersResult.map((f) => {
+    return f.from_id;
+  })
+
+  followers = await User.getProfiles(followers);
+
+  const followersTime = followersResult.map((f) => {
+    return f.followed_at;
+  })
+
+  let followed = followedResult.map((f) => {
+    return f.to_id;
+  })
+
+  followed = await User.getProfiles(followed);
+
+  const followedTime = followedResult.map((f) => {
+    return f.followed_at;
+  }) 
+  
+  return {followers, followersTime, followed, followedTime};
+}
 
 module.exports = {
   signUp,

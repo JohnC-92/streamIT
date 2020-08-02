@@ -196,12 +196,11 @@ async function signUp() {
   }
 };
 
-
 /**
  * Function to check if token cookie exist and save profile info to localstorage
  * @param {*} token access token given by server
  */
-async function saveProfiletoLocal(token) {
+async function saveProfiletoLocal(token, streamerKeys) {
   try {
     await fetch('/user/profile', {
       method: 'GET',
@@ -211,6 +210,7 @@ async function saveProfiletoLocal(token) {
     }).then((res) => {
       return res.json();
     }).then((res) => {
+      // console.log(res)
       if (!res.error) {
         const user = {
           id: res.data.id,
@@ -220,8 +220,25 @@ async function saveProfiletoLocal(token) {
           streamKey: res.data.streamKey,
           streamTitle: res.data.streamTitle,
           streamType: res.data.streamType,
+          followers: res.data.followers,
+          followed: res.data.followed,
         };
         localStorage.setItem('userInfo', JSON.stringify(user));
+
+        const sideFollow = document.querySelector('.sideFollow');
+        sideFollow.style.display = 'block';
+        const sideFollowStreams = document.querySelector('.sideFollowStreams');
+
+        for (let i = 0; i < res.data.followers.length; i++) {
+          if (streamerKeys.includes(res.data.streamKey)) {
+            const sideBarDiv = createSidebarDIV(res.data.streamKey, res.data.name, res.data.streamTitle, res.data.picture, res.data.streamType, res.data.id);
+            sideFollowStreams.appendChild(sideBarDiv);
+          } else {
+            const key = 'notStreaming';
+            const sideBarDiv = createSidebarDIV(key, res.data.followers[i].name, res.data.followers[i].streamTitle, res.data.followers[i].picture, res.data.followers[i].streamType, res.data.followers[i].id);
+            sideFollowStreams.appendChild(sideBarDiv);
+          }          
+        }        
       }
     });
   } catch (err) {
@@ -237,8 +254,9 @@ function renderSidebar() {
   request.onreadystatechange = async function() {
     if (request.readyState === 4) {
       const sideBar = document.querySelector('.sideBar');
+      let keys;
       if (JSON.parse(request.response).live) {
-        const keys = Object.keys(JSON.parse(request.response).live);
+        keys = Object.keys(JSON.parse(request.response).live);
         // console.log(keys)
         let keyObj;
         await fetch('/user/keys', {
@@ -251,6 +269,14 @@ function renderSidebar() {
         for (let i = 0; i < keys.length; i++) {
           const sideBarDiv = createSidebarDIV(keys[i], keyObj[keys[i]+'1'], keyObj[keys[i]+'2'], keyObj[keys[i]+'3'], keyObj[keys[i]+'4'], keyObj[keys[i]+'5']);
           sideBar.appendChild(sideBarDiv);
+        }
+      }
+
+      if (token) {
+        if (keys !== undefined) {
+          saveProfiletoLocal(token, keys);
+        } else {
+          saveProfiletoLocal(token, []);
         }
       }
     }
@@ -280,7 +306,11 @@ function createSidebarDIV(key, name, title, picture, type, id) {
   }
 
   const url = document.createElement('a');
-  url.setAttribute('href', '/video?streamerId='+id+'&room='+name);
+  if (key !== 'notStreaming') {
+    url.setAttribute('href', '/video?streamerId='+id+'&room='+name);
+  } else {
+    url.setAttribute('href', '/profile?streamerId='+id);
+    }
 
   const div = document.createElement('div');
   div.setAttribute('class', 'sideRow');
@@ -305,7 +335,9 @@ function createSidebarDIV(key, name, title, picture, type, id) {
 
   const sideViewers = document.createElement('div');
   sideViewers.setAttribute('class', 'sideViewers side'+name);
-  if (users[key] === undefined) {
+  if (key === 'notStreaming') {
+    sideViewers.innerText = 'not live';
+  } else if (users[key] === undefined) {
     sideViewers.innerText = '0';
   } else {
     sideViewers.innerText = users[key];
@@ -315,7 +347,7 @@ function createSidebarDIV(key, name, title, picture, type, id) {
   sideTitleName.appendChild(sideName);
   div.appendChild(sideImg);
   div.appendChild(sideTitleName);
-  div.appendChild(sideDot);
+  div.appendChild(sideDot); 
   div.appendChild(sideViewers);
   url.appendChild(div);
   sideStream.appendChild(url);

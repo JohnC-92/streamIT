@@ -14,6 +14,20 @@ liveTalk.addEventListener('click', () => {
   streamFilter('talkshow');
 });
 
+const gamingCategory = document.querySelector('.menu-2');
+const musicCategory = document.querySelector('.menu-3');
+const talkCategory = document.querySelector('.menu-4');
+
+gamingCategory.addEventListener('click', () => {
+  streamFilter('gaming');
+});
+musicCategory.addEventListener('click', () => {
+  streamFilter('musical');
+});
+talkCategory.addEventListener('click', () => {
+  streamFilter('talkshow');
+}); 
+
 /**
  * Function to render profile page
  */
@@ -38,10 +52,10 @@ function renderStreams() {
           liveChannels.appendChild(div);
         }
 
-        if (window.location.href.indexOf('category=') !== -1) {
-          const key = window.location.href.split('category=')[1];
-          streamFilter(key);
-        }
+        // if (window.location.href.indexOf('category=') !== -1) {
+        //   const key = window.location.href.split('category=')[1];
+        //   streamFilter(key);
+        // }
       }
     }
   };
@@ -134,6 +148,7 @@ function createStreamDIV(key, name, title, picture, type, id) {
  * @param {*} key
  */
 function streamFilter(key) {
+  console.log('CAME HERE')
   const className = '.' + key;
   const streams = document.querySelectorAll(className);
 
