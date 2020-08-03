@@ -13,6 +13,16 @@ const showPass = document.querySelectorAll('.showPass');
 const titleCh = document.querySelector('.titleCh');
 const member = document.querySelector('.memberImg');
 
+if (window.location.href.indexOf('category=') !== -1) {
+  const key = window.location.href.split('category=')[1];
+  streamFilter(key);
+}
+
+if (window.location.href.indexOf('keyword=') !== -1) {
+  const key = window.location.href.split('keyword=')[1];
+  streamNameFilter(key);
+}
+
 // set global token, get token cookie from browser
 let token = '';
 if (document.cookie) {
@@ -353,4 +363,48 @@ function createSidebarDIV(key, name, title, picture, type, id) {
   sideStream.appendChild(url);
 
   return sideStream;
+};
+
+/**
+ * Function to hide all streams and show certain streams
+ * @param {*} key
+ */
+function streamFilter(key) {
+  const className = '.' + key;
+  const streams = document.querySelectorAll(className);
+
+  const hideStreams = document.querySelectorAll('.streams');
+  const sideStreams = document.querySelectorAll('.sideStream');
+
+  for (let i = 0; i < hideStreams.length; i++) {
+    hideStreams[i].style.display = 'none';
+    sideStreams[i].style.display = 'none';
+  };
+
+  for (let i = 0; i < streams.length; i++) {
+    streams[i].style.display = 'block';
+  };
+
+  // const liveTitleCategory = document.querySelector('.liveTitleCategory');
+  // liveTitleCategory.style.display = 'none';
+  // liveGaming.style.display = 'none';
+  // liveMusical.style.display = 'none';
+  // liveTalk.style.display = 'none';
+};
+
+/**
+ * Function to search stream name
+ */
+function streamNameFilter() {
+
+  const name = window.location.href.split('keyword=')[1];
+  const streams = document.querySelectorAll('.streamName');
+
+  if (name !== '') {
+    for (let i = 0; i < streams.length; i++) {
+      if (streams[i].innerText.toLowerCase().indexOf(name.toLowerCase()) === -1) {
+        streams[i].parentNode.parentNode.parentNode.style.display = 'none';
+      }
+    }
+  }
 };

@@ -137,6 +137,9 @@ async function getProfile(token) {
 
         // add followers/followed div       
         createFollowDIV(res.data.followers, res.data.followersTime, res.data.followed, res.data.followedTime);
+
+        // add payment div
+        createPayment(res.data.id)
       } else {
         alert('Token Expired/Invalid, Please sign in again');
         signOut();
@@ -509,4 +512,76 @@ const secondsToDhms = (seconds) => {
   const sDisplay = s > 0 ? s + (s == 1 ? " 秒" : " 秒") : "";
   // return dDisplay + hDisplay + mDisplay + sDisplay;
   return dDisplay + hDisplay + mDisplay;
+}
+
+/**
+ * Function to get payment details
+ * @param {*} id
+ */
+function createPayment(id) {
+  const request = new XMLHttpRequest();
+  request.onreadystatechange = async function() {
+    if (request.readyState === 4) {
+      const profileStripeRow = document.querySelector('.profileStripeRow');
+      const payments = JSON.parse(request.response);
+      console.log('Payments: ', payments);
+
+
+      for (let i = 0; i < payments.paid.length; i++) {
+        const div = createPaymentDiv(payments.paid[i].time_created, payments.paid[i].from_name, payments.paid[i].to_name, payments.paid[i].amount, payments.paid[i].message);
+        profileStripeRow.appendChild(div);
+      }
+
+      for (let i = 0; i < payments.received.length; i++) {
+        const div = createPaymentDiv(payments.received[i].time_created, payments[i].received.from_name, payments.received[i].to_name, payments.received[i].amount, payments.received[i].message);
+        profileStripeRow.appendChild(div);
+      }
+    }
+  };
+  request.open('POST', '/payment/records/'+id);
+  request.send();
+};
+
+/**
+ * Function to create Payments DIV
+ * @param {*} time
+ * @param {*} from
+ * @param {*} to
+ * @param {*} amount
+ * @param {*} message
+ * @return {*} return Payments DIV
+ */
+function createPaymentDiv(time, from, to, amount, message) {
+  const paymentDiv = document.createElement('div');
+  paymentDiv.setAttribute('class', 'payment');
+
+  const paymentTime = document.createElement('div');
+  paymentTime.setAttribute('class', 'paymentTime');
+  
+  const timeEdit = time.substr(0,10) + ' ' + time.substr(11,12);
+  paymentTime.innerText = timeEdit;
+
+  const paymentAmount = document.createElement('div');
+  paymentAmount.setAttribute('class', 'paymentAmount');
+  paymentAmount.innerText = 'NTD. ' + amount;
+
+  const paymentFrom = document.createElement('div');
+  paymentFrom.setAttribute('class', 'paymentFrom');
+  paymentFrom.innerText = from;
+
+  const paymentTo = document.createElement('div');
+  paymentTo.setAttribute('class', 'paymentTo');
+  paymentTo.innerText = to;
+
+  const paymentMsg = document.createElement('div');
+  paymentMsg.setAttribute('class', 'paymentMsg');
+  paymentMsg.innerText = message;
+
+  paymentDiv.appendChild(paymentTime);
+  paymentDiv.appendChild(paymentAmount);
+  paymentDiv.appendChild(paymentFrom);
+  paymentDiv.appendChild(paymentTo);
+  paymentDiv.appendChild(paymentMsg);
+
+  return paymentDiv;
 }

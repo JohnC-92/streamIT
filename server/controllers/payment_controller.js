@@ -8,17 +8,16 @@ const getStripeKey = async (req, res) => {
 };
 
 const makePayment = async(req, res) => {
-  const {paymentMethodId, paymentIntentId, orderAmount, currency, useStripeSdk} = req.body;
-  console.log(req.body);
+  const {paymentMethodId, paymentIntentId, amount, currency, useStripeSdk} = req.body;
+  // console.log(req.body);
   // const orderAmount = 1400;
 
   try {
     let intent;
     if (paymentMethodId) {
       // Create new PaymentIntent with a PaymentMethod ID from the client.
-      intent = await stripe.paymentIntents.create({
-        // amount: orderAmount,
-        amount: 5200,
+      intent = await stripe.paymentIntents.create({     
+        amount: amount*100,
         currency: currency,
         payment_method: paymentMethodId,
         confirmation_method: 'manual',
@@ -61,16 +60,36 @@ const generateResponse = (intent) => {
     case 'succeeded':
       // Payment is complete, authentication not required
       // To cancel the payment after capture you will need to issue a Refund (https://stripe.com/docs/api/refunds)
-      // const result = Payment.makePayment(from_id, to_id, message, amount);
-      // if (result.error) {
-      //   return {error: 'Payment insertion error'};
-      // }
       console.log('💰 Payment received!');
       return {clientSecret: intent.client_secret};
   }
 };
 
+const updatePayment = async(req, res) => {  
+  const {from_id, from_name, to_id, to_name, amount, message} = req.body;
+  const result = await Payment.updatePayment(from_id, from_name, to_id, to_name, amount, message)
+  if (result.error) {
+    return res.send({error: result.error});
+  }
+  res.send(result);
+}
+
+const getPayment = async(req, res) => {
+  console.log('im here');
+  console.log(req.params);
+  const {id} = req.params;
+  const paidPayments = await Payment.getPayment(id, true);
+  const receivedPayments = await Payment.getPayment(id, false);
+
+  res.send({
+    paid: paidPayments,
+    received: receivedPayments,
+  })
+}
+
 module.exports = {
   getStripeKey,
   makePayment,
+  updatePayment,
+  getPayment,
 }

@@ -35,15 +35,15 @@
                 <img class="streamerImg" alt="">
               </div>
               <div class="streamerTitleName">
-                <div class="streamerTitle">
-                  <!-- Testing123 Title -->
-                </div>
-                <div class="streamerName">
-                  <!-- Test playerName -->
-                </div>
+                <a class="streamerProfile">
+                  <div class="streamerTitle">
+                  </div>
+                
+                  <div class="streamerName">
+                  </div>
+                </a>
               </div>
               <div class="streamerViewers">
-                <!-- 觀看人數：0 -->
               </div>
               <div class="followBtn">
                 追蹤
@@ -117,46 +117,47 @@
                     <!-- <div id="signinForm" class="signinForm"> -->
                     <div id="donateInfo" class="donateInfo">
               
-                      <div class="row">
-                        <div class="info">贊助人</div>
-                        <input type="text" id="emailIn" class="" name="login">
-                      </div>
-
-                      <div class="row">
-                        <div class="info">實況主</div>
-                        <input type="text" id="emailIn" class="" name="login">
-                      </div>
-
-                      <div class="row">
-                        <div class="info">贊助金額</div>
-                        <input type="text" id="emailIn" class="" name="login">
-                      </div>
-
-                      <div class="row">
-                        <div class="info">想說的話</div>
-                        <!-- <input type="text" id="emailIn" class="" name="login"> -->
-                        <textarea name="login" rows="3"></textarea>
-                      </div>
-
-                      <div class="row">
-                        <div class="info">信用卡號</div>
-                        <input type="text" id="emailIn" class="" name="login">
-                      </div>
-              
-                      <div class="rowSubmit">
-                        <input type="submit" class="signinBtn" value="一鍵贊助" onclick="signIn()">
-                      </div>       
-<!--                       
                       <form id="payment-form" class="sr-payment-form">
+
+                        <div class="row">
+                          <div class="info">贊助人</div>
+                          <input type="text" id="giver" class="" name="donate">
+                        </div>
+
+                        <div class="row">
+                          <div class="info">實況主</div>
+                          <input type="text" id="receiver" class="" name="donate">
+                        </div>
+
+                        <div class="row">
+                          <div class="info">贊助金額 (單位: NTD)</div>
+                          <input type="number" id="number" class="inputNumber" name="donate">
+                        </div>
+
+                        <div class="row">
+                          <div class="info">想說的話</div>
+                          <!-- <input type="text" id="emailIn" class="" name="login"> -->
+                          <textarea id="stripeMsg" name="donate" rows="3"></textarea>
+                        </div>
+
+                        <!-- <div class="row">
+                          <div class="info">信用卡號</div>
+                          <input type="text" id="card" class="" name="donate">
+                        </div> -->
+                
+                        <!-- <div class="rowSubmit">
+                          <input type="submit" class="signinBtn" value="一鍵贊助" onclick="signIn()">
+                        </div>        -->
+                      
                         <div class="sr-combo-inputs-row">
                           <div class="sr-input sr-card-element" id="card-element"></div>
                         </div>
                         <div class="sr-field-eror" id="card-errors" role="alert"></div>
-                        <button id="submit">
+                        <button class="stripeBtn signinBtn" id="submit">
                           <div class="spinner hidden" id="spinner"></div>
-                          <span id="button-text">Pay</span><span id="order-amount"></span>
+                          <span id="button-text">贊助</span><span id="order-amount"></span>
                         </button>
-                      </form> -->
+                      </form>
                       <!-- <div class="sr-result hidden">
                         <p>Payment completed<br /></p>
                         <pre>
@@ -180,6 +181,8 @@
     <script src="js/header.js"></script>
     <script src="js/video.js"></script>
     <script src="js/socketClient.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="js/stripeScript.js"></script>
     <script>
       getStreamerProfileandGetVideo();
       renderSidebar();  

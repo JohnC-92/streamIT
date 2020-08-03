@@ -15,14 +15,32 @@ const chatUsers = document.querySelector('.chat-users');
 const chatUsersList = document.querySelector('.chat-usersList');
 chatUsersList.style.display = 'none';
 
-donateBtn.addEventListener('click', () => {
+const receiver = document.getElementById('receiver');
+
+// if (localStorage.length !== 0) {
+//   const followArr = JSON.parse(localStorage.getItem('userInfo')).followed;
+//   followArr.map((f) => {
+//     if (f.id === streamerId) {
+//       followBtn.innerText = '取消追蹤';
+//     }
+//   })
+// }
+
+donateBtn.addEventListener('click', () => {  
   if (token) {
     if (JSON.parse(localStorage.getItem('userInfo')).id === streamerId) {
       alert(`無法贊助自己`);
       return;
     }
   }
-  // window.location.replace('web/donate.html');
+
+  const giver = document.getElementById('giver');
+  
+  if (localStorage.length !== 0) {
+    giver.value = JSON.parse(localStorage.getItem('userInfo')).name;
+    giver.readOnly = true;
+  }
+
   donateForm.style.display = 'block';
 });
 
@@ -120,7 +138,6 @@ const getVideo = async () => {
   // }
 
   if (window.location.href.indexOf('id=') !== -1) {
-    console.log('HEY1')
     const video = document.getElementById('video');
     const id = window.location.href.split('id=')[1];
     await fetch('/vodOne/'+id, {
@@ -137,11 +154,9 @@ const getVideo = async () => {
       video.appendChild(source);
     });
   } else if (window.location.href.split('video')[1]==='') {
-    console.log('HEY2')
     let videoDiv = document.querySelector('.videoDiv');
     videoDiv.innerHTML = `<iframe width="1080" height="765" src="https://www.youtube.com/embed/qeX4_MEnLLo?start=27&autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
   } else {
-    console.log('HEY3')
     if (flvjs.isSupported()) {
       const video = document.getElementById('video');
       const flvPlayer = flvjs.createPlayer({
@@ -167,20 +182,29 @@ function getStreamerProfileandGetVideo() {
       const response =JSON.parse(request.response).data;
       // console.log(response)
       // console.log(response[0])
-      streamerKey = response.stream_key;
+      streamerKey = response.streamKey;
+
+      const streamerProfile = document.querySelector('.streamerProfile');
+      streamerProfile.setAttribute('href', '/profile?streamerId='+streamerId)
 
       const streamerImg = document.querySelector('.streamerImg');
       streamerImg.setAttribute('src', response.picture);
 
       const streamerTitle = document.querySelector('.streamerTitle');
-      streamerTitle.innerText = response.stream_title || 'Welcome to ' + response.name + `'s world`;
+      streamerTitle.innerText = response.streamTitle || 'Welcome to ' + response.name + `'s world`;
 
       const streamerName = document.querySelector('.streamerName');
       streamerName.innerText = response.name;
+      receiver.value = response.name;
+      receiver.readOnly = true;
 
       const streamerViewers = document.querySelector('.streamerViewers');
-      if (users[response.key]) {
-        streamerViewers.innerText = '觀看人數： ' + users[response.key];
+      if (users[response.streamKey]) {
+        if (users[response.streamKey] === undefined) {
+          streamerViewers.innerText = '觀看人數： 0';
+        } else {
+          streamerViewers.innerText = '觀看人數： ' + users[response.streamKey];
+        }
       } else {
         streamerViewers.innerText = '觀看人數： 1';
       }
