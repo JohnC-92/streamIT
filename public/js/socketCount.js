@@ -4,7 +4,7 @@ let users = {};
 // Get room and users
 socket.on('usersCount', ({usersCount}) => {
   users = usersCount;
-  console.log(usersCount);
+  // console.log(usersCount);
 
   if (Object.keys(users).length > 0) {
     getViewers(users);
@@ -24,9 +24,6 @@ function getViewers(users) {
 
     const sideclassName = '.side'+key;
     const sideViewCount = document.querySelector(sideclassName);
-
-    console.log('className: ', className)
-    console.log('span: ', viewCount)
 
     if (viewCount !== null) {
       viewCount.innerText = '觀看人數: ' + viewers;

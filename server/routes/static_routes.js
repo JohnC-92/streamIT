@@ -1,10 +1,6 @@
 const router = require('express').Router();
 
-router.get('/layout', (req, res) => {
-  res.render('layout');
-});
-
-router.get('/index', (req, res) => {
+router.get('/', (req, res) => {
   res.render('index');
 });
 
@@ -16,8 +12,12 @@ router.get('/profile', (req, res) => {
   res.render('profile');
 });
 
-router.get('/payment/donate', (req, res) => {
-  res.sendFile('web/donate.html');
-});
+// router.get('/layout', (req, res) => {
+//   res.render('layout');
+// });
+
+// router.get('/payment/donate', (req, res) => {
+//   res.sendFile('web/donate.html');
+// });
 
 module.exports = router;

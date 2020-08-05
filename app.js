@@ -50,7 +50,7 @@ app.use(require('./server/routes/vod_routes'));
 // Error Handling Middleware
 app.use((err, req, res, next) => {
   console.log(err);
-  res.status(500).send('Internal Server Error'); // change it later to HTML page
+  res.status(500).send('Internal Server Error'); // change it later to error HTML page
 });
 
 httpServer.listen(httpPort, () => {

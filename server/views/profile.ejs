@@ -440,12 +440,12 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="js/socketCount.js"></script>
     <script>
-      if (window.location.href.indexOf('streamerId') !== -1) {
-        const streamerId = window.location.href.split('streamerId=')[1].split('&')[0];
-        getProfileStreamer(streamerId)
-      } else if (token) {
-        getProfile(token);
-      }
+      // if (window.location.href.indexOf('streamerId') !== -1) {
+      //   const streamerId = window.location.href.split('streamerId=')[1].split('&')[0];
+      //   getProfileStreamer(streamerId)
+      // } else if (token) {
+      //   getProfile(token);
+      // }      
       renderSidebar();
       // if (token) {
       //   saveProfiletoLocal(token);

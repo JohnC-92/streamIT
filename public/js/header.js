@@ -57,7 +57,7 @@ signinBtn.addEventListener('click', () => {
     alert('成功登出');
     localStorage.clear();
     signOut();
-    window.location.replace('/index');
+    window.location.replace('/');
   }
 });
 

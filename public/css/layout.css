@@ -1267,7 +1267,10 @@ a {
   margin-left: 15px;
 }
 
-.paymentTime,
+.paymentTime {
+  width: 18%;
+}
+
 .paymentAmount,
 .paymentFrom,
 .paymentTo {

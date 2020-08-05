@@ -17,16 +17,16 @@ chatUsersList.style.display = 'none';
 
 const receiver = document.getElementById('receiver');
 
-// if (localStorage.length !== 0) {
-//   const followArr = JSON.parse(localStorage.getItem('userInfo')).followed;
-//   followArr.map((f) => {
-//     if (f.id === streamerId) {
-//       followBtn.innerText = '取消追蹤';
-//     }
-//   })
-// }
+if (localStorage.getItem('userInfo')) {
+  const followArr = JSON.parse(localStorage.getItem('userInfo')).followed;
+  followArr.map((f) => {
+    if (f.id === streamerId) {
+      followBtn.innerText = '取消追蹤';
+    }
+  });
+}
 
-donateBtn.addEventListener('click', () => {  
+donateBtn.addEventListener('click', () => {
   if (token) {
     if (JSON.parse(localStorage.getItem('userInfo')).id === streamerId) {
       alert(`無法贊助自己`);

@@ -98,6 +98,23 @@ profileStripeTab.addEventListener('click', () => {
   profileStripeDiv.style.display = 'block';
 });
 
+// profile page rendering
+if (token) {
+  if (window.location.href.indexOf('streamerId') !== -1) {
+    const streamerId = window.location.href.split('streamerId=')[1].split('&')[0];
+    if (JSON.parse(localStorage.getItem('userInfo')).id === parseInt(streamerId)) {
+      getProfile(token);
+    } else {
+      getProfileStreamer(streamerId);
+    }
+  } else {
+    getProfile(token);
+  }
+} else if (window.location.href.indexOf('streamerId') !== -1) {
+  const streamerId = window.location.href.split('streamerId=')[1].split('&')[0];
+  getProfileStreamer(streamerId);
+}
+
 /**
  * Function to check if token cookie exist and get user profile
  * @param {*} token access token given by server
@@ -108,12 +125,11 @@ async function getProfile(token) {
       method: 'GET',
       headers: {
         authorization: token,
-        // authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYSIsImlhdCI6MTU5NDYwOTM5MCwiZXhwIjoxNTk0NjEyOTkwfQ.m7nXwDjo4qqkJ02eJ6kj4bPbYTCv9MWevIAyJm_74bg',
       },
     }).then((res) => {
       return res.json();
     }).then((res) => {
-      console.log('ProfileInfo: ', res)
+      console.log('ProfileInfo: ', res);
       if (!res.error) {
         // get show profile divs
         const image = document.querySelector('.profileImg-Img');
@@ -135,15 +151,15 @@ async function getProfile(token) {
         // fetch VODS
         fetchVODs(res.data.name, res.data.streamKey, res.data.picture);
 
-        // add followers/followed div       
+        // add followers/followed div
         createFollowDIV(res.data.followers, res.data.followersTime, res.data.followed, res.data.followedTime);
 
         // add payment div
-        createPayment(res.data.id)
+        getPayment(res.data.id);
       } else {
         alert('Token Expired/Invalid, Please sign in again');
         signOut();
-        window.location.replace('/index');
+        window.location.replace('/');
       }
     });
   } catch (err) {
@@ -163,11 +179,7 @@ async function getProfileStreamer(streamerId) {
       console.log(res);
       return res.json();
     }).then((res) => {
-      console.log(res)
       const data = res.data;
-      
-      // console.log(data)
-      // console.log(data.name)
       if (!res.error) {
         // get show profile divs
         const image = document.querySelector('.profileImg-Img');
@@ -180,30 +192,30 @@ async function getProfileStreamer(streamerId) {
         profileStreamTitle.value = data.streamTitle || `Welcome to ${data.name}'s world`;
         profileStreamType.value = data.streamType || `Gaming`;
 
-        // hide other tabs      
+        // hide other tabs
         profileStripeTab.style.display = 'none';
-        
+
         // hide buttons
         const profileImgDesc = document.querySelector('.profileImg-Desc');
         const profileNote = document.querySelector('.profileNote');
         profileImgDesc.style.display = 'none';
         profileNote.style.display = 'none';
         profileUpdateBtn.style.display = 'none';
-        
-        //make read only
+
+        // make read only
         document.querySelector('.profileName').readOnly = true;
         document.querySelector('.profileStreamTitle').readOnly = true;
-        document.querySelector('.profileStreamType').readOnly = true;   
+        document.querySelector('.profileStreamType').readOnly = true;
 
         // fetch VODS
         fetchVODs(data.name, data.streamKey, data.picture);
 
-        // add followers/followed div       
+        // add followers/followed div
         createFollowDIV(data.followers, data.followersTime, data.followed, data.followedTime);
       } else {
         alert('Token Expired/Invalid, Please sign in again');
         signOut();
-        window.location.replace('/index');
+        window.location.replace('/');
       }
     });
   } catch (err) {
@@ -362,7 +374,7 @@ function createVodDIV(name, key, vod, picture) {
   // spanTime.innerText = '5分鐘前';
   const currentTime = Date.parse((new Date()).toJSON()); 
   const videoTime = currentTime - Date.parse(vod.time_created);
-  spanTime.innerText = secondsToDhms(followTime/1000) + '前';
+  spanTime.innerText = secondsToDhms(videoTime/1000) + '前';
 
   const streamDesc = document.createElement('div');
   streamDesc.setAttribute('class', 'streamDesc');
@@ -403,7 +415,6 @@ function createVodDIV(name, key, vod, picture) {
  * @param {*} followedTime
  */
 async function createFollowDIV(followers, followersTime, followed, followedTime) {
-  
   const followerDiv = document.querySelector('.follower');
   const followedDiv = document.querySelector('.followed');
 
@@ -456,10 +467,9 @@ async function createFollowDIV(followers, followersTime, followed, followedTime)
     userDiv.appendChild(userDesc);
 
     url.appendChild(userDiv);
-    
     followerDiv.appendChild(url);
   }
-  
+
   for (let i = 0; i < followed.length; i++) {
     const url = document.createElement('a');
     url.setAttribute('href', '/profile?streamerId='+followed[i].id);
@@ -493,7 +503,6 @@ async function createFollowDIV(followers, followersTime, followed, followedTime)
     userDiv.appendChild(userDesc);
 
     url.appendChild(userDiv);
-    
     followedDiv.appendChild(url);
   }
 };
@@ -504,28 +513,27 @@ const secondsToDhms = (seconds) => {
   const h = Math.floor(seconds % (3600*24) / 3600);
   const m = Math.floor(seconds % 3600 / 60);
   const s = Math.floor(seconds % 60);
-  
-  const dDisplay = d > 0 ? d + (d == 1 ? " 天, " : " 天, ") : "";
-  const hDisplay = h > 0 ? h + (h == 1 ? " 小時, " : " 小時, ") : "";
-  // const mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " minutes, ") : "";
-  const mDisplay = m > 0 ? m + (m == 1 ? " 分鐘, " : " 分鐘 ") : "";
-  const sDisplay = s > 0 ? s + (s == 1 ? " 秒" : " 秒") : "";
+
+  const dDisplay = d > 0 ? d + (d == 1 ? ' 天, ' : ' 天, ') : '';
+  const hDisplay = h > 0 ? h + (h == 1 ? ' 小時, ' : ' 小時, ') : '';
+  // const mDisplay = m > 0 ? m + (m == 1 ? ' minute, ' : ' minutes, ') : '';
+  const mDisplay = m > 0 ? m + (m == 1 ? ' 分鐘, ' : ' 分鐘 ') : '';
+  const sDisplay = s > 0 ? s + (s == 1 ? ' 秒' : ' 秒') : '';
   // return dDisplay + hDisplay + mDisplay + sDisplay;
   return dDisplay + hDisplay + mDisplay;
-}
+};
 
 /**
  * Function to get payment details
  * @param {*} id
  */
-function createPayment(id) {
+function getPayment(id) {
   const request = new XMLHttpRequest();
   request.onreadystatechange = async function() {
     if (request.readyState === 4) {
       const profileStripeRow = document.querySelector('.profileStripeRow');
       const payments = JSON.parse(request.response);
       console.log('Payments: ', payments);
-
 
       for (let i = 0; i < payments.paid.length; i++) {
         const div = createPaymentDiv(payments.paid[i].time_created, payments.paid[i].from_name, payments.paid[i].to_name, payments.paid[i].amount, payments.paid[i].message);
@@ -557,8 +565,8 @@ function createPaymentDiv(time, from, to, amount, message) {
 
   const paymentTime = document.createElement('div');
   paymentTime.setAttribute('class', 'paymentTime');
-  
-  const timeEdit = time.substr(0,10) + ' ' + time.substr(11,12);
+
+  const timeEdit = time.substr(0, 10) + ' ' + time.substr(11, 12).substr(0,8);
   paymentTime.innerText = timeEdit;
 
   const paymentAmount = document.createElement('div');

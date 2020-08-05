@@ -24,18 +24,9 @@ function initSocket(server) {
       // Welcome current user
       socket.emit('message', formatMessage(botName, '歡迎來到聊天室 :D'));
 
-      // Broadcast when a user connects
-      // socket.broadcast
-      //     .to(user.room)
-      //     .emit(
-      //         'message',
-      //         formatMessage(botName, `${user.username} has joined the chat`));
-
       // Send users and room info
       io.to(user.room).emit('roomUsers', {
-        room: user.room,
         users: getRoomUsers(user.room)[0],
-        usersCount: getRoomUsers(user.room)[1],
       });
     });
 
@@ -51,15 +42,9 @@ function initSocket(server) {
       const user = userLeave(socket.id);
 
       if (user) {
-        // io.to(user.room).emit(
-        //     'message',
-        //     formatMessage(botName, `${user.username} has left the chat`));
-
         // Send room info, users list and users count
         io.to(user.room).emit('roomUsers', {
-          room: user.room,
           users: getRoomUsers(user.room)[0],
-          usersCount: getRoomUsers(user.room)[1],
         });
       };
     });
@@ -67,7 +52,6 @@ function initSocket(server) {
 
   // Runs every few seconds to update frontend users count
   const socketJob = new CronJob('*/5 * * * * *', () => {
-    // console.log('Running socket cronjob woohoo!!!');
     io.emit('usersCount', {
       usersCount: returnUsersCount(),
     });

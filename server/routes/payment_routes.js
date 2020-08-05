@@ -18,6 +18,6 @@ router.post('/payment/updatePay',
     wrapAsync(updatePayment));
 
 router.post('/payment/records/:id',
-    wrapAsync(getPayment))
+    wrapAsync(getPayment));
 
 module.exports = router;

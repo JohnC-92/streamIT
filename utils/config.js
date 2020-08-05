@@ -32,8 +32,8 @@ const config = {
     // },
 
     trans: {
-      // ffmpeg: 'D:/AppWorks/videoStream/streamit/utils/ffmpeg.exe',
-      ffmpeg: 'F:/AppWorks/videoStream/ffmpeg/bin/ffmpeg.exe',
+      ffmpeg: 'D:/AppWorks/videoStream/streamit/utils/ffmpeg.exe',
+      // ffmpeg: 'F:/AppWorks/videoStream/ffmpeg/bin/ffmpeg.exe',
       // ffmpeg: '/usr/bin/ffmpeg',
       tasks: [
         {

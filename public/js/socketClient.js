@@ -23,9 +23,7 @@ const socket = io();
 socket.emit('joinRoom', {username, room});
 
 // Get room and users
-socket.on('roomUsers', ({room, users, usersCount}) => {
-  // outputRoomName(room);
-  // outputUsersCount(usersCount);
+socket.on('roomUsers', ({users}) => {
   outputUsers(users);
 });
 
@@ -73,23 +71,6 @@ function outputMessage(message) {
   document.querySelector('.chat-messages').appendChild(div);
 };
 
-// Add room name to DOM
-/**
- * Function to get room name and replace room name HTML
- * @param {*} room
- */
-function outputRoomName(room) {
-  roomName.innerText = room;
-}
-
-// Add usersCount to DOM
-/**
- * Function to get usersCount in same room and replace room users count HTML
- * @param {*} usersCount
- */
-function outputUsersCount(usersCount) {
-  userCount.innerText = usersCount;
-};
 
 // Add users to DOM
 /**
@@ -98,16 +79,15 @@ function outputUsersCount(usersCount) {
  */
 function outputUsers(users) {
   const usersDiv = document.getElementById('chat-user');
-  const userObj = {};
+  // const userObj = {};
   let userHTML = '';
   users.map((user)=> {
-    if (!userObj[user.username]) {
-      userHTML += `<div class="chat-user">${user.username}</div>`;
-      userObj[user] = 1;
-    }
+    // if (!userObj[user.username]) {
+    // userHTML += `<div class="chat-user">${user.username}</div>`;
+    // userObj[user] = 1;
+    // }
+    userHTML += `<div class="chat-user">${user}</div>`;
   });
-  // console.log('----users: ', users)
-  // console.log('----usersHTML: ', userHTML)
   usersDiv.innerHTML = userHTML;
 };
 

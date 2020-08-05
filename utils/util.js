@@ -135,7 +135,7 @@ const wrapAsync = (fn) => {
   };
 };
 
-// function to update thumbnails every 5s
+// function to update thumbnails every 20s
 const options = {
   uri: host + ':8888/api/streams',
   headers: {

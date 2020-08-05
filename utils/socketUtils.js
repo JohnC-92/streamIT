@@ -74,21 +74,19 @@ function userLeave(id) {
  */
 function getRoomUsers(room) {
   const userList = users.filter((user) => user.room === room);
-  // console.log('BEFORE: ', userList);
-  // userList = userList.filter(uniqueArray);
-  // console.log('AFTER: ', userList);
-  // const userCount = userList.length;
   const userObj = {};
   userList.map((user) => {
     if (!userObj[user.username]) {
       userObj[user.username] = 1;
     }
   });
-  const userCount = Object.keys(userObj).length;
+
+  const userUnique = Object.keys(userObj);
+  const userUniqueCount = Object.keys(userObj).length;
 
   // add users count to userCount Object everytime someone enters or leave the room
-  usersCount[room] = userCount;
-  return [userList, userCount];
+  usersCount[room] = userUniqueCount;
+  return [userUnique, userUniqueCount];
 }
 
 /**
@@ -98,17 +96,6 @@ function getRoomUsers(room) {
 function returnUsersCount() {
   return usersCount;
 }
-
-// /**
-//  * Function to get array value
-//  * @param {*} value current arr value
-//  * @param {*} index current arr index
-//  * @param {*} self whole array
-//  * @return {*} return unique value
-//  */
-// function uniqueArray(value, index, self) {
-//   return self.indexOf(value) === index;
-// }
 
 module.exports = {
   formatMessage,
