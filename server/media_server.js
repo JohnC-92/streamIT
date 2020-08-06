@@ -19,8 +19,16 @@ nms.on('prePublish', async (id, StreamPath, args) => {
   }
 });
 
-nms.on('donePublish', (id, StreamPath, args) => {
-  console.log('[NodeEvent on donePublish]', `id=${id} StreamPath=${StreamPath} args=${JSON.stringify(args)}`);
+// nms.on('donePublish', (id, StreamPath, args) => {
+//   console.log('[NodeEvent on donePublish]', `id=${id} StreamPath=${StreamPath} args=${JSON.stringify(args)}`);
+
+//   // resize video + delete video + upload resized video + update video info to database
+//   const streamKey = getStreamKeyFromStreamPath(StreamPath);
+//   processVideo(streamKey, StreamPath);
+// });
+
+nms.on('donePlay', (id, StreamPath, args) => {
+  console.log('[NodeEvent on donePlay]', `id=${id} StreamPath=${StreamPath} args=${JSON.stringify(args)}`);
 
   // resize video + delete video + upload resized video + update video info to database
   const streamKey = getStreamKeyFromStreamPath(StreamPath);

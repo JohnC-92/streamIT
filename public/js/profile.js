@@ -99,9 +99,9 @@ profileStripeTab.addEventListener('click', () => {
 });
 
 // profile page rendering
+const streamerId = window.location.href.split('streamerId=')[1];
 if (token) {
-  if (window.location.href.indexOf('streamerId') !== -1) {
-    const streamerId = window.location.href.split('streamerId=')[1].split('&')[0];
+  if (streamerId !== undefined) {
     if (JSON.parse(localStorage.getItem('userInfo')).id === parseInt(streamerId)) {
       getProfile(token);
     } else {
@@ -110,9 +110,10 @@ if (token) {
   } else {
     getProfile(token);
   }
-} else if (window.location.href.indexOf('streamerId') !== -1) {
-  const streamerId = window.location.href.split('streamerId=')[1].split('&')[0];
+} else if (streamerId !== undefined) {
   getProfileStreamer(streamerId);
+} else {
+  window.location.replace('/error404');
 }
 
 /**
@@ -220,6 +221,7 @@ async function getProfileStreamer(streamerId) {
     });
   } catch (err) {
     console.log(err);
+    window.location.replace('/error404');
   }
 };
 

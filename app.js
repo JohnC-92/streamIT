@@ -5,7 +5,6 @@ const fs = require('fs');
 const nodeMediaServer = require('./server/media_server');
 const thumbnailGenerator = require('./utils/util').job;
 const initSocket = require('./utils/socket');
-
 const http = require('http');
 const https = require('https');
 const httpPort = 3000;
@@ -13,6 +12,7 @@ const httpsPort = 3001;
 
 const app = express();
 
+// http & https credentials
 const options = {
   key: fs.readFileSync('private.pem'),
   cert: fs.readFileSync('certChain.crt'),
@@ -50,7 +50,13 @@ app.use(require('./server/routes/vod_routes'));
 // Error Handling Middleware
 app.use((err, req, res, next) => {
   console.log(err);
-  res.status(500).send('Internal Server Error'); // change it later to error HTML page
+  res.render('error500');
+  // res.status(500).send('Internal Server Error'); // change it later to error HTML page
+});
+
+// Render page not found when no path is defined
+app.get('*', (req, res) => {
+  res.render('error404');
 });
 
 httpServer.listen(httpPort, () => {
@@ -67,5 +73,5 @@ nodeMediaServer.run();
 // Start Socket Server
 initSocket(httpServer);
 
-// Cron Job to generate thumbnails every 5 seconds
+// Cron Job to generate thumbnails every 20 seconds
 thumbnailGenerator.start();

@@ -18,7 +18,7 @@ function formatMessage(username, text) {
 
 const randomInteger = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+};
 
 // Join user to chat
 /**
@@ -30,7 +30,7 @@ const randomInteger = (min, max) => {
  */
 function userJoin(id, username, room) {
   if (username === undefined) {
-    username = 'Anonymous' + randomInteger(1,99999);
+    username = 'Anonymous' + randomInteger(1, 99999);
   }
 
   const user = {id, username, room};

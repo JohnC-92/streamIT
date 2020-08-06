@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" /> -->
+    <link rel="stylesheet" href="css/layout.css">
+    <!-- <script src="https://cdn.bootcss.com/flv.js/1.4.2/flv.min.js"></script> -->
+    <title>Live Streaming</title>
+  </head>
+
+  <body>
+    <header class="header">
+      <%- include('partials/header'); %>
+    </header>
+
+    <div class="bodyContainer">
+      
+      <div class="errorContentContainer">
+        <div class="errorLiveContainer">
+          <div class="notFound404">
+            500 Error
+          </div>
+          <div class="notFoundTitle">
+            Oops something's wrong
+          </div>
+          <div class="notFoundText">
+            We're sorry, an unexpected error occurred. Please go back to homepage to <span class="notFoundBrowseBtn">browse channels</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <script src="js/header.js"></script>
+    <script>
+      const browserChannelBtn = document.querySelector('.notFoundBrowseBtn');
+      browserChannelBtn.addEventListener('click', () => {
+        window.location.replace('/');
+      })
+    </script>
+  </body>
+
+
+</html>

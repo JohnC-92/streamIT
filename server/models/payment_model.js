@@ -1,20 +1,20 @@
 const {query, transaction, commit, rollback} = require('../../utils/mysqlcon');
 
-const updatePayment = async (from_id, from_name, to_id, to_name, amount, message) => {
+const updatePayment = async (fromId, fromName, toId, toName, amount, message) => {
   try {
     paymentObj = {
-      from_id: from_id,
-      from_name: from_name,
-      to_id: to_id,
-      to_name: to_name,
+      from_id: fromId,
+      from_name: fromName,
+      to_id: toId,
+      to_name: toName,
       amount: amount,
       message: message,
       time_created: new Date(),
     };
-    const result = await query('INSERT INTO payment SET ?', [paymentObj]);   
+    const result = await query('INSERT INTO payment SET ?', [paymentObj]);
     return result;
   } catch (err) {
-    console.log(err)
+    console.log(err);
     return {error: err};
   }
 };
@@ -22,10 +22,10 @@ const updatePayment = async (from_id, from_name, to_id, to_name, amount, message
 const getPayment = async (id, from) => {
   try {
     if (from === true) {
-      const result = await query('SELECT * FROM payment WHERE from_id = ?', [id])
+      const result = await query('SELECT * FROM payment WHERE from_id = ?', [id]);
       return result;
     } else {
-      const result = await query('SELECT * FROM payment WHERE to_id = ?', [id])
+      const result = await query('SELECT * FROM payment WHERE to_id = ?', [id]);
       return result;
     }
   } catch (err) {

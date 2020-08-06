@@ -35,7 +35,7 @@ donateBtn.addEventListener('click', () => {
   }
 
   const giver = document.getElementById('giver');
-  
+
   if (localStorage.length !== 0) {
     giver.value = JSON.parse(localStorage.getItem('userInfo')).name;
     giver.readOnly = true;
@@ -195,6 +195,11 @@ function getStreamerProfileandGetVideo() {
 
       const streamerName = document.querySelector('.streamerName');
       streamerName.innerText = response.name;
+
+      if (room !== response.name) {
+        window.location.replace('/error404');
+      }
+
       receiver.value = response.name;
       receiver.readOnly = true;
 

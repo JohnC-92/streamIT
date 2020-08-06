@@ -359,8 +359,8 @@ a {
 }
 
 .searchImg {
-  width: 25px;
-  height: 25px;
+  width: 30px;
+  height: 30px;
 }
 
 .searchImg:hover {
@@ -412,12 +412,14 @@ a {
 
 .memberLink {
   display: inline-flex;
+  /* background: white; */
 }
 
 .memberImg {
   width: 30px;
   height: 30px;
   margin: 0 15px 0 5px;
+  /* background: white; */
 }
 
 .memberImg:hover {
@@ -763,6 +765,53 @@ a {
   /* position: absolute; */
   /* width: 100%; */
   /* min-width: 1650px; */
+}
+
+/* Error Page */
+.errorContentContainer {
+  height: 100%;
+  float: left;
+  width: 100%;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.errorLiveContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 30px;
+  background: rgba(0, 0, 0, 0.001);
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.notFound404 {
+  color: rgba(127, 41, 255, 0.9);
+  font-size: 100px;
+  font-weight: bolder;
+}
+
+.notFoundTitle {
+  font-size: 80px;
+  font-weight: bolder;
+}
+
+.notFoundText {
+  text-align: center;
+  font-size: 50px;
+}
+
+.notFoundBrowseBtn {
+  background: rgba(127, 41, 255, 0.9);
+  padding: 0 15px;
+  border-radius: 8px;
+  color: white;
+}
+
+.notFoundBrowseBtn:hover {
+  cursor: pointer;
+  background: rgba(127, 41, 255, 1.0);
 }
 
 /* INDEX PAGE VIDEO */

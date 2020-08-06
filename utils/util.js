@@ -32,7 +32,6 @@ const generateStreamThumbnail = (streamKey) => {
   }).unref();
 };
 
-
 // make generated video smaller
 // resize video, delete video, upload video,
 // upload video thumbnails, update video info to db
@@ -80,7 +79,7 @@ const processVideo = (streamKey, streamPath) => {
             console.log(`ffmpeg process exited with code ${code}`);
             console.log('--------process number end: ', numProcess, '--------');
             numProcess -= 1;
-            if (numProcess === 0) {
+            if (numProcess === 0 && code === 0) {
               console.log('All ffmpeg process done!');
               removeAndUploadFiles(streamKey, filePath);
             }

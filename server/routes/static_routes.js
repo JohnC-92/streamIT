@@ -12,12 +12,8 @@ router.get('/profile', (req, res) => {
   res.render('profile');
 });
 
-// router.get('/layout', (req, res) => {
-//   res.render('layout');
-// });
-
-// router.get('/payment/donate', (req, res) => {
-//   res.sendFile('web/donate.html');
-// });
+router.get('/error404', (req, res) => {
+  res.render('error404');
+});
 
 module.exports = router;
