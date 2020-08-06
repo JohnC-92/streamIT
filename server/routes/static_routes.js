@@ -16,4 +16,8 @@ router.get('/error404', (req, res) => {
   res.render('error404');
 });
 
+router.get('/error500', (req, res) => {
+  res.render('error500');
+});
+
 module.exports = router;

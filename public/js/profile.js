@@ -543,7 +543,7 @@ function getPayment(id) {
       }
 
       for (let i = 0; i < payments.received.length; i++) {
-        const div = createPaymentDiv(payments.received[i].time_created, payments[i].received.from_name, payments.received[i].to_name, payments.received[i].amount, payments.received[i].message);
+        const div = createPaymentDiv(payments.received[i].time_created, payments.received[i].from_name, payments.received[i].to_name, payments.received[i].amount, payments.received[i].message);
         profileStripeRow.appendChild(div);
       }
     }
