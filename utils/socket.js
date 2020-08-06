@@ -17,6 +17,7 @@ function initSocket(server) {
     });
 
     socket.on('joinRoom', ({username, room}) => {
+      // Add user to user array
       const user = userJoin(socket.id, username, room);
 
       socket.join(user.room);
@@ -33,7 +34,6 @@ function initSocket(server) {
     // Listen for chatMessage
     socket.on('chatMessage', (msg) => {
       const user = getCurrentUser(socket.id);
-
       io.to(user.room).emit('message', formatMessage(user.username, msg));
     });
 

@@ -13,12 +13,9 @@ const fs = require('fs');
 // function to generate stream thumbnail
 const generateStreamThumbnail = (streamKey) => {
   console.log('--------Generating Thumbnails--------')
-  // const url = host + ':8888/live/' + streamKey + '/index.m3u8';
   const streamUrl = host + ':8888/live/' + streamKey + '.flv';
-  const args = [
+  const streamThumbnailArgs = [
     '-y',
-    // '-i', host + ':8888/live/' + streamKey + '/index.m3u8',
-    // '-i', 'http://127.0.0.1:8888/live/CVRbgD9gy/index.m3u8',
     '-i', streamUrl,
     '-ss', '00:00:01',
     '-vframes', '1',
@@ -26,7 +23,7 @@ const generateStreamThumbnail = (streamKey) => {
     'server/thumbnails/'+streamKey+'.png',
   ];
 
-  spawn(ffmpeg, args, {
+  spawn(ffmpeg, streamThumbnailArgs, {
     detached: true,
     stdio: 'ignore',
   }).unref();
@@ -38,21 +35,24 @@ const generateStreamThumbnail = (streamKey) => {
 const processVideo = (streamKey, streamPath) => {
   console.log('--------Generating Resized Video--------');
 
+  // set video file path and read files in directory
   const filePath = 'server/media' + streamPath + '/';
   fs.readdir(filePath, (err, files) => {
     if (err) {
       throw err;
     }
 
-    let numProcess = 0;
+    // add 1 to child process for every video file
+    // child process counter is needed to account for process done later
+    let numChildProcess = 0;
     files.forEach((filename) => {
       if (filename.indexOf('resized') === -1) {
         const name = filename.split('.')[0]+'-resized.mp4';
         if (!files.includes(name)) {
-          numProcess += 1;
-          console.log('--------process number start: ', numProcess, '--------');
+          numChildProcess += 1;
+          console.log('--------process number start: ', numChildProcess, '--------');
 
-          const args = [
+          const videoResizingArgs = [
             '-i', filePath + filename,
             '-s', '1280x720',
             '-ss', '00:00:04',
@@ -61,7 +61,7 @@ const processVideo = (streamKey, streamPath) => {
             filePath+name,
           ];
 
-          const ffmpegProcess = spawn(ffmpeg, args);
+          const ffmpegProcess = spawn(ffmpeg, videoResizingArgs);
 
           ffmpegProcess.stdout.on('data', (data) => {
             console.log(`stdout: ${data}`);
@@ -76,10 +76,13 @@ const processVideo = (streamKey, streamPath) => {
           });
 
           ffmpegProcess.on('close', (code) => {
+            // code 0 indicating ffmpeg process successed
             console.log(`ffmpeg process exited with code ${code}`);
-            console.log('--------process number end: ', numProcess, '--------');
-            numProcess -= 1;
-            if (numProcess === 0 && code === 0) {
+            console.log('--------process number end: ', numChildProcess, '--------');
+            numChildProcess -= 1;
+
+            // upload resized files to s3 and remove all video files
+            if (numChildProcess === 0 && code === 0) {
               console.log('All ffmpeg process done!');
               removeAndUploadFiles(streamKey, filePath);
             }
@@ -88,9 +91,9 @@ const processVideo = (streamKey, streamPath) => {
       }
     });
   });
-
 };
 
+// function to remove video files and upload files to s3
 const removeAndUploadFiles = (streamKey, filePath) => {
   fs.readdir(filePath, (err, files) => {
     if (err) {
@@ -99,6 +102,7 @@ const removeAndUploadFiles = (streamKey, filePath) => {
 
     files.forEach((fileName) => {
       if (fileName.indexOf('resized') === -1) {
+        // delete original video file
         fs.unlink(filePath+fileName, (err) => {
           if (err) {
             throw err;
@@ -106,12 +110,13 @@ const removeAndUploadFiles = (streamKey, filePath) => {
           console.log(fileName, ' removed');
         });
       } else {
-        // upload video file and video thumbnail
+        // upload resized video file and video thumbnail
         uploadFile(streamKey, filePath, fileName);
 
         const videoURL = config.s3.url+`/media/${streamKey}/${fileName}`;
         const thumbnailURL = config.s3.url+`/media/${streamKey}/${fileName.split('.')[0]+'.png'}`;
 
+        // insert video url and video thumbnail url into database
         const videoObj = {
           stream_key: streamKey,
           video_url: videoURL,
@@ -126,7 +131,7 @@ const removeAndUploadFiles = (streamKey, filePath) => {
 
 // function to catch error
 // reference: https://thecodebarbarian.com/80-20-guide-to-express-error-handling
-const wrapAsync = (fn) => {
+const catchAsyncError = (fn) => {
   return function(req, res, next) {
     // Make sure to `.catch()` any errors and pass them along to the `next()`
     // middleware in the chain, in this case the error handler.
@@ -167,15 +172,18 @@ aws.config.update({
   region: 'ap-northeast-2',
 });
 
+// define s3 and s3 multer
 const s3 = new aws.S3();
 const storage = multerS3({
   s3: s3,
   acl: 'public-read',
   bucket: 'streamit-tw',
   key: function(req, file, cb) {
-    console.log(file);
+    // set uploaded filename with user email
     let fileName = req.body.email.split('.').join('-');
     fileName = fileName.replace('@', '-');
+
+    // get image file extension
     const fileExt = file.originalname.split('.').pop();
     cb(null, 'profileImg/' + fileName + '.' + fileExt);
   },
@@ -189,7 +197,6 @@ const fileType = upload.fields(
 );
 
 // uploading a file to S3
-
 const uploadFile = (streamKey, filePath, fileName) => {
   const fileContent = fs.readFileSync(filePath+fileName);
 
@@ -235,7 +242,7 @@ const uploadFile = (streamKey, filePath, fileName) => {
 module.exports = {
   generateStreamThumbnail,
   processVideo,
-  wrapAsync,
+  catchAsyncError,
   job,
   fileType,
   uploadFile,

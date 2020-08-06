@@ -365,7 +365,7 @@ function createVodDIV(name, key, vod, picture) {
   streamThumbnail.setAttribute('class', 'streamThumbnail');
 
   const url = document.createElement('a');
-  url.setAttribute('href', '/video?key='+key+'&room='+name+'&id='+vod.id);
+  url.setAttribute('href', '/video?room='+name+'&id='+vod.id);
 
   const img = document.createElement('img');
   img.setAttribute('class', 'thumbnails');

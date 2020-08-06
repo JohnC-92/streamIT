@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const {wrapAsync} = require('../../utils/util');
+const {catchAsyncError} = require('../../utils/util');
 
 const {
   getStripeKey,
@@ -9,15 +9,15 @@ const {
 } = require('../controllers/payment_controller');
 
 router.get('/payment/stripe-key',
-    wrapAsync(getStripeKey));
+    catchAsyncError(getStripeKey));
 
 router.post('/payment/pay',
-    wrapAsync(makePayment));
+    catchAsyncError(makePayment));
 
 router.post('/payment/updatePay',
-    wrapAsync(updatePayment));
+    catchAsyncError(updatePayment));
 
 router.post('/payment/records/:id',
-    wrapAsync(getPayment));
+    catchAsyncError(getPayment));
 
 module.exports = router;

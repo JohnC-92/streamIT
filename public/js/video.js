@@ -153,7 +153,7 @@ const getVideo = async () => {
       source.type = 'video/mp4';
       video.appendChild(source);
     });
-  } else if (window.location.href.split('video')[1]==='') {
+  } else if (window.location.href.split('video')[1] === '') {
     let videoDiv = document.querySelector('.videoDiv');
     videoDiv.innerHTML = `<iframe width="1080" height="765" src="https://www.youtube.com/embed/qeX4_MEnLLo?start=27&autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
   } else {

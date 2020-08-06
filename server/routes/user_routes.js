@@ -1,6 +1,6 @@
 const router = require('express').Router();
-// const {wrapAsync} = require('../../utils/util');
-const {wrapAsync, fileType} = require('../../utils/util');
+// const {catchAsyncError} = require('../../utils/util');
+const {catchAsyncError, fileType} = require('../../utils/util');
 
 const {
   signUp,
@@ -16,41 +16,41 @@ const {
 } = require('../controllers/user_controllers');
 
 router.get('/test',
-    wrapAsync(test));
+    catchAsyncError(test));
 
 router.post('/user/signup',
-    wrapAsync(signUp));
+    catchAsyncError(signUp));
 
 router.post('/user/signin',
-    wrapAsync(signIn));
+    catchAsyncError(signIn));
 
 router.get('/user/profile',
-    wrapAsync(getUserProfile));
+    catchAsyncError(getUserProfile));
 
 router.get('/user/keys',
-    wrapAsync(getUserKeys));
+    catchAsyncError(getUserKeys));
 
 router.get('/user/keys/:id',
-    wrapAsync(getStreamerProfile));
+    catchAsyncError(getStreamerProfile));
 
 // update profile img route
 router.post('/user/updateImg', fileType,
-    wrapAsync(updateUserImg));
+    catchAsyncError(updateUserImg));
 
 // update profile route
 router.post('/user/updateProfile',
-    wrapAsync(updateUserProfile));
+    catchAsyncError(updateUserProfile));
 
 // delete user profile
 router.post('/user/deleteProfile',
-    wrapAsync(deleteUserProfile));
+    catchAsyncError(deleteUserProfile));
 
 // get and update followers route
 router.get('/user/getFollowers',
-    wrapAsync(getFollowers));
+    catchAsyncError(getFollowers));
 
 router.post('/user/updateFollowers',
-    wrapAsync(updateFollowers));
+    catchAsyncError(updateFollowers));
 
 module.exports = router;
 

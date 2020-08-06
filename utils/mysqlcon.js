@@ -1,17 +1,10 @@
 const mysql = require('mysql');
 const {promisify} = require('util');
 const {nodeEnv, dbhost, dbUser, dbPass, db, dbTest} = require('./config');
-const env = nodeEnv || 'production';
+const env = nodeEnv;
 const multipleStatements = (nodeEnv === 'test');
 
 const mysqlConfig = {
-  // for EC2 machine
-  production: {
-    host: dbhost,
-    user: dbUser,
-    password: dbPass,
-    database: db,
-  },
   // for localhost development
   development: {
     host: dbhost,
