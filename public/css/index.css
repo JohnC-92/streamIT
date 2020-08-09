@@ -26,6 +26,7 @@
   transition: box-shadow .2s ease;
   transition: transform .3s ease;
   border: 1px solid rgba(0, 0, 0, 0.05);
+  /* width: 25%; */
 }
 
 .liveGaming:hover,
@@ -42,7 +43,9 @@
 }
 
 .liveCategoryImg {
-  width: 380px;
+  /* width: 380px; */
+  /* width: 30%; */
+  width: 350px;
 }
 
 .liveGamingDesc,
@@ -103,7 +106,7 @@
 }
 
 .thumbnails {
-  width: 350px;
+  width: 330px;
 }
 
 .streamliveLabel {

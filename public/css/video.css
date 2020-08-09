@@ -140,7 +140,9 @@
   top: 0;
   right: 0;   
   width: 100%;
-  height: 300px;
+  max-height: 50%;
+  overflow: hidden;
+  /* height: 300px; */
   text-align: center;
   z-index: 10;
   background: #F0F0F0;
