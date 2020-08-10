@@ -13,11 +13,6 @@ const showPass = document.querySelectorAll('.showPass');
 const titleCh = document.querySelector('.titleCh');
 const member = document.querySelector('.memberImg');
 
-if (window.location.href.indexOf('category=') !== -1) {
-  const key = window.location.href.split('category=')[1];
-  streamFilter(key);
-}
-
 if (window.location.href.indexOf('keyword=') !== -1) {
   const key = window.location.href.split('keyword=')[1];
   streamNameFilter(key);
@@ -158,7 +153,7 @@ async function signIn() {
       }
       return res.json();
     }).then((res) => {
-      console.log(res);
+      // console.log(res);
       alert(`Signed in Successful!`);
       window.location.reload();
     });
@@ -192,7 +187,7 @@ async function signUp() {
     }).then((res) => {
       return res.json();
     }).then((res) => {
-      console.log(res)
+      // console.log(res)
       if (res.error) {
         alert(res.error);
         return;
@@ -201,7 +196,7 @@ async function signUp() {
       window.location.reload();
     });
   } catch (err) {
-    console.log(err)
+    // console.log(err)
     alert('Sign Up Failed!');
   }
 };
@@ -240,9 +235,9 @@ async function saveProfiletoLocal(token, streamerKeys) {
         sideFollow.style.display = 'block';
         const sideFollowStreams = document.querySelector('.sideFollowStreams');
 
-        console.log(streamerKeys)
+        // console.log(streamerKeys)
         for (let i = 0; i < res.data.followed.length; i++) {
-          console.log(res.data.followed[i].stream_key)
+          // console.log(res.data.followed[i].stream_key)
           if (streamerKeys.includes(res.data.followed[i].stream_key)) {
             const sideBarDiv = createSidebarDIV(res.data.followed[i].stream_key, res.data.followed[i].name, res.data.followed[i].streamTitle, res.data.followed[i].picture, res.data.followed[i].streamType, res.data.followed[i].id);
             sideFollowStreams.appendChild(sideBarDiv);
@@ -251,6 +246,11 @@ async function saveProfiletoLocal(token, streamerKeys) {
             const sideBarDiv = createSidebarDIV(key, res.data.followed[i].name, res.data.followed[i].streamTitle, res.data.followed[i].picture, res.data.followed[i].streamType, res.data.followed[i].id);
             sideFollowStreams.appendChild(sideBarDiv);
           }
+        }
+
+        if (window.location.href.indexOf('category=') !== -1) {
+          const key = window.location.href.split('category=')[1];
+          streamFilter(key);
         }
       }
     });
@@ -280,7 +280,7 @@ function renderSidebar() {
           keyObj = res;
         });
         for (let i = 0; i < keys.length; i++) {
-          const sideBarDiv = createSidebarDIV(keys[i], keyObj[keys[i]+'1'], keyObj[keys[i]+'2'], keyObj[keys[i]+'3'], keyObj[keys[i]+'4'], keyObj[keys[i]+'5']);
+          const sideBarDiv = createSidebarDIV(keys[i], keyObj[keys[i]+'-name'], keyObj[keys[i]+'-title'], keyObj[keys[i]+'-picture'], keyObj[keys[i]+'-type'], keyObj[keys[i]+'-id']);
           sideBar.appendChild(sideBarDiv);
         }
       }
@@ -296,6 +296,7 @@ function renderSidebar() {
   };
   request.open('GET', 'http://127.0.0.1:8888/api/streams');
   // request.open('GET', 'https://streamit.website:8888/api/streams');
+  // request.open('GET', 'https://d6r73c53ses2h.cloudfront.net:8888/api/streams');
   request.send();
 }
 
@@ -323,7 +324,7 @@ function createSidebarDIV(key, name, title, picture, type, id) {
     url.setAttribute('href', '/video?streamerId='+id+'&room='+name);
   } else {
     url.setAttribute('href', '/profile?streamerId='+id);
-    }
+}
 
   const div = document.createElement('div');
   div.setAttribute('class', 'sideRow');
@@ -337,7 +338,7 @@ function createSidebarDIV(key, name, title, picture, type, id) {
 
   const sideStreamTitle = document.createElement('div');
   sideStreamTitle.setAttribute('class', 'sideStreamTitle');
-  sideStreamTitle.innerText = title || name + `'s world`;
+  sideStreamTitle.innerText = title || name + `'s stream`;
 
   const sideName = document.createElement('div');
   sideName.setAttribute('class', 'sideName');
@@ -356,8 +357,8 @@ function createSidebarDIV(key, name, title, picture, type, id) {
     sideViewers.innerText = users[key];
   }
 
-  sideTitleName.appendChild(sideStreamTitle);
   sideTitleName.appendChild(sideName);
+  sideTitleName.appendChild(sideStreamTitle);
   div.appendChild(sideImg);
   div.appendChild(sideTitleName);
   div.appendChild(sideDot); 
@@ -381,6 +382,9 @@ function streamFilter(key) {
 
   for (let i = 0; i < hideStreams.length; i++) {
     hideStreams[i].style.display = 'none';
+  };
+
+  for (let i = 0; i < sideStreams.length; i++) {
     sideStreams[i].style.display = 'none';
   };
 
@@ -411,3 +415,4 @@ function streamNameFilter() {
     }
   }
 };
+

@@ -473,8 +473,7 @@ a {
 }
 
 .sideStreamTitle {
-  font-weight: bolder;
-  font-size: 17px;
+  font-size: 14px;
   width: 110px;
   white-space: nowrap; 
   overflow: hidden;
@@ -482,7 +481,8 @@ a {
 }
 
 .sideName {
-  font-size: 14px;
+  font-weight: bolder;
+  font-size: 17px;
   width: 110px;
   white-space: nowrap; 
   overflow: hidden;

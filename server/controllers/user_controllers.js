@@ -93,29 +93,6 @@ const signIn = async (req, res) => {
   });
 };
 
-// const getUserProfile = async (req, res) => {
-//   let token = req.header('Authorization');
-//   if (!token) {
-//     return res.status(400).send({error: 'Token required'});
-//   } else {
-//     token = token.replace('Bearer ', '');
-//   }
-//   const result = await User.getUserProfile(token);
-//   if (result.error) {
-//     return res.status(403).send(result.error);
-//   }
-
-//   res.send({
-//     data: {
-//       id: result.id,
-//       provider: result.provider,
-//       email: result.email,
-//       name: result.name,
-//       picture: result.picture,
-//     },
-//   });
-// };
-
 const getUserProfile = async (req, res) => {
   try {
     // if header authorization, check if provided token is valid
@@ -155,11 +132,11 @@ const getUserKeys = async(req, res) => {
 
   const resObj = {};
   result.map((res) => {
-    resObj[res.stream_key + '1'] = res.name;
-    resObj[res.stream_key + '2'] = res.stream_title;
-    resObj[res.stream_key + '3'] = res.picture;
-    resObj[res.stream_key + '4'] = res.stream_type;
-    resObj[res.stream_key + '5'] = res.id;
+    resObj[res.stream_key + '-name'] = res.name;
+    resObj[res.stream_key + '-title'] = res.stream_title;
+    resObj[res.stream_key + '-picture'] = res.picture;
+    resObj[res.stream_key + '-type'] = res.stream_type;
+    resObj[res.stream_key + '-id'] = res.id;
   });
 
   return res.send(resObj);
@@ -274,26 +251,26 @@ const followFunction = async(id) => {
 
   let followers = followersResult.map((f) => {
     return f.from_id;
-  })
+  });
 
   followers = await User.getProfiles(followers);
 
   const followersTime = followersResult.map((f) => {
     return f.followed_at;
-  })
+  });
 
   let followed = followedResult.map((f) => {
     return f.to_id;
-  })
+  });
 
   followed = await User.getProfiles(followed);
 
   const followedTime = followedResult.map((f) => {
     return f.followed_at;
-  }) 
-  
+  });
+
   return {followers, followersTime, followed, followedTime};
-}
+};
 
 module.exports = {
   signUp,

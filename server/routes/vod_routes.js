@@ -2,14 +2,16 @@ const router = require('express').Router();
 const {catchAsyncError} = require('../../utils/util');
 
 const {
+  getUserVODs,
   getUserVOD,
-  getUserOneVOD,
 } = require('../controllers/vod_controller');
 
-router.get('/vod/:streamKey',
-    catchAsyncError(getUserVOD));
+// get all user VODs with user stream key
+router.get('/vods/:streamKey',
+    catchAsyncError(getUserVODs));
 
-router.get('/vodOne/:id',
-    catchAsyncError(getUserOneVOD));
+// get single user VOD with video id
+router.get('/vod/:id',
+    catchAsyncError(getUserVOD));
 
 module.exports = router;

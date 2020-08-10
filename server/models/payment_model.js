@@ -1,4 +1,4 @@
-const {query, transaction, commit, rollback} = require('../../utils/mysqlcon');
+const {query} = require('../../utils/mysqlcon');
 
 const updatePayment = async (fromId, fromName, toId, toName, amount, message) => {
   try {
@@ -31,7 +31,7 @@ const getPayment = async (id, from) => {
   } catch (err) {
     return {error: err};
   }
-}
+};
 
 module.exports = {
   updatePayment,

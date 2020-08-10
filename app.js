@@ -12,7 +12,7 @@ const httpsPort = 3001;
 
 const app = express();
 
-// http & https credentials
+// Http & Https credentials
 const options = {
   key: fs.readFileSync('private.pem'),
   cert: fs.readFileSync('certChain.crt'),
@@ -41,10 +41,14 @@ app.use('/', function(req, res, next) {
   next();
 });
 
-// Routes Defining
+// Routes Defining //
+// EJS rendered routes
 app.use(require('./server/routes/static_routes'));
+// User logic related routes
 app.use(require('./server/routes/user_routes'));
+// Payment logic related routes
 app.use(require('./server/routes/payment_routes'));
+// Vods logic related routes
 app.use(require('./server/routes/vod_routes'));
 
 // Error Handling Middleware
@@ -54,7 +58,7 @@ app.use((err, req, res, next) => {
   // res.status(500).send('Internal Server Error'); // change it later to error HTML page
 });
 
-// Render page not found when no path is defined
+// Render page not found when no related path is defined
 app.get('*', (req, res) => {
   res.render('error404');
 });

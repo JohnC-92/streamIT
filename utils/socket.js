@@ -1,5 +1,12 @@
 const socketio = require('socket.io');
-const {formatMessage, userJoin, getCurrentUser, userLeave, getRoomUsers, returnUsersCount} = require('./socketUtils');
+const {
+  formatMessage,
+  userJoin,
+  getCurrentUser,
+  userLeave,
+  getRoomUsers,
+  returnUsersCount,
+} = require('./socketUtils');
 const CronJob = require('cron').CronJob;
 
 /**
@@ -20,6 +27,7 @@ function initSocket(server) {
       // Add user to user array
       const user = userJoin(socket.id, username, room);
 
+      // Join current user to his specific room
       socket.join(user.room);
 
       // Welcome current user

@@ -255,6 +255,10 @@
   text-overflow: ellipsis;
 }
 
+.noProfileVod {
+  padding: 0 20px;
+}
+
 .profileVod {
   margin: 0 20px 20px;
   /* transition: box-shadow 200ms ease; */
@@ -283,6 +287,11 @@
   padding: 15px;
   /* height: 35vh; */
   margin-bottom: 15px;
+}
+
+.noProfileFollower,
+.noProfileFollowed {
+  padding: 0 20px;
 }
 
 .user {
@@ -345,6 +354,10 @@
   font-size: 25px;
   font-weight: 700;
   margin-bottom: 20px;
+}
+
+.noProfilePayment {
+  padding: 0 10px;
 }
 
 .payment {

@@ -27,7 +27,7 @@ async function getProfile(token) {
         profileImgName.value = res.data.name;
         email.value = res.data.email;
         streamKey.value = res.data.streamKey;
-        profileStreamTitle.value = res.data.streamTitle || `Welcome to ${res.data.name}'s world`;
+        profileStreamTitle.value = res.data.streamTitle || `Welcome to ${res.data.name}'s stream`;
       } else {
         alert('Token Invalid, Please sign in again');
         signOut();
