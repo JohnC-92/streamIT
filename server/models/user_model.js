@@ -157,7 +157,7 @@ const facebookSignIn = async (accessToken, expire) => {
   }
 };
 
-const getUserProfile = async (token) => {
+const getUserProfileToken = async (token) => {
   return new Promise((resolve, reject) => {
     // verify if JWT token is valid by comparing secretKey and endTime
     jwt.verify(token, secret, async (err) => {
@@ -175,6 +175,7 @@ const getUserProfile = async (token) => {
 
 const getProfiles = async (ids) => {
   try {
+    console.log(ids)
     const result = await query('SELECT id, name, picture, stream_key, stream_title, stream_type FROM users WHERE id IN (?)', [ids]);
     return result;
   } catch (err) {
@@ -182,7 +183,7 @@ const getProfiles = async (ids) => {
   }
 };
 
-const getUserKeys = async () => {
+const getAllUsers = async () => {
   try {
     const result = await query('SELECT id, name, stream_key, stream_title, picture, stream_type FROM users', []);
     return result;
@@ -191,7 +192,7 @@ const getUserKeys = async () => {
   }
 };
 
-const getStreamerProfile = async (id) => {
+const getSingleUser = async (id) => {
   try {
     const result = await query('SELECT id, name, stream_key, stream_title, stream_type, picture FROM users WHERE id = ?', [id]);
     return result;
@@ -268,10 +269,10 @@ module.exports = {
   signUp,
   nativeSignIn,
   facebookSignIn,
-  getUserProfile,
+  getUserProfileToken,
   getProfiles,
-  getUserKeys,
-  getStreamerProfile,
+  getAllUsers,
+  getSingleUser,
   updateUserImg,
   updateUserProfile,
   deleteUserProfile,

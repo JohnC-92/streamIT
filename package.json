@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "mocha --exit"
+    "test": "mocha --exit",
+    "fakedata": "node test/fake_data_generator.js"
   },
   "keywords": [],
   "author": "John",
@@ -34,6 +35,7 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
     "eslint": "^7.6.0",
     "eslint-config-google": "^0.14.0",
     "mocha": "^8.1.1",

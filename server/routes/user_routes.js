@@ -5,9 +5,9 @@ const {catchAsyncError, fileType} = require('../../utils/util');
 const {
   signUp,
   signIn,
-  getUserProfile,
-  getUserKeys,
-  getStreamerProfile,
+  getUserProfileToken,
+  getAllUsers,
+  getSingleUser,
   updateUserImg,
   updateUserProfile,
   deleteUserProfile,
@@ -22,13 +22,13 @@ router.post('/user/signin',
     catchAsyncError(signIn));
 
 router.get('/user/profile',
-    catchAsyncError(getUserProfile));
+    catchAsyncError(getUserProfileToken));
 
 router.get('/user/keys',
-    catchAsyncError(getUserKeys));
+    catchAsyncError(getAllUsers));
 
 router.get('/user/keys/:id',
-    catchAsyncError(getStreamerProfile));
+    catchAsyncError(getSingleUser));
 
 // update profile img route
 router.post('/user/updateImg', fileType,

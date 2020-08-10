@@ -93,14 +93,14 @@ const signIn = async (req, res) => {
   });
 };
 
-const getUserProfile = async (req, res) => {
+const getUserProfileToken = async (req, res) => {
   try {
     // if header authorization, check if provided token is valid
     if (req.header('Authorization')) {
       let token = req.header('Authorization');
       token = token.replace('Bearer ', '');
 
-      const result = await User.getUserProfile(token);
+      const result = await User.getUserProfileToken(token);
       const {followers, followersTime, followed, followedTime} = await followFunction(result.id);
 
       res.send({
@@ -127,8 +127,8 @@ const getUserProfile = async (req, res) => {
   }
 };
 
-const getUserKeys = async(req, res) => {
-  const result = await User.getUserKeys();
+const getAllUsers = async (req, res) => {
+  const result = await User.getAllUsers();
 
   const resObj = {};
   result.map((res) => {
@@ -142,9 +142,9 @@ const getUserKeys = async(req, res) => {
   return res.send(resObj);
 };
 
-const getStreamerProfile = async (req, res) => {
+const getSingleUser = async (req, res) => {
   const {id} = req.params;
-  const result = await User.getStreamerProfile(id);
+  const result = await User.getSingleUser(id);
   const {followers, followersTime, followed, followedTime} = await followFunction([id]);
   // return res.send(result);
   res.send({
@@ -191,8 +191,13 @@ const deleteUserProfile = async(req, res) => {
 };
 
 const getFollowers = async (req, res) => {
-  const {id, from} = req.body;
-  const result = User.getFollowers(id, from);
+  const {id, from} = req.query;
+  let result;
+  if (from === 'false') {
+    result = await User.getFollowers(parseInt(id), false);
+  } else {
+    result = await User.getFollowers(parseInt(id), true);
+  }
   return res.send(result);
 };
 
@@ -245,7 +250,7 @@ const facebookSignIn = async (token) => {
   }
 };
 
-const followFunction = async(id) => {
+const followFunction = async (id) => {
   const followersResult = await User.getFollowers(id, false);
   const followedResult = await User.getFollowers(id, true);
 
@@ -275,9 +280,9 @@ const followFunction = async(id) => {
 module.exports = {
   signUp,
   signIn,
-  getUserProfile,
-  getUserKeys,
-  getStreamerProfile,
+  getUserProfileToken,
+  getAllUsers,
+  getSingleUser,
   updateUserImg,
   updateUserProfile,
   deleteUserProfile,

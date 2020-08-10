@@ -79,3 +79,5 @@ initSocket(httpServer);
 
 // Cron Job to generate thumbnails every 20 seconds
 thumbnailGenerator.start();
+
+module.exports = app;

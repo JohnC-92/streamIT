@@ -138,7 +138,3 @@ function createStreamDIV(key, name, title, picture, type, id) {
   return streams;
 };
 
-
-
-
-
