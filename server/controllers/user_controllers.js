@@ -93,37 +93,14 @@ const signIn = async (req, res) => {
   });
 };
 
-// const getUserProfile = async (req, res) => {
-//   let token = req.header('Authorization');
-//   if (!token) {
-//     return res.status(400).send({error: 'Token required'});
-//   } else {
-//     token = token.replace('Bearer ', '');
-//   }
-//   const result = await User.getUserProfile(token);
-//   if (result.error) {
-//     return res.status(403).send(result.error);
-//   }
-
-//   res.send({
-//     data: {
-//       id: result.id,
-//       provider: result.provider,
-//       email: result.email,
-//       name: result.name,
-//       picture: result.picture,
-//     },
-//   });
-// };
-
-const getUserProfile = async (req, res) => {
+const getUserProfileToken = async (req, res) => {
   try {
     // if header authorization, check if provided token is valid
     if (req.header('Authorization')) {
       let token = req.header('Authorization');
       token = token.replace('Bearer ', '');
 
-      const result = await User.getUserProfile(token);
+      const result = await User.getUserProfileToken(token);
       const {followers, followersTime, followed, followedTime} = await followFunction(result.id);
 
       res.send({
@@ -150,24 +127,24 @@ const getUserProfile = async (req, res) => {
   }
 };
 
-const getUserKeys = async(req, res) => {
-  const result = await User.getUserKeys();
+const getAllUsers = async (req, res) => {
+  const result = await User.getAllUsers();
 
   const resObj = {};
   result.map((res) => {
-    resObj[res.stream_key + '1'] = res.name;
-    resObj[res.stream_key + '2'] = res.stream_title;
-    resObj[res.stream_key + '3'] = res.picture;
-    resObj[res.stream_key + '4'] = res.stream_type;
-    resObj[res.stream_key + '5'] = res.id;
+    resObj[res.stream_key + '-name'] = res.name;
+    resObj[res.stream_key + '-title'] = res.stream_title;
+    resObj[res.stream_key + '-picture'] = res.picture;
+    resObj[res.stream_key + '-type'] = res.stream_type;
+    resObj[res.stream_key + '-id'] = res.id;
   });
 
   return res.send(resObj);
 };
 
-const getStreamerProfile = async (req, res) => {
+const getSingleUser = async (req, res) => {
   const {id} = req.params;
-  const result = await User.getStreamerProfile(id);
+  const result = await User.getSingleUser(id);
   const {followers, followersTime, followed, followedTime} = await followFunction([id]);
   // return res.send(result);
   res.send({
@@ -214,8 +191,13 @@ const deleteUserProfile = async(req, res) => {
 };
 
 const getFollowers = async (req, res) => {
-  const {id, from} = req.body;
-  const result = User.getFollowers(id, from);
+  const {id, from} = req.query;
+  let result;
+  if (from === 'false') {
+    result = await User.getFollowers(parseInt(id), false);
+  } else {
+    result = await User.getFollowers(parseInt(id), true);
+  }
   return res.send(result);
 };
 
@@ -268,39 +250,39 @@ const facebookSignIn = async (token) => {
   }
 };
 
-const followFunction = async(id) => {
+const followFunction = async (id) => {
   const followersResult = await User.getFollowers(id, false);
   const followedResult = await User.getFollowers(id, true);
 
   let followers = followersResult.map((f) => {
     return f.from_id;
-  })
+  });
 
   followers = await User.getProfiles(followers);
 
   const followersTime = followersResult.map((f) => {
     return f.followed_at;
-  })
+  });
 
   let followed = followedResult.map((f) => {
     return f.to_id;
-  })
+  });
 
   followed = await User.getProfiles(followed);
 
   const followedTime = followedResult.map((f) => {
     return f.followed_at;
-  }) 
-  
+  });
+
   return {followers, followersTime, followed, followedTime};
-}
+};
 
 module.exports = {
   signUp,
   signIn,
-  getUserProfile,
-  getUserKeys,
-  getStreamerProfile,
+  getUserProfileToken,
+  getAllUsers,
+  getSingleUser,
   updateUserImg,
   updateUserProfile,
   deleteUserProfile,

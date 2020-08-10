@@ -4,9 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" /> -->
     <link rel="stylesheet" href="css/layout.css">
-    <!-- <script src="https://cdn.bootcss.com/flv.js/1.4.2/flv.min.js"></script> -->
+    <link rel="stylesheet" href="css/profile.css">
     <title>Live Streaming</title>
   </head>
 
@@ -28,33 +27,31 @@
 
           <div class="profileTabs">
 
-            <div class="profileInfo profileActive">
+            <div class="profileInfo profileActive profileTab">
               個人檔案
             </div>
 
-            <div class="profileVideo">
+            <div class="profileVideo profileTab">
               歷史影片
             </div>
 
-            <div class="profileFollower">
+            <div class="profileFollower profileTab">
               追蹤名單
             </div>
 
-            <div class="profileStripe">
+            <div class="profileStripe profileTab">
               匯款記錄
             </div>
 
           </div>
 
-          <div class="profileInfoTab">
+          <div class="profileInfoTab profileDivs">
             <div class="profileSubTitle">
               大頭貼
             </div>
 
             <div class="profileRow">
               <div class="profileImg">
-                <!-- <img class="profileImg-Img" src="https://i0.wp.com/pinkupost.com/wp-content/uploads/2019/06/%E6%9C%A8%E6%9D%91%E6%8B%93%E5%93%89_%E9%95%B7%E5%B2%A1%E5%BC%98%E6%A8%B9_%E6%95%99%E5%A0%B4_2020%E5%B9%B4%E7%89%B9%E5%88%A5%E5%8A%87_%E5%AF%8C%E5%A3%AB%E9%9B%BB%E8%A6%96%E5%8F%B0_%E5%B0%8F%E8%AA%AA%E7%9C%9F%E4%BA%BA%E5%8C%96%E6%97%A5%E5%8A%87-2-1.jpg?resize=640%2C792" alt=""> -->
-                <!-- <img class="profileImg-Img" src="https://www.dlf.pt/dfpng/middlepng/2-23802_meme-faces-happy-png-transparent-png.png" alt=""> -->
                 <img class="profileImg-Img" src="" alt="">
               </div>
               <div class="profileImg-Desc">
@@ -123,11 +120,11 @@
               </div>
             </div>
 
-            <div class="profileSubTitle">
+            <div class="profileSubTitle profileDeleteAcc">
               停用您的 StreamIT 賬號
             </div>
 
-            <div class="profileInfoContainer">
+            <div class="profileInfoContainer profileDeleteAccDiv">
               <div class="profileRowInfo">
                 <div class="profileInfo-Desc-Stop">
                   停用您的 StreamIT 賬號
@@ -141,7 +138,7 @@
 
           </div>
 
-          <div class="profileVODTab">
+          <div class="profileVODTab profileDivs hide">
 
             <div class="profileSubTitle">
               近期實況直播
@@ -149,45 +146,11 @@
 
             <div class="profileVideoRow">
             
-              <div class="profileVod">
-                <a href="#">
-                  <div class="streamThumbnail">
-                    <img class="thumbnails" src="assets/summitThumbnail.png" alt="">
-                    <span class="streamTime">8小時前</span>
-                  </div>
-                </a>
-                <div class="streamDesc">
-                  <img class="streamImg" src="assets/summit.png" alt="">
-                  <div class="streamTitleName">
-                    <div class="streamTitle">easy chillin [@summit1g]</div>
-                    <div class="streamName">summit1g</div>
-                  </div>
-                </div>
-                <!-- <div class="streamType">Musical</div> -->
-              </div>
-
-              <div class="profileVod">
-                <a href="#">
-                  <div class="streamThumbnail">
-                    <img class="thumbnails" src="assets/summitThumbnail2.png" alt="">
-                    <span class="streamTime">2天前</span>
-                  </div>
-                </a>
-                <div class="streamDesc">
-                  <img class="streamImg" src="assets/summit.png" alt="">
-                  <div class="streamTitleName">
-                    <div class="streamTitle">trying money farming lol [@summit1g]</div>
-                    <div class="streamName">summit1g</div>
-                  </div>
-                </div>
-                <!-- <div class="streamType">Musical</div> -->
-              </div>
-
             </div>
 
           </div>
 
-          <div class="profileFollowerTab">
+          <div class="profileFollowerTab profileDivs hide">
 
             <div class="profileSubTitle">
               追蹤您的使用者
@@ -195,72 +158,6 @@
             </div>
 
             <div class="profileFollowerRow follower">
-
-              <!-- <a href='/profile?streamerId=1'> -->
-              <a href='#'>
-                <div class="user">             
-                  <img class="userImg" src="https://www.dlf.pt/dfpng/middlepng/2-23802_meme-faces-happy-png-transparent-png.png" alt="">
-                  <div class="userDesc">                 
-                    <div class="userName">
-                      John
-                    </div>
-                    <div class="userfollowTime">
-                      3分鐘 前追蹤
-                    </div>
-                  </div>               
-                </div>
-              </a>
-
-              <a href='#'>
-                <div class="user">             
-                  <img class="userImg" src="assets/summit.png" alt="">
-                  <div class="userDesc">                 
-                    <div class="userName">
-                      summit1g
-                    </div>
-                    <div class="userfollowTime">
-                      5分鐘 前追蹤
-                    </div>
-                    <!-- <div class="userEmail">
-                      john@hotmail.com
-                    </div> -->
-                  </div>
-                </div>
-              </a>
-
-              <a href='#'>
-                <div class="user">             
-                  <img class="userImg" src="assets/talk4.png" alt="">
-                  <div class="userDesc">                 
-                    <div class="userName">
-                      Gross Gore
-                    </div>
-                    <div class="userfollowTime">
-                      7分鐘 前追蹤
-                    </div>
-                    <!-- <div class="userEmail">
-                      john@hotmail.com
-                    </div> -->
-                  </div>
-                </div>
-              </a>
-
-              <a href='#'>
-                <div class="user">             
-                  <img class="userImg" src="assets/wayne.png" alt="">
-                  <div class="userDesc">                 
-                    <div class="userName">
-                      WayneSC
-                    </div>
-                    <div class="userfollowTime">
-                      11分鐘 前追蹤
-                    </div>
-                    <!-- <div class="userEmail">
-                      john@hotmail.com
-                    </div> -->
-                  </div>
-                </div>
-              </a>
 
             </div>
 
@@ -270,80 +167,12 @@
             </div>
 
             <div class="profileFollowerRow followed">
-            
-              <a href='#'>
-                <div class="user">             
-                  <img class="userImg" src="assets/hafu.png" alt="">
-                  <div class="userDesc">                 
-                    <div class="userName">
-                      Hafu
-                    </div>
-                    <div class="userfollowTime">
-                      11分鐘 前追蹤
-                    </div>
-                    <!-- <div class="userEmail">
-                      john@hotmail.com
-                    </div> -->
-                  </div>
-                </div>
-              </a>
-
-              <a href='#'>
-                <div class="user">             
-                  <img class="userImg" src="assets/music2.png" alt="">
-                  <div class="userDesc">                 
-                    <div class="userName">
-                      Mike Shinoda
-                    </div>
-                    <div class="userfollowTime">
-                      15分鐘 前追蹤
-                    </div>
-                    <!-- <div class="userEmail">
-                      john@hotmail.com
-                    </div> -->
-                  </div>
-                </div>
-              </a>
-
-              <a href='#'>
-                <div class="user">             
-                  <img class="userImg" src="assets/talk1.png" alt="">
-                  <div class="userDesc">                 
-                    <div class="userName">
-                      肉乙
-                    </div>
-                    <div class="userfollowTime">
-                      31分鐘 前追蹤
-                    </div>
-                    <!-- <div class="userEmail">
-                      john@hotmail.com
-                    </div> -->
-                  </div>
-                </div>
-              </a>
-
-              <a href='#'>
-                <div class="user">             
-                  <img class="userImg" src="assets/talk2.png" alt="">
-                  <div class="userDesc">                 
-                    <div class="userName">
-                      啾比りみつ
-                    </div>
-                    <div class="userfollowTime">
-                      1小時 前追蹤
-                    </div>
-                    <!-- <div class="userEmail">
-                      john@hotmail.com
-                    </div> -->
-                  </div>
-                </div>
-              </a>
 
             </div>
 
           </div>
 
-          <div class="profileStripeTab">
+          <div class="profileStripeTab profileDivs hide">
 
             <div class="profileSubTitle">
               匯款記錄
@@ -370,60 +199,6 @@
 
               </div>
 
-              <div class="payment">             
-                <div class="paymentTime">
-                  2020-08-01 10:11:21
-                </div>
-                <div class="paymentAmount">
-                  NTD. 1000
-                </div>
-                <div class="paymentFrom">
-                  Charles
-                </div>
-                <div class="paymentTo">
-                  John
-                </div>
-                <div class="paymentMsg">
-                  Best thing bout tonight is we're not fighting.
-                </div>
-              </div>
-
-              <div class="payment">             
-                <div class="paymentTime">
-                  2020-07-15 22:11:21
-                </div>
-                <div class="paymentAmount">
-                  NTD. 1000
-                </div>
-                <div class="paymentFrom">
-                  Ben
-                </div>
-                <div class="paymentTo">
-                  John
-                </div>
-                <div class="paymentMsg">
-                  This is the best day of my life. I never thought that someone like me would receive that much love. Thank you guys for lightening up my life.
-                </div>
-              </div>
-
-              <div class="payment">             
-                <div class="paymentTime">
-                  2020-07-10 05:45:33
-                </div>
-                <div class="paymentAmount">
-                  NTD. 1000
-                </div>
-                <div class="paymentFrom">
-                  Kenny
-                </div>
-                <div class="paymentTo">
-                  John
-                </div>
-                <div class="paymentMsg">
-                  When I'm young I'd listen to the radio, waiting for my favourite song
-                </div>
-              </div>
-                          
             </div>
 
           </div>
@@ -438,18 +213,9 @@
     <script src="js/header.js"></script>
     <script src="js/profile.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="js/socketCount.js"></script>
+    <script src="js/socket_count.js"></script>
     <script>
-      // if (window.location.href.indexOf('streamerId') !== -1) {
-      //   const streamerId = window.location.href.split('streamerId=')[1].split('&')[0];
-      //   getProfileStreamer(streamerId)
-      // } else if (token) {
-      //   getProfile(token);
-      // }      
       renderSidebar();
-      // if (token) {
-      //   saveProfiletoLocal(token);
-      // }
     </script>
   </body>
 

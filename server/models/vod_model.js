@@ -1,6 +1,7 @@
 const {query} = require('../../utils/mysqlcon');
 
-const getUserVOD = async (streamKey) => {
+// get all user VODs with user stream key
+const getUserVODs = async (streamKey) => {
   try {
     const vods = await query('SELECT * FROM videos WHERE stream_key = ?', [streamKey]);
     return vods;
@@ -9,7 +10,8 @@ const getUserVOD = async (streamKey) => {
   }
 };
 
-const getUserOneVOD = async (id) => {
+// get single user VOD with video id
+const getUserVOD = async (id) => {
   try {
     const vods = await query('SELECT * FROM videos WHERE id = ?', [id]);
     return vods;
@@ -19,6 +21,6 @@ const getUserOneVOD = async (id) => {
 };
 
 module.exports = {
+  getUserVODs,
   getUserVOD,
-  getUserOneVOD,
 }

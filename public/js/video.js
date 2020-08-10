@@ -40,7 +40,7 @@ donateBtn.addEventListener('click', () => {
     giver.value = JSON.parse(localStorage.getItem('userInfo')).name;
     giver.readOnly = true;
   }
-
+ 
   donateForm.style.display = 'block';
 });
 
@@ -107,40 +107,10 @@ const followStreamer = async () => {
 };
 
 const getVideo = async () => {
-  // if (window.location.href.indexOf('id=') !== -1) {
-  //   const video = document.getElementById('video');
-  //   const id = window.location.href.split('id=')[1];
-  //   await fetch('/vodOne/'+id, {
-  //     method: 'GET',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //   }).then((res) => {
-  //     return res.json();
-  //   }).then((res) => {
-  //     const source = document.createElement('source');
-  //     source.src = res[0].video_url;
-  //     source.type = 'video/mp4';
-  //     video.appendChild(source);
-  //   });
-  // } else {
-  //   if (flvjs.isSupported()) {
-  //     const video = document.getElementById('video');
-  //     const flvPlayer = flvjs.createPlayer({
-  //       type: 'flv',
-  //       url: 'http://127.0.0.1:8888/live/'+streamerKey+'.flv',
-  //       // url: 'https://streamit.website:8888/live/'+streamerKey+'.flv',
-  //     });
-  //     flvPlayer.attachMediaElement(video);
-  //     flvPlayer.load();
-  //     flvPlayer.play();
-  //   };
-  // }
-
   if (window.location.href.indexOf('id=') !== -1) {
     const video = document.getElementById('video');
     const id = window.location.href.split('id=')[1];
-    await fetch('/vodOne/'+id, {
+    await fetch('/vod/'+id, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -153,9 +123,6 @@ const getVideo = async () => {
       source.type = 'video/mp4';
       video.appendChild(source);
     });
-  } else if (window.location.href.split('video')[1] === '') {
-    let videoDiv = document.querySelector('.videoDiv');
-    videoDiv.innerHTML = `<iframe width="1080" height="765" src="https://www.youtube.com/embed/qeX4_MEnLLo?start=27&autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
   } else {
     if (flvjs.isSupported()) {
       const video = document.getElementById('video');
@@ -164,6 +131,7 @@ const getVideo = async () => {
         url: 'http://127.0.0.1:8888/live/'+streamerKey+'.flv',
         // url: 'https://streamit.website:8888/live/'+streamerKey+'.flv',
         // url: 'https://dinay18pwoqyb.cloudfront.net/live/'+streamerKey+'.flv',
+        // url: 'https://d6r73c53ses2h.cloudfront.net/live/'+streamerKey+'.flv',
       });
       flvPlayer.attachMediaElement(video);
       flvPlayer.load();
@@ -191,7 +159,7 @@ function getStreamerProfileandGetVideo() {
       streamerImg.setAttribute('src', response.picture);
 
       const streamerTitle = document.querySelector('.streamerTitle');
-      streamerTitle.innerText = response.streamTitle || 'Welcome to ' + response.name + `'s world`;
+      streamerTitle.innerText = response.streamTitle || 'Welcome to ' + response.name + `'s stream`;
 
       const streamerName = document.querySelector('.streamerName');
       streamerName.innerText = response.name;

@@ -1,0 +1,185 @@
+/* INDEX PAGE VIDEO */
+.liveContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 30px;
+  background: rgba(0, 0, 0, 0.001);
+  height: 100%;
+}
+
+.slidingLiveStream {
+  display: flex;
+}
+
+.slideStream {
+  margin:0 10px;
+}
+
+.liveType {
+  display: flex;
+}
+
+.liveGaming,
+.liveMusical,
+.liveTalk {
+  display: flex;
+  transition: box-shadow .2s ease;
+  transition: transform .3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  /* width: 25%; */
+}
+
+.liveGaming:hover,
+.liveMusical:hover,
+.liveTalk:hover {
+  /* position: relative;
+  top: -2px;
+  left: 2px; */
+  -webkit-box-shadow: -10px 15px 5px 0px rgba(0,0,0,0.2);
+  -moz-box-shadow: -10px 15px 5px 0px rgba(0,0,0,0.2);
+  box-shadow: -10px 15px 5px 0px rgba(0,0,0,0.2);
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+.liveCategoryImg {
+  /* width: 380px; */
+  /* width: 30%; */
+  width: 350px;
+}
+
+.liveGamingDesc,
+.liveMusicalDesc,
+.liveTalkDesc {
+  display: flex;
+  flex-direction: column;
+  width: 150px;
+  background: white;
+  padding: 15px 20px;
+  margin-right: 10px;
+}
+
+.typeTitle {
+  color: rgba(127, 41, 255, 1);
+  font-size: 24px;
+  font-weight: bold;
+  /* text-align: center; */
+}
+
+.typeList {
+  font-size: 22px;
+  font-weight: normal;
+}
+
+.liveTitle,
+.liveType {
+  font-size: 26px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  margin-left: 16px;
+  margin-top: 5px;
+}
+
+.liveChannels,
+.hotChannels {
+  display: flex;
+  font-size: 20px;
+  flex-wrap: wrap;
+}
+
+.streams {
+  margin: 0px 20px 20px;
+  padding: 5px 0 0 0;
+  transition: box-shadow 200ms ease;
+}
+
+.streams:hover {
+  position: relative;
+  top: -2px;
+  left: 2px;
+  -webkit-box-shadow: 0px 0px 20px 8px rgba(0,0,0,0.15);
+  -moz-box-shadow: 0px 0px 20px 8px rgba(0,0,0,0.15);
+  box-shadow: 0px 0px 20px 8px rgba(0,0,0,0.15);
+}
+
+.streamThumbnail {
+  position: relative;
+  text-align: center;
+}
+
+.thumbnails {
+  /* width: 330px; */
+  width: 100%;
+  max-width: 330px;
+}
+
+.streamliveLabel {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  padding: 2px;
+  color: white;
+  background: red;
+  width: 50px;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.streamcountLabel {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  padding: 2px;
+  color: white;
+  background: black;
+  opacity: 0.8;
+  /* width: 120px;   */
+  border-radius: 5px;
+  font-size: 18px;
+}
+
+.streamDesc {
+  display: flex;
+  margin: 5px 12px;
+}
+
+.streamImg {
+  border-radius: 50%;
+  width: 55px;
+  height: 55px;
+  background: white;
+  margin-right: 12px;
+}
+
+.streamTitleName {
+  width: 250px;
+}
+
+.streamTitle {
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 1px;
+  margin-bottom: 5px;
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 90%;
+}
+
+.streamName {
+  font-size: 17px;
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.streamType {
+  font-size: 13px;
+  color: white;
+  background: rgba(127, 41, 255, 0.8);
+  width: 75px;
+  padding: 2px 5px;
+  text-align: center;
+  margin-top: 13px;
+  margin-bottom: 10px;
+}

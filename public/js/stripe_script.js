@@ -1,8 +1,6 @@
 // A reference to Stripe.js
 let stripe;
 
-const payBtn = document.querySelector('.stripeBtn');
-
 let orderData = {
   // items: [{id: 'photo-subscription'}],
   currency: 'twd',
@@ -10,15 +8,6 @@ let orderData = {
 
 const number = document.getElementById('number');
 const stripeMsg = document.getElementById('stripeMsg');
-
-// const checkformInput = () => {
-//   if (!giver.value || !receiver.value || !number.value || !stripeMsg.value) {
-//     alert('請填妥所有空格!');
-//   }
-// }
-
-// const controller = new AbortController();
-// const { signal } = controller;
 
 fetch('/payment/stripe-key')
     .then(function(result) {
@@ -28,17 +17,16 @@ fetch('/payment/stripe-key')
       return setupElements(data);
     })
     .then(function({stripe, card, clientSecret}) {
-
       document.querySelector('button').disabled = false;
 
-      var form = document.getElementById('payment-form');
+      const form = document.getElementById('payment-form');
       form.addEventListener('submit', function(event) {
         event.preventDefault();
         if (!giver.value || !receiver.value || !number.value || !stripeMsg.value) {
           alert('請填妥所有空格!');
         } else {
           pay(stripe, card, clientSecret);
-        }      
+        }
       });
     });
 
@@ -104,11 +92,6 @@ const handleAction = function(clientSecret) {
  * Collect card details and pay for the order
  */
 const pay = function(stripe, card) {
-  // changeLoadingState(true); 
-
-  // const payBtn = document.querySelector('.stripeBtn');
-  // payBtn.disabled = 'true';
-
   // Collects card details and creates a PaymentMethod
   stripe
       .createPaymentMethod('card', card)
@@ -124,7 +107,7 @@ const pay = function(stripe, card) {
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify(orderData)
+            body: JSON.stringify(orderData),
           });
         }
       })
@@ -149,62 +132,48 @@ const pay = function(stripe, card) {
 const orderComplete = function(clientSecret) {
   stripe.retrievePaymentIntent(clientSecret).then(function(result) {
     const paymentIntent = result.paymentIntent;
-    const paymentIntentJson = JSON.stringify(paymentIntent, null, 2);
+    // const paymentIntentJson = JSON.stringify(paymentIntent, null, 2);
 
     if (paymentIntent.status === 'succeeded') {
-
       const amount = document.querySelector('.inputNumber').value;
-      const from_id = JSON.parse(localStorage.getItem('userInfo')).id;
-      const from_name = JSON.parse(localStorage.getItem('userInfo')).name;
-      const to_id = streamerId;
-      const to_name = document.querySelector('.streamerName').innerText
+      let fromId;
+      let fromName;
+      if (localStorage.getItem('userInfo') !== null) {
+        fromId = JSON.parse(localStorage.getItem('userInfo')).id 
+        fromName = JSON.parse(localStorage.getItem('userInfo')).name;
+      } else {
+        fromId = null;
+        fromName = document.getElementById('giver').value;;
+      }
+      const toId = streamerId;
+      const toName = document.querySelector('.streamerName').innerText;
       const message = document.getElementById('stripeMsg').value;
 
       const data = {
-        from_id: from_id,
-        from_name: from_name,
-        to_id: to_id,
-        to_name: to_name,
+        fromId: fromId,
+        fromName: fromName,
+        toId: toId,
+        toName: toName,
         amount: amount,
         message: message,
-      }
+      };
 
-      console.log('DATA: ',data)
+      // console.log('DATA: ', data);
 
       fetch('/payment/updatePay', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-         body: JSON.stringify(data),
-        })
+        body: JSON.stringify(data),
+      });
 
-      alert('贊助成功! 已贊助實況主 NTD. ' + (paymentIntent.amount/100));  
+      alert('贊助成功! 已贊助實況主 NTD. ' + (paymentIntent.amount/100));
+      donateForm.style.display = 'none';
     }
   });
 };
 
 const showError = function(errorMsgText) {
-  // changeLoadingState(false);
-  // const errorMsg = document.querySelector('.sr-field-error');
-  // errorMsg.textContent = errorMsgText;
   alert(errorMsgText);
-  // setTimeout(function() {
-  //   errorMsg.textContent = '';
-  // }, 4000);
 };
-
-// // Show a spinner on payment submission
-// const changeLoadingState = function(isLoading) {
-//   if (isLoading) {
-//     document.querySelector('button').disabled = true;
-//     document.querySelector('#spinner').classList.remove('hidden');
-//     document.querySelector('#button-text').classList.add('hidden');
-//   } else {
-//     document.querySelector('button').disabled = false;
-//     document.querySelector('#spinner').classList.add('hidden');
-//     document.querySelector('#button-text').classList.remove('hidden');
-//   }
-// };
-
-

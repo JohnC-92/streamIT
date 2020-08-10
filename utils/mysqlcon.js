@@ -4,6 +4,7 @@ const {nodeEnv, dbhost, dbUser, dbPass, db, dbTest} = require('./config');
 const env = nodeEnv;
 const multipleStatements = (nodeEnv === 'test');
 
+// Define mysql configs
 const mysqlConfig = {
   // for localhost development
   development: {
@@ -21,12 +22,15 @@ const mysqlConfig = {
   },
 };
 
+// Create connection to mysql
 const mysqlCon = mysql.createConnection(mysqlConfig[env], {multipleStatements});
 
+// Promisify all mysql queries and bind mysql connection (promisify will cause original parent lost)
 const promiseQuery = (query, bindings) => {
   return promisify(mysqlCon.query).bind(mysqlCon)(query, bindings);
 };
 
+// Promisify mysql transaction queries
 const promiseTransaction = promisify(mysqlCon.beginTransaction).bind(mysqlCon);
 const promiseCommit = promisify(mysqlCon.commit).bind(mysqlCon);
 const promiseRollBack = promisify(mysqlCon.rollback).bind(mysqlCon);

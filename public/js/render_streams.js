@@ -48,7 +48,8 @@ function renderStreams() {
           keyObj = res;
         });
         for (let i = 0; i < keys.length; i++) {
-          const div = createStreamDIV(keys[i], keyObj[keys[i]+'1'], keyObj[keys[i]+'2'], keyObj[keys[i]+'3'], keyObj[keys[i]+'4'], keyObj[keys[i]+'5']);
+          // function createStreamDIV(key, name, title, picture, type, id) {
+          const div = createStreamDIV(keys[i], keyObj[keys[i]+'-name'], keyObj[keys[i]+'-title'], keyObj[keys[i]+'-picture'], keyObj[keys[i]+'-type'], keyObj[keys[i]+'-id']);
           liveChannels.appendChild(div);
         }
       }
@@ -72,8 +73,8 @@ function renderStreams() {
 function createStreamDIV(key, name, title, picture, type, id) {
   const streams = document.createElement('div');
   if (type) {
-    type = type.toLowerCase();
-    streams.setAttribute('class', 'streams '+type);
+    const streamType = type.toLowerCase();
+    streams.setAttribute('class', 'streams '+streamType);
   } else {
     streams.setAttribute('class', 'streams gaming');
   }
@@ -112,15 +113,15 @@ function createStreamDIV(key, name, title, picture, type, id) {
 
   const streamTitle = document.createElement('div');
   streamTitle.setAttribute('class', 'streamTitle');
-  streamTitle.innerText = title || 'Welcome to ' + name + `'s world`;
+  streamTitle.innerText = title || 'Welcome to ' + name + `'s stream`;
 
   const streamName = document.createElement('div');
-  streamName.setAttribute('class', 'streamName');
+  streamName.setAttribute('class', 'str eamName');
   streamName.innerText = name;
 
-  // const streamType = document.createElement('div');
-  // streamType.setAttribute('class', 'streamType');
-  // streamType.innerText = 'Musical';
+  const streamType = document.createElement('div');
+  streamType.setAttribute('class', 'streamType');
+  streamType.innerText = type || 'Gaming';
 
   streamThumbnail.appendChild(img);
   streamThumbnail.appendChild(spanLive);
@@ -130,13 +131,10 @@ function createStreamDIV(key, name, title, picture, type, id) {
   streamDesc.appendChild(streamImg);
   streamTitleName.appendChild(streamTitle);
   streamTitleName.appendChild(streamName);
+  streamTitleName.appendChild(streamType);
   streamDesc.appendChild(streamTitleName);
   streams.appendChild(streamDesc);
   // streams.appendChild(streamType);
   return streams;
 };
-
-
-
-
 

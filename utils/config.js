@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+// RTMP server config & process env configs
 const config = {
 
   host: {
@@ -16,6 +17,7 @@ const config = {
       ping_timeout: 30,
     },
 
+    // RTMP server http video route
     http: {
       // port: 8000,
       port: 8888,
@@ -23,6 +25,7 @@ const config = {
       allow_origin: '*',
     },
 
+    // RTMP server https video route
     // https: {
     //   port: 8888,
     //   mediaroot: './server/media',
@@ -31,9 +34,10 @@ const config = {
     //   allow_origin: '*',
     // },
 
+    // Set ffmpeg route and video converting format
     trans: {
-      ffmpeg: 'D:/AppWorks/videoStream/streamit/utils/ffmpeg.exe',
-      // ffmpeg: 'F:/AppWorks/videoStream/ffmpeg/bin/ffmpeg.exe',
+      //ffmpeg: 'D:/AppWorks/videoStream/streamit/utils/ffmpeg.exe',
+      ffmpeg: 'F:/AppWorks/videoStream/ffmpeg/bin/ffmpeg.exe',
       // ffmpeg: '/usr/bin/ffmpeg',
       tasks: [
         {
