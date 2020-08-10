@@ -63,14 +63,14 @@ const generateResponse = (intent) => {
   }
 };
 
-const updatePayment = async(req, res) => {  
-  const {from_id, from_name, to_id, to_name, amount, message} = req.body;
-  const result = await Payment.updatePayment(from_id, from_name, to_id, to_name, amount, message);
+const updatePayment = async(req, res) => {
+  const {fromId, fromName, toId, toName, amount, message} = req.body;
+  const result = await Payment.updatePayment(fromId, fromName, toId, toName, amount, message);
   if (result.error) {
     return res.send({error: result.error});
   }
   res.send(result);
-}
+};
 
 const getPayment = async(req, res) => {
   const {id} = req.params;

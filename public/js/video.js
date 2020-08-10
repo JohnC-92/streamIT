@@ -40,7 +40,7 @@ donateBtn.addEventListener('click', () => {
     giver.value = JSON.parse(localStorage.getItem('userInfo')).name;
     giver.readOnly = true;
   }
-
+ 
   donateForm.style.display = 'block';
 });
 
@@ -131,7 +131,7 @@ const getVideo = async () => {
         url: 'http://127.0.0.1:8888/live/'+streamerKey+'.flv',
         // url: 'https://streamit.website:8888/live/'+streamerKey+'.flv',
         // url: 'https://dinay18pwoqyb.cloudfront.net/live/'+streamerKey+'.flv',
-        url: 'https://d6r73c53ses2h.cloudfront.net/live/'+streamerKey+'.flv',
+        // url: 'https://d6r73c53ses2h.cloudfront.net/live/'+streamerKey+'.flv',
       });
       flvPlayer.attachMediaElement(video);
       flvPlayer.load();

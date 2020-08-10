@@ -180,7 +180,7 @@ const getProfiles = async (ids) => {
   } catch (err) {
     return {error: err};
   }
-}
+};
 
 const getUserKeys = async () => {
   try {

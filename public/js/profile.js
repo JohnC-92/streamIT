@@ -583,7 +583,7 @@ function createPaymentDiv(time, from, to, amount, message) {
   const paymentTime = document.createElement('div');
   paymentTime.setAttribute('class', 'paymentTime');
 
-  const timeEdit = time.substr(0, 10) + ' ' + time.substr(11, 12).substr(0,8);
+  const timeEdit = time.substr(0, 10) + '\n' + time.substr(11, 12).substr(0,8);
   paymentTime.innerText = timeEdit;
 
   const paymentAmount = document.createElement('div');
