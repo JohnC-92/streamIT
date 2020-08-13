@@ -25,7 +25,7 @@
   display: flex;
   transition: box-shadow .2s ease;
   transition: transform .3s ease;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  /* border: 1px solid rgba(0, 0, 0, 0.05); */
   /* width: 25%; */
 }
 
@@ -35,17 +35,18 @@
   /* position: relative;
   top: -2px;
   left: 2px; */
-  -webkit-box-shadow: -10px 15px 5px 0px rgba(0,0,0,0.2);
-  -moz-box-shadow: -10px 15px 5px 0px rgba(0,0,0,0.2);
-  box-shadow: -10px 15px 5px 0px rgba(0,0,0,0.2);
-  transform: scale(1.05);
+  -webkit-box-shadow: 0px 0px 15px 10px rgba(0,0,0,0.2);
+  -moz-box-shadow: 0px 0px 15px 10px rgba(0,0,0,0.2);
+  box-shadow: 0px 0px 15px 10px rgba(0,0,0,0.2);
+  transform: scale(1.03);
   cursor: pointer;
 }
 
 .liveCategoryImg {
   /* width: 380px; */
-  /* width: 30%; */
-  width: 350px;
+  /* width: 80%; */
+  max-height: 262.5px;
+  max-width: 350px;
 }
 
 .liveGamingDesc,
@@ -53,7 +54,9 @@
 .liveTalkDesc {
   display: flex;
   flex-direction: column;
-  width: 150px;
+  /* width: 20%; */
+  max-width: 150px;
+  max-height: 262.5px;
   background: white;
   padding: 15px 20px;
   margin-right: 10px;
