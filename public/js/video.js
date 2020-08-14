@@ -19,11 +19,13 @@ const receiver = document.getElementById('receiver');
 
 if (localStorage.getItem('userInfo')) {
   const followArr = JSON.parse(localStorage.getItem('userInfo')).followed;
-  followArr.map((f) => {
-    if (f.id === streamerId) {
-      followBtn.innerText = '取消追蹤';
-    }
-  });
+  if (followArr.length !== 0) {
+    followArr.map((f) => {
+      if (f.id === streamerId) {
+        followBtn.innerText = '取消追蹤';
+      }
+    });
+  }
 }
 
 donateBtn.addEventListener('click', () => {

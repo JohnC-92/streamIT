@@ -73,7 +73,7 @@ for (let i = 0; i < showPass.length; i++) {
 }
 
 member.addEventListener('click', () => {
-  if (!document.cookie) {
+  if (token === '') {
     alert('Please sign in');
     loginForm.style.display = 'block';
   } else {

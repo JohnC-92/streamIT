@@ -101,6 +101,7 @@ const getUserProfileToken = async (req, res) => {
       token = token.replace('Bearer ', '');
 
       const result = await User.getUserProfileToken(token);
+
       const {followers, followersTime, followed, followedTime} = await followFunction(result.id);
 
       res.send({
@@ -145,6 +146,7 @@ const getAllUsers = async (req, res) => {
 const getSingleUser = async (req, res) => {
   const {id} = req.params;
   const result = await User.getSingleUser(id);
+
   const {followers, followersTime, followed, followedTime} = await followFunction([id]);
   // return res.send(result);
   res.send({
@@ -164,12 +166,10 @@ const getSingleUser = async (req, res) => {
 };
 
 const updateUserImg = async(req, res) => {
-  console.log(req.body);
   const {email} = req.body;
   // const fileName = email.split('.').join('-');
   let fileName = email.replace('.', '-');
   fileName = fileName.replace('@', '-');
-  console.log(fileName);
 
   const ext = req.files.profileImg[0].originalname.split('.').pop();
   const imgUrl = `${s3.url}/profileImg/${fileName}.${ext}`;
@@ -203,7 +203,6 @@ const getFollowers = async (req, res) => {
 
 const updateFollowers = async (req, res) => {
   const {follow} = req.body;
-  console.log(follow)
   if (follow) {
     const {fromId, toId} = req.body;
     const followedAt = new Date();
@@ -258,7 +257,9 @@ const followFunction = async (id) => {
     return f.from_id;
   });
 
-  followers = await User.getProfiles(followers);
+  if (followers.length !== 0) {
+    followers = await User.getProfiles(followers);
+  }
 
   const followersTime = followersResult.map((f) => {
     return f.followed_at;
@@ -268,7 +269,9 @@ const followFunction = async (id) => {
     return f.to_id;
   });
 
-  followed = await User.getProfiles(followed);
+  if (followed.length !== 0) {
+    followed = await User.getProfiles(followed);
+  }
 
   const followedTime = followedResult.map((f) => {
     return f.followed_at;
