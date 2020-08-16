@@ -121,7 +121,10 @@ function createStreamDIV(key, name, title, picture, type, id) {
   streamImg.setAttribute('class', 'streamImg');
   streamImg.setAttribute('src', picture);
 
+  const streamImgDiv = document.createElement('div');
+
   const streamImgProfile = document.createElement('a');
+  streamImgProfile.setAttribute('class', 'streamerLink');
   streamImgProfile.setAttribute('href', '/profile?streamerId=' + id);
 
   const streamTitleName = document.createElement('div');
@@ -132,6 +135,7 @@ function createStreamDIV(key, name, title, picture, type, id) {
   streamTitle.innerText = title || 'Welcome to ' + name + `'s stream`;
 
   const streamProfile = document.createElement('a');
+  streamProfile.setAttribute('class', 'streamerLink');
   streamProfile.setAttribute('href', '/profile?streamerId=' + id);
 
   const streamName = document.createElement('div');
@@ -149,7 +153,8 @@ function createStreamDIV(key, name, title, picture, type, id) {
   streams.appendChild(url);
   
   streamImgProfile.appendChild(streamImg)
-  streamDesc.appendChild(streamImgProfile);
+  streamImgDiv.appendChild(streamImgProfile)
+  streamDesc.appendChild(streamImgDiv);
   streamTitleName.appendChild(streamTitle);
   streamProfile.appendChild(streamName);
   streamTitleName.appendChild(streamProfile);
