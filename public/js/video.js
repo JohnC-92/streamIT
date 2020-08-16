@@ -166,9 +166,9 @@ function getStreamerProfileandGetVideo() {
       const streamerName = document.querySelector('.streamerName');
       streamerName.innerText = response.name;
 
-      if (room !== response.name) {
-        window.location.replace('/error404');
-      }
+      // if (room !== response.name) {
+      //   window.location.replace('/error404');
+      // }
 
       receiver.value = response.name;
       receiver.readOnly = true;
