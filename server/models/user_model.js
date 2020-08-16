@@ -44,6 +44,8 @@ const signUp = async (name, password, email, expire) => {
       access_expired: expire,
       login_at: loginAt,
       stream_key: shortid.generate(),
+      stream_title: 'Welcome to ' + name + `'s world`,
+      stream_type: 'Gaming',
     };
 
     // Insert into user info into database
