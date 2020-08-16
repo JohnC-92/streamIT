@@ -348,6 +348,32 @@
   /* height: 65vh; */
 }
 
+/* select {
+  text-align: center;
+  text-align-last:center;
+} */
+
+.selectDiv {
+  margin-top: 5px;
+  margin-bottom: 20px;
+}
+
+/* .received {
+
+} */
+
+/* .paid {
+  display: none !important;
+} */
+
+.paymentSelect {
+  font-size: 25px;
+  width: 150px;
+  height: 40px;
+  text-align: center;
+  text-align-last:center;
+}
+
 .paymentDetails {
   border-bottom: 1px solid grey;
   display: flex;

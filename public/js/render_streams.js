@@ -52,6 +52,19 @@ function renderStreams() {
           const div = createStreamDIV(keys[i], keyObj[keys[i]+'-name'], keyObj[keys[i]+'-title'], keyObj[keys[i]+'-picture'], keyObj[keys[i]+'-type'], keyObj[keys[i]+'-id']);
           liveChannels.appendChild(div);
         }
+
+        // const streamTypes = document.querySelectorAll('.streamType');
+        // for (i = 0; i < streamTypes.length; i++) {
+        //   streamTypes[i].addEventListener('click', () => {
+        //     streamFilter(streamTypes[i].innerText.toLowerCase());
+        //   });
+        // }
+      }
+      const streamTypes = document.querySelectorAll('.streamType');
+      for (i = 0; i < streamTypes.length; i++) {
+        streamTypes[i].addEventListener('click', (e) => {
+          streamFilter(e.target.innerText.toLowerCase());
+        });
       }
     }
   };
@@ -108,6 +121,9 @@ function createStreamDIV(key, name, title, picture, type, id) {
   streamImg.setAttribute('class', 'streamImg');
   streamImg.setAttribute('src', picture);
 
+  const streamImgProfile = document.createElement('a');
+  streamImgProfile.setAttribute('href', '/profile?streamerId=' + id);
+
   const streamTitleName = document.createElement('div');
   streamTitleName.setAttribute('class', 'streamTitleName');
 
@@ -115,8 +131,11 @@ function createStreamDIV(key, name, title, picture, type, id) {
   streamTitle.setAttribute('class', 'streamTitle');
   streamTitle.innerText = title || 'Welcome to ' + name + `'s stream`;
 
+  const streamProfile = document.createElement('a');
+  streamProfile.setAttribute('href', '/profile?streamerId=' + id);
+
   const streamName = document.createElement('div');
-  streamName.setAttribute('class', 'str eamName');
+  streamName.setAttribute('class', 'streamName');
   streamName.innerText = name;
 
   const streamType = document.createElement('div');
@@ -128,9 +147,12 @@ function createStreamDIV(key, name, title, picture, type, id) {
   streamThumbnail.appendChild(spanCount);
   url.appendChild(streamThumbnail);
   streams.appendChild(url);
-  streamDesc.appendChild(streamImg);
+  
+  streamImgProfile.appendChild(streamImg)
+  streamDesc.appendChild(streamImgProfile);
   streamTitleName.appendChild(streamTitle);
-  streamTitleName.appendChild(streamName);
+  streamProfile.appendChild(streamName);
+  streamTitleName.appendChild(streamProfile);
   streamTitleName.appendChild(streamType);
   streamDesc.appendChild(streamTitleName);
   streams.appendChild(streamDesc);

@@ -11,6 +11,33 @@ const profileStripeTab = document.querySelector('.profileStripe');
 const profileTabs = document.querySelectorAll('.profileTab');
 const profileDivs = document.querySelectorAll('.profileDivs');
 
+// Get payment select HTML div
+const paymentSelect = document.querySelector('.paymentSelect');
+
+// Add show payments logic to select HTML
+paymentSelect.addEventListener('change', (e) => {
+  const receivedDivs = document.querySelectorAll('.received');
+  const paidDivs = document.querySelectorAll('.paid');
+
+  // Case received payments from others
+  if (e.target.selectedIndex === 0) {
+    for (let i = 0; i < receivedDivs.length; i++) {
+      receivedDivs[i].classList.remove('hide');
+    }
+    for (let i = 0; i < paidDivs.length; i++) {
+      paidDivs[i].classList.add('hide');
+    }
+  } else if (e.target.selectedIndex === 1) {
+  // Case paid payments to others
+    for (let i = 0; i < receivedDivs.length; i++) {
+      receivedDivs[i].classList.add('hide');
+    }
+    for (let i = 0; i < paidDivs.length; i++) {
+      paidDivs[i].classList.remove('hide');
+    }
+  }
+});
+
 // Add profile tabs logic to highlight color and show tab div
 for (let i = 0; i < profileTabs.length; i++) {
   profileTabs[i].addEventListener('click', () => {
@@ -44,7 +71,7 @@ profileForm.addEventListener('submit', (e) => {
   e.preventDefault();
   updateProfileImage();
 });
- 
+
 // Update profile image logic
 profileImgInputBtn.addEventListener('change', () => {
   const fileExt = profileImgInputBtn.value.split('.').pop();
@@ -552,13 +579,13 @@ function getPayment(id) {
 
       // Create payments made DIVs
       for (let i = 0; i < payments.paid.length; i++) {
-        const div = createPaymentDiv(payments.paid[i].time_created, payments.paid[i].from_name, payments.paid[i].to_name, payments.paid[i].amount, payments.paid[i].message);
+        const div = createPaymentDiv(payments.paid[i].time_created, payments.paid[i].from_name, payments.paid[i].to_name, payments.paid[i].amount, payments.paid[i].message, false);
         profileStripeRow.appendChild(div);
       }
 
       // Create payments received DIVs
       for (let i = 0; i < payments.received.length; i++) {
-        const div = createPaymentDiv(payments.received[i].time_created, payments.received[i].from_name, payments.received[i].to_name, payments.received[i].amount, payments.received[i].message);
+        const div = createPaymentDiv(payments.received[i].time_created, payments.received[i].from_name, payments.received[i].to_name, payments.received[i].amount, payments.received[i].message, true);
         profileStripeRow.appendChild(div);
       }
     }
@@ -574,11 +601,16 @@ function getPayment(id) {
  * @param {*} to
  * @param {*} amount
  * @param {*} message
+ * @param {*} received
  * @return {*} return Payments DIV
  */
-function createPaymentDiv(time, from, to, amount, message) {
+function createPaymentDiv(time, from, to, amount, message, received) {
   const paymentDiv = document.createElement('div');
-  paymentDiv.setAttribute('class', 'payment');
+  if (received === true) {
+    paymentDiv.setAttribute('class', 'payment received');
+  } else {
+    paymentDiv.setAttribute('class', 'payment paid hide');
+  }
 
   const paymentTime = document.createElement('div');
   paymentTime.setAttribute('class', 'paymentTime');

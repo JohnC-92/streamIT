@@ -176,6 +176,11 @@
   text-overflow: ellipsis;
 }
 
+.streamName:hover {
+  cursor: pointer;
+  color: rgba(127, 41, 255, 0.8);
+}
+
 .streamType {
   font-size: 13px;
   color: white;
@@ -185,4 +190,9 @@
   text-align: center;
   margin-top: 13px;
   margin-bottom: 10px;
+}
+
+.streamType:hover {
+  cursor: pointer;
+  background: rgba(127, 41, 255, 0.9);
 }
