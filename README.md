@@ -64,7 +64,9 @@ Website URL: https://streamit.website
 ![](https://i.imgur.com/ByAECvk.png)
 
 ## Database Schema
-![](https://i.imgur.com/DaZGx1a.png)
+![](https://i.imgur.com/OnErgIb.png)
+
+
 
 ## Main Features
 
