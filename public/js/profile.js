@@ -412,6 +412,7 @@ function createVodDIV(streamerId, name, key, vod, picture) {
   const streamTitle = document.createElement('div');
   streamTitle.setAttribute('class', 'streamTitle');
   streamTitle.innerText = 'Welcome to ' + name + `'s stream`;
+  // streamTitle.innerText = vod.stream_title;
 
   const streamName = document.createElement('div');
   streamName.setAttribute('class', 'streamName');

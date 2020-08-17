@@ -201,3 +201,35 @@
   cursor: pointer;
   background: rgba(127, 41, 255, 1.0);
 }
+
+@media (max-width: 1750px) and (min-width: 1550px) {
+  .liveCategoryImg {
+    max-height: 242.5px;
+    max-width: 300px;
+  }
+
+  .thumbnails {
+    width: 100%;
+    max-width: 320px;
+  }
+}
+
+@media (max-width: 1550px) and (min-width: 1000px) {
+  .liveCategoryImg {
+    max-height: 242.5px;
+    max-width: 260px;
+  }
+
+  .sideBar {
+    width: 220px;
+  }
+
+  .sideStream {
+    width: 220px;
+  }
+
+  .thumbnails {
+    width: 100%;
+    max-width: 320px;
+  }
+}

@@ -162,6 +162,7 @@ function getStreamerProfileandGetVideo() {
 
       const streamerTitle = document.querySelector('.streamerTitle');
       streamerTitle.innerText = response.streamTitle || 'Welcome to ' + response.name + `'s stream`;
+      // streamerTitle.innerText = response.streamTitle || 'Welcome to ' + response.name + `'s stream`;
 
       const streamerName = document.querySelector('.streamerName');
       streamerName.innerText = response.name;

@@ -235,6 +235,14 @@ async function saveProfiletoLocal(token, streamerKeys) {
         sideFollow.style.display = 'block';
         const sideFollowStreams = document.querySelector('.sideFollowStreams');
 
+        if (res.data.followed.length !== 0) {
+          const sideDiv = document.querySelector('.sideTitle');
+          sideDiv.classList.add('hide');
+        } else {
+          const sideDiv = document.querySelector('.sideFollow');
+          sideDiv.classList.add('hide');
+        }
+
         // console.log(streamerKeys)
         for (let i = 0; i < res.data.followed.length; i++) {
           // console.log(res.data.followed[i])
