@@ -8,16 +8,21 @@
 
 Website URL: https://streamit.website
 
+## Test Account
+    email: yuyan@mail.com
+    pass: yuyan.123#
+
 ## Table of Contents
 
 - [Technologies](#Technologies)
 - [Architecture](#Architecture)
+- [Database Schema](#Database-Schema)
 - [Main Features](#Main-Features)
 - [Streaming Demo](#Streaming-Demo)
 - [Video Pipeline](#Video-Pipeline-for-VOD-And-Live-Streaming)
 - [Server Bandwidth Usage](#Server-Bandwidth-Usage-Analysis)
 - [Contact](#Contact)
-<!-- - [Database Schema](#Database-Schema) -->
+
 ## Technologies
 
 ### Backend
@@ -58,25 +63,19 @@ Website URL: https://streamit.website
 ## Architecture
 ![](https://i.imgur.com/ByAECvk.png)
 
-<!-- ## Database Schema
-
-### PASTER DATABASE SCHEMA AFTER CREATING FAKE DATA AND ADDING INDEXES -->
+## Database Schema
+![](https://i.imgur.com/DaZGx1a.png)
 
 ## Main Features
 
-
 - Streaming:
     - Stream and create your own live content to entertain others
-
 - Video on Demand (VOD):
     - VOD is uploaded immediately after every stream ends
-
-- Following:
+- Follow Feature:
     - Follow your favourite streamer and get informed if they are online on the sidebar
-
-- Donation:
+- Donate Feature:
     - Support your favourite streamer by donating to them
-
 - Chatroom:
     - Interact with your favourite streamer via live chat
 

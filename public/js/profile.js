@@ -148,7 +148,7 @@ async function getProfile(token) {
         profileStreamType.value = res.data.streamType || `Gaming`;
 
         // Fetch VODS and add VODS divs
-        fetchVODs(res.data.name, res.data.streamKey, res.data.picture);
+        fetchVODs(res.data.id, res.data.name, res.data.streamKey, res.data.picture);
 
         // Add followers/followed div
         createFollowDIV(res.data.followers, res.data.followersTime, res.data.followed, res.data.followedTime);
@@ -175,7 +175,7 @@ async function getStreamerProfile(streamerId) {
     await fetch('/user/keys/'+streamerId, {
       method: 'GET',
     }).then((res) => {
-      // console.log(res);
+      // console.log('GetStreamerProfile: ', res);
       return res.json();
     }).then((res) => {
       const data = res.data;
@@ -217,7 +217,7 @@ async function getStreamerProfile(streamerId) {
         document.querySelector('.profileStreamType').readOnly = true;
 
         // Fetch VODS and add VODs div
-        fetchVODs(data.name, data.streamKey, data.picture);
+        fetchVODs(data.id, data.name, data.streamKey, data.picture);
 
         // Add followers/followed div
         createFollowDIV(data.followers, data.followersTime, data.followed, data.followedTime);
@@ -338,11 +338,12 @@ async function deleteAccount() {
 
 /**
  * Function to get all VODs
+ * @param {*} streamerId
  * @param {*} streamerName
  * @param {*} streamerKey
  * @param {*} streamerPicture
  */
-function fetchVODs(streamerName, streamerKey, streamerPicture) {
+function fetchVODs(streamerId, streamerName, streamerKey, streamerPicture) {
   const request = new XMLHttpRequest();
   request.onreadystatechange = async function() {
     if (request.readyState === 4) {
@@ -359,7 +360,7 @@ function fetchVODs(streamerName, streamerKey, streamerPicture) {
       } else {
       // Render VODs div when there are VODs
         for (let i = 0; i < VODs.length; i++) {
-          const div = createVodDIV(streamerName, streamerKey, VODs[i], streamerPicture);
+          const div = createVodDIV(streamerId, streamerName, streamerKey, VODs[i], streamerPicture);
           profileVideoContainer.appendChild(div);
         }
       }
@@ -371,13 +372,14 @@ function fetchVODs(streamerName, streamerKey, streamerPicture) {
 
 /**
  * Function to create VODs DIV
+ * @param {*} streamerId
  * @param {*} name
  * @param {*} key
  * @param {*} vod
  * @param {*} picture
  * @return {*} return VODs DIV
  */
-function createVodDIV(name, key, vod, picture) {
+function createVodDIV(streamerId, name, key, vod, picture) {
   const profileVod = document.createElement('div');
   profileVod.setAttribute('class', 'profileVod');
 
@@ -385,7 +387,7 @@ function createVodDIV(name, key, vod, picture) {
   streamThumbnail.setAttribute('class', 'streamThumbnail');
 
   const url = document.createElement('a');
-  url.setAttribute('href', '/video?room='+name+'&id='+vod.id);
+  url.setAttribute('href', '/video?room='+name+'&streamerId='+streamerId+'&id='+vod.id);
 
   const img = document.createElement('img');
   img.setAttribute('class', 'thumbnails');
