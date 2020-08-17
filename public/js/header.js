@@ -73,7 +73,7 @@ for (let i = 0; i < showPass.length; i++) {
 }
 
 member.addEventListener('click', () => {
-  if (!document.cookie) {
+  if (token === '') {
     alert('Please sign in');
     loginForm.style.display = 'block';
   } else {
@@ -237,7 +237,7 @@ async function saveProfiletoLocal(token, streamerKeys) {
 
         // console.log(streamerKeys)
         for (let i = 0; i < res.data.followed.length; i++) {
-          // console.log(res.data.followed[i].stream_key)
+          // console.log(res.data.followed[i])
           if (streamerKeys.includes(res.data.followed[i].stream_key)) {
             const sideBarDiv = createSidebarDIV(res.data.followed[i].stream_key, res.data.followed[i].name, res.data.followed[i].streamTitle, res.data.followed[i].picture, res.data.followed[i].streamType, res.data.followed[i].id);
             sideFollowStreams.appendChild(sideBarDiv);

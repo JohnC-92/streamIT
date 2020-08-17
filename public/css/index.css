@@ -141,6 +141,10 @@
   font-size: 18px;
 }
 
+.streamerLink {
+  display: inline-block; 
+}
+
 .streamDesc {
   display: flex;
   margin: 5px 12px;
@@ -170,10 +174,16 @@
 }
 
 .streamName {
+  color: black;
   font-size: 17px;
   white-space: nowrap; 
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.streamName:hover {
+  cursor: pointer;
+  color: rgba(127, 41, 255, 0.9);
 }
 
 .streamType {
@@ -183,6 +193,11 @@
   width: 75px;
   padding: 2px 5px;
   text-align: center;
-  margin-top: 13px;
+  margin-top: 5px;
   margin-bottom: 10px;
+}
+
+.streamType:hover {
+  cursor: pointer;
+  background: rgba(127, 41, 255, 1.0);
 }

@@ -11,6 +11,33 @@ const profileStripeTab = document.querySelector('.profileStripe');
 const profileTabs = document.querySelectorAll('.profileTab');
 const profileDivs = document.querySelectorAll('.profileDivs');
 
+// Get payment select HTML div
+const paymentSelect = document.querySelector('.paymentSelect');
+
+// Add show payments logic to select HTML
+paymentSelect.addEventListener('change', (e) => {
+  const receivedDivs = document.querySelectorAll('.received');
+  const paidDivs = document.querySelectorAll('.paid');
+
+  // Case received payments from others
+  if (e.target.selectedIndex === 0) {
+    for (let i = 0; i < receivedDivs.length; i++) {
+      receivedDivs[i].classList.remove('hide');
+    }
+    for (let i = 0; i < paidDivs.length; i++) {
+      paidDivs[i].classList.add('hide');
+    }
+  } else if (e.target.selectedIndex === 1) {
+  // Case paid payments to others
+    for (let i = 0; i < receivedDivs.length; i++) {
+      receivedDivs[i].classList.add('hide');
+    }
+    for (let i = 0; i < paidDivs.length; i++) {
+      paidDivs[i].classList.remove('hide');
+    }
+  }
+});
+
 // Add profile tabs logic to highlight color and show tab div
 for (let i = 0; i < profileTabs.length; i++) {
   profileTabs[i].addEventListener('click', () => {
@@ -44,7 +71,7 @@ profileForm.addEventListener('submit', (e) => {
   e.preventDefault();
   updateProfileImage();
 });
- 
+
 // Update profile image logic
 profileImgInputBtn.addEventListener('change', () => {
   const fileExt = profileImgInputBtn.value.split('.').pop();
@@ -121,7 +148,7 @@ async function getProfile(token) {
         profileStreamType.value = res.data.streamType || `Gaming`;
 
         // Fetch VODS and add VODS divs
-        fetchVODs(res.data.name, res.data.streamKey, res.data.picture);
+        fetchVODs(res.data.id, res.data.name, res.data.streamKey, res.data.picture);
 
         // Add followers/followed div
         createFollowDIV(res.data.followers, res.data.followersTime, res.data.followed, res.data.followedTime);
@@ -148,7 +175,7 @@ async function getStreamerProfile(streamerId) {
     await fetch('/user/keys/'+streamerId, {
       method: 'GET',
     }).then((res) => {
-      // console.log(res);
+      // console.log('GetStreamerProfile: ', res);
       return res.json();
     }).then((res) => {
       const data = res.data;
@@ -190,7 +217,7 @@ async function getStreamerProfile(streamerId) {
         document.querySelector('.profileStreamType').readOnly = true;
 
         // Fetch VODS and add VODs div
-        fetchVODs(data.name, data.streamKey, data.picture);
+        fetchVODs(data.id, data.name, data.streamKey, data.picture);
 
         // Add followers/followed div
         createFollowDIV(data.followers, data.followersTime, data.followed, data.followedTime);
@@ -311,11 +338,12 @@ async function deleteAccount() {
 
 /**
  * Function to get all VODs
+ * @param {*} streamerId
  * @param {*} streamerName
  * @param {*} streamerKey
  * @param {*} streamerPicture
  */
-function fetchVODs(streamerName, streamerKey, streamerPicture) {
+function fetchVODs(streamerId, streamerName, streamerKey, streamerPicture) {
   const request = new XMLHttpRequest();
   request.onreadystatechange = async function() {
     if (request.readyState === 4) {
@@ -332,7 +360,7 @@ function fetchVODs(streamerName, streamerKey, streamerPicture) {
       } else {
       // Render VODs div when there are VODs
         for (let i = 0; i < VODs.length; i++) {
-          const div = createVodDIV(streamerName, streamerKey, VODs[i], streamerPicture);
+          const div = createVodDIV(streamerId, streamerName, streamerKey, VODs[i], streamerPicture);
           profileVideoContainer.appendChild(div);
         }
       }
@@ -344,13 +372,14 @@ function fetchVODs(streamerName, streamerKey, streamerPicture) {
 
 /**
  * Function to create VODs DIV
+ * @param {*} streamerId
  * @param {*} name
  * @param {*} key
  * @param {*} vod
  * @param {*} picture
  * @return {*} return VODs DIV
  */
-function createVodDIV(name, key, vod, picture) {
+function createVodDIV(streamerId, name, key, vod, picture) {
   const profileVod = document.createElement('div');
   profileVod.setAttribute('class', 'profileVod');
 
@@ -358,7 +387,7 @@ function createVodDIV(name, key, vod, picture) {
   streamThumbnail.setAttribute('class', 'streamThumbnail');
 
   const url = document.createElement('a');
-  url.setAttribute('href', '/video?room='+name+'&id='+vod.id);
+  url.setAttribute('href', '/video?room='+name+'&streamerId='+streamerId+'&id='+vod.id);
 
   const img = document.createElement('img');
   img.setAttribute('class', 'thumbnails');
@@ -552,13 +581,13 @@ function getPayment(id) {
 
       // Create payments made DIVs
       for (let i = 0; i < payments.paid.length; i++) {
-        const div = createPaymentDiv(payments.paid[i].time_created, payments.paid[i].from_name, payments.paid[i].to_name, payments.paid[i].amount, payments.paid[i].message);
+        const div = createPaymentDiv(payments.paid[i].time_created, payments.paid[i].from_name, payments.paid[i].to_name, payments.paid[i].amount, payments.paid[i].message, false);
         profileStripeRow.appendChild(div);
       }
 
       // Create payments received DIVs
       for (let i = 0; i < payments.received.length; i++) {
-        const div = createPaymentDiv(payments.received[i].time_created, payments.received[i].from_name, payments.received[i].to_name, payments.received[i].amount, payments.received[i].message);
+        const div = createPaymentDiv(payments.received[i].time_created, payments.received[i].from_name, payments.received[i].to_name, payments.received[i].amount, payments.received[i].message, true);
         profileStripeRow.appendChild(div);
       }
     }
@@ -574,11 +603,16 @@ function getPayment(id) {
  * @param {*} to
  * @param {*} amount
  * @param {*} message
+ * @param {*} received
  * @return {*} return Payments DIV
  */
-function createPaymentDiv(time, from, to, amount, message) {
+function createPaymentDiv(time, from, to, amount, message, received) {
   const paymentDiv = document.createElement('div');
-  paymentDiv.setAttribute('class', 'payment');
+  if (received === true) {
+    paymentDiv.setAttribute('class', 'payment received');
+  } else {
+    paymentDiv.setAttribute('class', 'payment paid hide');
+  }
 
   const paymentTime = document.createElement('div');
   paymentTime.setAttribute('class', 'paymentTime');

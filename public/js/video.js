@@ -19,11 +19,13 @@ const receiver = document.getElementById('receiver');
 
 if (localStorage.getItem('userInfo')) {
   const followArr = JSON.parse(localStorage.getItem('userInfo')).followed;
-  followArr.map((f) => {
-    if (f.id === streamerId) {
-      followBtn.innerText = '取消追蹤';
-    }
-  });
+  if (followArr.length !== 0) {
+    followArr.map((f) => {
+      if (f.id === streamerId) {
+        followBtn.innerText = '取消追蹤';
+      }
+    });
+  }
 }
 
 donateBtn.addEventListener('click', () => {
@@ -164,9 +166,9 @@ function getStreamerProfileandGetVideo() {
       const streamerName = document.querySelector('.streamerName');
       streamerName.innerText = response.name;
 
-      if (room !== response.name) {
-        window.location.replace('/error404');
-      }
+      // if (room !== response.name) {
+      //   window.location.replace('/error404');
+      // }
 
       receiver.value = response.name;
       receiver.readOnly = true;
