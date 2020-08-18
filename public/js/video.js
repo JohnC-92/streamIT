@@ -90,8 +90,8 @@ const followStreamer = async () => {
     fromId: JSON.parse(localStorage.getItem('userInfo')).id,
     toId: streamerId,
   };
-  await fetch('/user/updateFollowers', {
-    method: 'POST',
+  await fetch('/user/followers', {
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
     },

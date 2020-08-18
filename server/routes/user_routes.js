@@ -31,22 +31,22 @@ router.get('/user/keys/:id',
     catchAsyncError(getSingleUser));
 
 // update profile img route
-router.post('/user/updateImg', fileType,
+router.put('/user/img', fileType,
     catchAsyncError(updateUserImg));
 
 // update profile route
-router.post('/user/updateProfile',
+router.put('/user/profile',
     catchAsyncError(updateUserProfile));
 
 // delete user profile
-router.post('/user/deleteProfile',
+router.delete('/user/profile',
     catchAsyncError(deleteUserProfile));
 
 // get and update followers route
-router.get('/user/getFollowers',
+router.get('/user/followers',
     catchAsyncError(getFollowers));
 
-router.post('/user/updateFollowers',
+router.put('/user/followers',
     catchAsyncError(updateFollowers));
 
 module.exports = router;

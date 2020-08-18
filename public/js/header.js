@@ -245,27 +245,31 @@ async function saveProfiletoLocal(token, streamerKeys) {
           sideDiv.classList.remove('hide');
           const sideStreams = document.querySelector('.sideFollowStreams');
           sideStreams.classList.remove('hide');
+
+          // const liveStreamerDiv = document.querySelectorAll('.sideName');
+          // const liveStreamers = liveStreamerDiv.map((div) => {
+          //   return div.innerText;
+          // });
+
+          const sideFollowStreams = document.querySelector('.sideFollowStreams');
+          for (let i = 0; i < res.data.followed.length; i++) {
+            if (streamerKeys.includes(res.data.followed[i].stream_key)) {
+              const sideBarDiv = createSidebarDIV(res.data.followed[i].stream_key, res.data.followed[i].name, res.data.followed[i].stream_title, res.data.followed[i].picture, res.data.followed[i].stream_type, res.data.followed[i].id);
+              sideFollowStreams.appendChild(sideBarDiv);
+            } else {
+              const key = 'notStreaming';
+              const sideBarDiv = createSidebarDIV(key, res.data.followed[i].name, res.data.followed[i].stream_title, res.data.followed[i].picture, res.data.followed[i].stream_type, res.data.followed[i].id);
+              sideFollowStreams.appendChild(sideBarDiv);
+            }
+          }
         } else {
           const sideDiv = document.querySelector('.sideTitle');
           sideDiv.classList.remove('hide');
           const sideStreams = document.querySelector('.sideRecommendStreams');
           sideStreams.classList.remove('hide');
         }
-
-        const sideFollowStreams = document.querySelector('.sideFollowStreams');
-        for (let i = 0; i < res.data.followed.length; i++) {
-          // console.log(res.data.followed[i])
-          if (streamerKeys.includes(res.data.followed[i].stream_key)) {
-            const sideBarDiv = createSidebarDIV(res.data.followed[i].stream_key, res.data.followed[i].name, res.data.followed[i].stream_title, res.data.followed[i].picture, res.data.followed[i].stream_type, res.data.followed[i].id);
-            sideFollowStreams.appendChild(sideBarDiv);
-          } else {
-            const key = 'notStreaming';
-            const sideBarDiv = createSidebarDIV(key, res.data.followed[i].name, res.data.followed[i].stream_title, res.data.followed[i].picture, res.data.followed[i].stream_type, res.data.followed[i].id);
-            sideFollowStreams.appendChild(sideBarDiv);
-          }
-        }
       }
-      });
+    });
   } catch (err) {
     console.log(err);
   }

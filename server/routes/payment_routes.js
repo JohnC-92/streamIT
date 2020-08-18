@@ -14,10 +14,10 @@ router.get('/payment/stripe-key',
 router.post('/payment/pay',
     catchAsyncError(makePayment));
 
-router.post('/payment/updatePay',
+router.put('/payment/pay',
     catchAsyncError(updatePayment));
 
-router.post('/payment/records/:id',
+router.get('/payment/records',
     catchAsyncError(getPayment));
 
 module.exports = router;

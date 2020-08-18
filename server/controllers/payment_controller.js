@@ -73,7 +73,7 @@ const updatePayment = async(req, res) => {
 };
 
 const getPayment = async(req, res) => {
-  const {id} = req.params;
+  const {id} = req.query;
   const paidPayments = await Payment.getPayment(id, true);
   const receivedPayments = await Payment.getPayment(id, false);
   res.send({
