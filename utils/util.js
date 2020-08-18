@@ -41,7 +41,7 @@ const processVideo = (streamKey, streamPath) => {
   fs.readdir(filePath, (err, files) => {
     if (err) {
       throw err;
-    }
+    } 
 
     // Add 1 to child process for every video file
     // Child process counter is needed to account for process done later
@@ -101,7 +101,7 @@ const removeAndUploadFiles = async (streamKey, filePath) => {
       throw err;
     }
 
-    files.forEach((fileName) => {
+    files.forEach(async (fileName) => {
       if (fileName.indexOf('resized') === -1) {
         // Delete original video file
         fs.unlink(filePath+fileName, (err) => {
@@ -117,17 +117,17 @@ const removeAndUploadFiles = async (streamKey, filePath) => {
         const videoURL = config.s3.url+`/media/${streamKey}/${fileName}`;
         const thumbnailURL = config.s3.url+`/media/${streamKey}/${fileName.split('.')[0]+'.png'}`;
 
-        // const streamTitle = await query('SELECT stream_title FROM users WHERE stream_key = ?', [streamKey])
+        const streamTitle = await query('SELECT stream_title FROM users WHERE stream_key = ?', [streamKey])
 
         // Insert video url and video thumbnail url into database
         const videoObj = {
           stream_key: streamKey,
-          // stream_title: streamTitle,
+          stream_title: streamTitle,
           video_url: videoURL,
           img_url: thumbnailURL,
           time_created: new Date(),
         };
-        query('INSERT INTO videos SET ?', [videoObj]);
+        await query('INSERT INTO videos SET ?', [videoObj]);
       }
     });
   });

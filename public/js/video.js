@@ -14,8 +14,10 @@ const chatX = document.querySelector('.chatX');
 const chatUsers = document.querySelector('.chat-users');
 const chatUsersList = document.querySelector('.chat-usersList');
 chatUsersList.style.display = 'none';
-
 const receiver = document.getElementById('receiver');
+
+const viewers = document.querySelector('.streamerViewers');
+viewers.innerText = '觀看人數： 1';
 
 if (localStorage.getItem('userInfo')) {
   const followArr = JSON.parse(localStorage.getItem('userInfo')).followed;
@@ -174,15 +176,15 @@ function getStreamerProfileandGetVideo() {
       receiver.value = response.name;
       receiver.readOnly = true;
 
+      console.log('heheehe')
+
       const streamerViewers = document.querySelector('.streamerViewers');
       if (users[response.streamKey]) {
         if (users[response.streamKey] === undefined) {
-          streamerViewers.innerText = '觀看人數： 0';
+          streamerViewers.innerText = '觀看人數： 1';
         } else {
           streamerViewers.innerText = '觀看人數： ' + users[response.streamKey];
         }
-      } else {
-        streamerViewers.innerText = '觀看人數： 1';
       }
       getVideo();
     }
