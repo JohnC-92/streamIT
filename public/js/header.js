@@ -239,11 +239,16 @@ async function saveProfiletoLocal(token, streamerKeys) {
           followed: res.data.followed,
         };
         localStorage.setItem('userInfo', JSON.stringify(user));
-        
+
         if (res.data.followed.length !== 0) {
           const sideDiv = document.querySelector('.sideFollow');
           sideDiv.classList.remove('hide');
           const sideStreams = document.querySelector('.sideFollowStreams');
+          sideStreams.classList.remove('hide');
+        } else {
+          const sideDiv = document.querySelector('.sideTitle');
+          sideDiv.classList.remove('hide');
+          const sideStreams = document.querySelector('.sideRecommendStreams');
           sideStreams.classList.remove('hide');
         }
 
@@ -337,7 +342,7 @@ function createSidebarDIV(key, name, title, picture, type, id) {
     url.setAttribute('href', '/video?streamerId='+id+'&room='+name);
   } else {
     url.setAttribute('href', '/profile?streamerId='+id);
-}
+  }
 
   const div = document.createElement('div');
   div.setAttribute('class', 'sideRow');
