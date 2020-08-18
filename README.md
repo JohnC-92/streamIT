@@ -64,7 +64,9 @@ Website URL: https://streamit.website
 ![](https://i.imgur.com/ByAECvk.png)
 
 ## Database Schema
-![](https://i.imgur.com/DaZGx1a.png)
+![](https://i.imgur.com/OnErgIb.png)
+
+
 
 ## Main Features
 
@@ -93,7 +95,7 @@ Website URL: https://streamit.website
 
 ## Server Bandwidth Usage Analysis
 
-### Meida Server Specs (AWS EC2): 
+### Media Server Specs (AWS EC2): 
     OS:	 x64_linux_4.14.181-142.260.amzn2.x86_64
     CPU:	 1 x Intel(R) Xeon(R) CPU E5-2676 v3     @ 2.40GHz
     Memory:	 983 MB
