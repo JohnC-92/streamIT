@@ -3,30 +3,16 @@ const liveMusical = document.querySelector('.liveMusical');
 const liveTalk = document.querySelector('.liveTalk');
 
 liveGaming.addEventListener('click', () => {
-  streamFilter('gaming');
+  streamFilter('gaming', false);
 });
 
 liveMusical.addEventListener('click', () => {
-  streamFilter('musical');
+  streamFilter('musical', false);
 });
 
 liveTalk.addEventListener('click', () => {
-  streamFilter('talkshow');
+  streamFilter('talkshow', false);
 });
-
-// const gamingCategory = document.querySelector('.menu-2');
-// const musicCategory = document.querySelector('.menu-3');
-// const talkCategory = document.querySelector('.menu-4');
-
-// gamingCategory.addEventListener('click', () => {
-//   streamFilter('gaming');
-// });
-// musicCategory.addEventListener('click', () => {
-//   streamFilter('musical');
-// });
-// talkCategory.addEventListener('click', () => {
-//   streamFilter('talkshow');
-// }); 
 
 /**
  * Function to render profile page
@@ -53,19 +39,18 @@ function renderStreams() {
           liveChannels.appendChild(div);
         }
 
-        // const streamTypes = document.querySelectorAll('.streamType');
-        // for (i = 0; i < streamTypes.length; i++) {
-        //   streamTypes[i].addEventListener('click', () => {
-        //     streamFilter(streamTypes[i].innerText.toLowerCase());
-        //   });
-        // }
       }
       const streamTypes = document.querySelectorAll('.streamType');
       for (i = 0; i < streamTypes.length; i++) {
         streamTypes[i].addEventListener('click', (e) => {
-          streamFilter(e.target.innerText.toLowerCase());
+          streamFilter(e.target.innerText.toLowerCase(), false);
         });
       }
+
+      // if (window.location.href.indexOf('category=') !== -1) {
+      //   const key = window.location.href.split('category=')[1];
+      //   streamFilter(key);
+      // }
     }
   };
   request.open('GET', 'http://127.0.0.1:8888/api/streams');

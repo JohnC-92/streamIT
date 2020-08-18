@@ -95,7 +95,7 @@ const processVideo = (streamKey, streamPath) => {
 };
 
 // Function to remove video files and upload files to s3
-const removeAndUploadFiles = (streamKey, filePath) => {
+const removeAndUploadFiles = async (streamKey, filePath) => {
   fs.readdir(filePath, (err, files) => {
     if (err) {
       throw err;
@@ -117,9 +117,12 @@ const removeAndUploadFiles = (streamKey, filePath) => {
         const videoURL = config.s3.url+`/media/${streamKey}/${fileName}`;
         const thumbnailURL = config.s3.url+`/media/${streamKey}/${fileName.split('.')[0]+'.png'}`;
 
+        // const streamTitle = await query('SELECT stream_title FROM users WHERE stream_key = ?', [streamKey])
+
         // Insert video url and video thumbnail url into database
         const videoObj = {
           stream_key: streamKey,
+          // stream_title: streamTitle,
           video_url: videoURL,
           img_url: thumbnailURL,
           time_created: new Date(),

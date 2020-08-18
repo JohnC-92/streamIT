@@ -9,8 +9,14 @@
 Website URL: https://streamit.website
 
 ## Test Account
-    email: yuyan@mail.com
-    pass: yuyan.123#
+    Email: yuyan@mail.com
+    Password: yuyan.123#
+     
+## Test Credit Card
+    Card Number: 4242 4242 4242 4242
+    Expiry Data: Any number
+    CVC: Any number
+    Post no.: Any number
 
 ## Table of Contents
 
@@ -66,8 +72,6 @@ Website URL: https://streamit.website
 ## Database Schema
 ![](https://i.imgur.com/OnErgIb.png)
 
-
-
 ## Main Features
 
 - Streaming:
@@ -93,7 +97,7 @@ Website URL: https://streamit.website
 ## Video Pipeline for VOD And Live Streaming
 ![](https://i.imgur.com/YSEn9Oo.png)
 
-## Server Bandwidth Usage Analysis
+## Server Bandwidth Usage Analysis with/without CDN
 
 ### Media Server Specs (AWS EC2): 
     OS:	 x64_linux_4.14.181-142.260.amzn2.x86_64
@@ -104,22 +108,24 @@ Website URL: https://streamit.website
 ### Start of Node Media Server - 0 Viewer
 ![](https://i.imgur.com/GkI7hxm.png)
 
-    There is 0 HTTP request and server output bandwidth is 6 mbps.
+    - 0 HTTP request
+    - Server output bandwidth = 6 mbps.
 
 ### Node Media Server without AWS Cloudfront(CDN) - 25 Viewers
 ![](https://i.imgur.com/WH6ogW4.png)
 
-    There are 25 HTTP requests which is 1 request for every viewer and server output bandwidth is 200+ mbps.
+    - 25 HTTP requests (1 request for every viewer)
+    - Server output bandwidth = 200+ mbps.
 
 ### Node Media Server with AWS Cloudfront(CDN) - 25 Viewers
 ![](https://i.imgur.com/G4ST7eg.png)
 
-    There is only 1 HTTP requests and server bandwidth is a stable 10 mbps.
+    - 1 HTTP requests 
+    - Server bandwidth = stable 10 mbps.
 
 ### Observation
 - As we can see from the bandwidth usage, without using CDN all viewer will request video from server thus increasing server burden on uploading bandwidth.
 - By using AWS Cloudfront(CDN), it effectively reduced server bandwidth by making only one request to server and serve them through it's own CDN servers.
 
 ## Contact
-
 Email: xtremeboost92@gmail.com
