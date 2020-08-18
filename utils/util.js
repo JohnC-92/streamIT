@@ -41,12 +41,14 @@ const processVideo = (streamKey, streamPath) => {
   fs.readdir(filePath, (err, files) => {
     if (err) {
       throw err;
-    } 
+    }
+    console.log('Files: ', files)
 
     // Add 1 to child process for every video file
     // Child process counter is needed to account for process done later
     let numChildProcess = 0;
     files.forEach((filename) => {
+      console.log('FILENAME: ', filename);
       if (filename.indexOf('resized') === -1) {
         const name = filename.split('.')[0]+'-resized.mp4';
         if (!files.includes(name)) {
@@ -95,7 +97,7 @@ const processVideo = (streamKey, streamPath) => {
 };
 
 // Function to remove video files and upload files to s3
-const removeAndUploadFiles = async (streamKey, filePath) => {
+const removeAndUploadFiles = (streamKey, filePath) => {
   fs.readdir(filePath, (err, files) => {
     if (err) {
       throw err;
@@ -117,7 +119,11 @@ const removeAndUploadFiles = async (streamKey, filePath) => {
         const videoURL = config.s3.url+`/media/${streamKey}/${fileName}`;
         const thumbnailURL = config.s3.url+`/media/${streamKey}/${fileName.split('.')[0]+'.png'}`;
 
-        const streamTitle = await query('SELECT stream_title FROM users WHERE stream_key = ?', [streamKey])
+        const result = await query('SELECT stream_title FROM users WHERE stream_key = ?', [streamKey])
+        const streamTitle = result[0].stream_title;
+        
+        console.log(result)
+        console.log(streamTitle)
 
         // Insert video url and video thumbnail url into database
         const videoObj = {
@@ -128,6 +134,7 @@ const removeAndUploadFiles = async (streamKey, filePath) => {
           time_created: new Date(),
         };
         await query('INSERT INTO videos SET ?', [videoObj]);
+        // query('INSERT INTO videos SET ?', [videoObj]);
       }
     });
   });
@@ -153,21 +160,21 @@ const options = {
   json: true, // Automatically parses the JSON string in the response
 };
 
-const job = new CronJob('*/20 * * * * *', () => {
-  rp(options)
-      .then((res) => {
-        if (res) {
-          const liveStreams = res.live;
-          for (let stream in liveStreams) {
-            if (!liveStreams.hasOwnProperty(stream)) continue;
-            generateStreamThumbnail(stream);
-          }
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-}, null, true);
+// const job = new CronJob('*/20 * * * * *', () => {
+//   rp(options)
+//       .then((res) => {
+//         if (res) {
+//           const liveStreams = res.live;
+//           for (let stream in liveStreams) {
+//             if (!liveStreams.hasOwnProperty(stream)) continue;
+//             generateStreamThumbnail(stream);
+//           }
+//         }
+//       })
+//       .catch((err) => {
+//         console.log(err);
+//       });
+// }, null, true);
 
 // Accepting a file with multer S3 and upload file
 aws.config.update({
@@ -247,7 +254,7 @@ module.exports = {
   generateStreamThumbnail,
   processVideo,
   catchAsyncError,
-  job,
+  // job,
   fileType,
   uploadFile,
 };

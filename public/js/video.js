@@ -176,8 +176,6 @@ function getStreamerProfileandGetVideo() {
       receiver.value = response.name;
       receiver.readOnly = true;
 
-      console.log('heheehe')
-
       const streamerViewers = document.querySelector('.streamerViewers');
       if (users[response.streamKey]) {
         if (users[response.streamKey] === undefined) {

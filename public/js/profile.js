@@ -150,7 +150,6 @@ async function getProfile(token) {
         // Fetch VODS and add VODS divs
         fetchVODs(res.data.id, res.data.name, res.data.streamKey, res.data.picture);
 
-        console.log('HEHEHEHEH')
         // Add followers/followed div
         createFollowDIV(res.data.followers, res.data.followersTime, res.data.followed, res.data.followedTime);
 
@@ -412,8 +411,7 @@ function createVodDIV(streamerId, name, key, vod, picture) {
 
   const streamTitle = document.createElement('div');
   streamTitle.setAttribute('class', 'streamTitle');
-  streamTitle.innerText = 'Welcome to ' + name + `'s stream`;
-  // streamTitle.innerText = vod.stream_title;
+  streamTitle.innerText = vod.stream_title || 'Welcome to ' + name + `'s stream`;
 
   const streamName = document.createElement('div');
   streamName.setAttribute('class', 'streamName');
