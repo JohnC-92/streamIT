@@ -239,28 +239,23 @@ async function saveProfiletoLocal(token, streamerKeys) {
           followed: res.data.followed,
         };
         localStorage.setItem('userInfo', JSON.stringify(user));
-
-        const sideFollow = document.querySelector('.sideFollow');
-        sideFollow.style.display = 'block';
-        const sideFollowStreams = document.querySelector('.sideFollowStreams');
-
+        
         if (res.data.followed.length !== 0) {
-          const sideDiv = document.querySelector('.sideTitle');
-          sideDiv.classList.add('hide');
-        } else {
           const sideDiv = document.querySelector('.sideFollow');
-          sideDiv.classList.add('hide');
+          sideDiv.classList.remove('hide');
+          const sideStreams = document.querySelector('.sideFollowStreams');
+          sideStreams.classList.remove('hide');
         }
 
-        // console.log(streamerKeys)
+        const sideFollowStreams = document.querySelector('.sideFollowStreams');
         for (let i = 0; i < res.data.followed.length; i++) {
           // console.log(res.data.followed[i])
           if (streamerKeys.includes(res.data.followed[i].stream_key)) {
-            const sideBarDiv = createSidebarDIV(res.data.followed[i].stream_key, res.data.followed[i].name, res.data.followed[i].streamTitle, res.data.followed[i].picture, res.data.followed[i].streamType, res.data.followed[i].id);
+            const sideBarDiv = createSidebarDIV(res.data.followed[i].stream_key, res.data.followed[i].name, res.data.followed[i].stream_title, res.data.followed[i].picture, res.data.followed[i].stream_type, res.data.followed[i].id);
             sideFollowStreams.appendChild(sideBarDiv);
           } else {
             const key = 'notStreaming';
-            const sideBarDiv = createSidebarDIV(key, res.data.followed[i].name, res.data.followed[i].streamTitle, res.data.followed[i].picture, res.data.followed[i].streamType, res.data.followed[i].id);
+            const sideBarDiv = createSidebarDIV(key, res.data.followed[i].name, res.data.followed[i].stream_title, res.data.followed[i].picture, res.data.followed[i].stream_type, res.data.followed[i].id);
             sideFollowStreams.appendChild(sideBarDiv);
           }
         }
@@ -278,7 +273,8 @@ function renderSidebar() {
   const request = new XMLHttpRequest();
   request.onreadystatechange = async function() {
     if (request.readyState === 4) {
-      const sideBar = document.querySelector('.sideBar');
+      const sideBar = document.querySelector('.sideRecommendStreams');
+      // const sideBar = document.querySelector('.sideBar');
       let keys;
       if (JSON.parse(request.response).live) {
         keys = Object.keys(JSON.parse(request.response).live);
@@ -303,6 +299,11 @@ function renderSidebar() {
         } else {
           saveProfiletoLocal(token, []);
         }
+      } else {
+        const sideDiv = document.querySelector('.sideTitle');
+        sideDiv.classList.remove('hide');
+        const sideStreams = document.querySelector('.sideRecommendStreams');
+        sideStreams.classList.remove('hide');
       }
     }
   };
