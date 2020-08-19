@@ -165,9 +165,10 @@ function getStreamerProfileandGetVideo() {
       const streamerImg = document.querySelector('.streamerImg');
       streamerImg.setAttribute('src', response.picture);
 
-      // const streamerTitle = document.querySelector('.streamerTitle');
-      // streamerTitle.innerText = response.streamTitle || 'Welcome to ' + response.name + `'s stream`;
-      // streamerTitle.innerText = response.streamTitle || 'Welcome to ' + response.name + `'s stream`;
+      if (window.location.href.indexOf('id=') === -1) {
+        const streamerTitle = document.querySelector('.streamerTitle');
+        streamerTitle.innerText = response.streamTitle || 'Welcome to ' + response.name + `'s stream`;  
+      }
 
       const streamerName = document.querySelector('.streamerName');
       streamerName.innerText = response.name;
