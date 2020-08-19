@@ -17,7 +17,7 @@ chatUsersList.style.display = 'none';
 const receiver = document.getElementById('receiver');
 
 const viewers = document.querySelector('.streamerViewers');
-viewers.innerText = '觀看人數： 1';
+viewers.innerText = '觀看人數： 0';
 
 if (localStorage.getItem('userInfo')) {
   const followArr = JSON.parse(localStorage.getItem('userInfo')).followed;
@@ -126,6 +126,9 @@ const getVideo = async () => {
       source.src = res[0].video_url;
       source.type = 'video/mp4';
       video.appendChild(source);
+
+      const streamerTitle = document.querySelector('.streamerTitle');
+      streamerTitle.innerText = res[0].stream_title;
     });
   } else {
     if (flvjs.isSupported()) {
@@ -162,8 +165,8 @@ function getStreamerProfileandGetVideo() {
       const streamerImg = document.querySelector('.streamerImg');
       streamerImg.setAttribute('src', response.picture);
 
-      const streamerTitle = document.querySelector('.streamerTitle');
-      streamerTitle.innerText = response.streamTitle || 'Welcome to ' + response.name + `'s stream`;
+      // const streamerTitle = document.querySelector('.streamerTitle');
+      // streamerTitle.innerText = response.streamTitle || 'Welcome to ' + response.name + `'s stream`;
       // streamerTitle.innerText = response.streamTitle || 'Welcome to ' + response.name + `'s stream`;
 
       const streamerName = document.querySelector('.streamerName');
@@ -179,7 +182,7 @@ function getStreamerProfileandGetVideo() {
       const streamerViewers = document.querySelector('.streamerViewers');
       if (users[response.streamKey]) {
         if (users[response.streamKey] === undefined) {
-          streamerViewers.innerText = '觀看人數： 1';
+          streamerViewers.innerText = '觀看人數： 0';
         } else {
           streamerViewers.innerText = '觀看人數： ' + users[response.streamKey];
         }
