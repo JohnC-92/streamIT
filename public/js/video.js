@@ -181,11 +181,9 @@ function getStreamerProfileandGetVideo() {
 
       const streamerViewers = document.querySelector('.streamerViewers');
       if (users[response.streamKey]) {
-        if (users[response.streamKey] === undefined) {
-          streamerViewers.innerText = '觀看人數： 0';
-        } else {
-          streamerViewers.innerText = '觀看人數： ' + users[response.streamKey];
-        }
+        streamerViewers.innerText = '觀看人數： ' + users[response.streamKey];
+      } else if (users[response.streamKey] === undefined) {
+        streamerViewers.innerText = '觀看人數： 0';
       }
       getVideo();
     }
