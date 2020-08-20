@@ -128,14 +128,14 @@ const facebookSignIn = async (accessToken, expire) => {
     const user = {
       provider: 'facebook',
       email: email,
-      password: null,
+      password: 'NaN',
       name: name,
       picture: 'https://graph.facebook.com/' + id + '/picture?type=large',
-      description: '',
       access_token: accessToken,
       access_expired: expire,
       login_at: loginAt,
       stream_key: shortid.generate(),
+      stream_title: 'Welcome to ' + name + `'s world`,
       stream_type: 'Gaming',
     };
 

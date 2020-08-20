@@ -8,17 +8,17 @@ const initSocket = require('./utils/socket');
 const http = require('http');
 const https = require('https');
 const httpPort = 3000;
-const httpsPort = 3001;
+// const httpsPort = 3001;
 
 const app = express();
 
-// Http & Https credentials
-const options = {
-  key: fs.readFileSync('private.pem'),
-  cert: fs.readFileSync('certChain.crt'),
-};
+// // Http & Https credentials
+// const options = {
+//   key: fs.readFileSync('private.pem'),
+//   cert: fs.readFileSync('certChain.crt'),
+// };
 const httpServer = http.createServer(app);
-const httpsServer = https.createServer(options, app);
+// const httpsServer = https.createServer(options, app);
 
 // Set views engine and views engine files folder
 app.set('views', './server/views');
@@ -55,7 +55,6 @@ app.use(require('./server/routes/vod_routes'));
 app.use((err, req, res, next) => {
   console.log(err);
   res.render('error500');
-  // res.status(500).send('Internal Server Error'); // change it later to error HTML page
 });
 
 // Render page not found when no related path is defined
@@ -67,9 +66,9 @@ httpServer.listen(httpPort, () => {
   console.log(`HTTP Server is running on port ${httpPort}`);
 });
 
-httpsServer.listen(httpsPort, () => {
-  console.log(`HTTPS Server is running on port ${httpsPort}`);
-});
+// httpsServer.listen(httpsPort, () => {
+//   console.log(`HTTPS Server is running on port ${httpsPort}`);
+// });
 
 // Start Node Media Server
 nodeMediaServer.run();

@@ -327,7 +327,7 @@ async function deleteAccount() {
         }
         alert('Delete Profile Successful');
         signOut();
-        window.location.replace('index');
+        window.location.replace('/');
       });
     }
   } catch (err) {
