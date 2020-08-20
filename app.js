@@ -12,11 +12,11 @@ const httpPort = 3000;
 
 const app = express();
 
-// // Http & Https credentials
-// const options = {
-//   key: fs.readFileSync('private.pem'),
-//   cert: fs.readFileSync('certChain.crt'),
-// };
+// Http & Https credentials
+const options = {
+  key: fs.readFileSync('private.pem'),
+  cert: fs.readFileSync('certChain.crt'),
+};
 const httpServer = http.createServer(app);
 // const httpsServer = https.createServer(options, app);
 

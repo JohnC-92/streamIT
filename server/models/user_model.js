@@ -126,7 +126,7 @@ const facebookSignIn = async (accessToken, expire) => {
     // Create login time, hashed password and JWT token
     const loginAt = new Date();
     const token = jwt.sign({
-      name: user.name,
+      name: name,
     }, secret, {expiresIn: expire});
     const user = {
       provider: 'facebook',
@@ -156,7 +156,11 @@ const facebookSignIn = async (accessToken, expire) => {
     user.id = userId;
     await commit();
 
-    return {token, loginAt, user};
+    return {
+      accessToken: token,
+      loginAt: loginAt,
+      user: user,
+    };
   } catch (err) {
     return {error: err};
   }
