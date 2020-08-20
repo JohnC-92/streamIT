@@ -125,13 +125,16 @@ const facebookSignIn = async (accessToken, expire) => {
 
     // Create login time, hashed password and JWT token
     const loginAt = new Date();
+    const token = jwt.sign({
+      name: user.name,
+    }, secret, {expiresIn: expire});
     const user = {
       provider: 'facebook',
       email: email,
       password: 'NaN',
       name: name,
       picture: 'https://graph.facebook.com/' + id + '/picture?type=large',
-      access_token: accessToken,
+      access_token: token,
       access_expired: expire,
       login_at: loginAt,
       stream_key: shortid.generate(),
@@ -148,12 +151,12 @@ const facebookSignIn = async (accessToken, expire) => {
       userId = result.insertId;
     } else {
       userId = nameResult[0].id;
-      await query('UPDATE users SET access_token = ?, access_expired = ?, login_at = ? WHERE id = ?', [accessToken, expire, loginAt, userId]);
+      await query('UPDATE users SET access_token = ?, access_expired = ?, login_at = ? WHERE id = ?', [token, expire, loginAt, userId]);
     }
     user.id = userId;
     await commit();
 
-    return {accessToken, loginAt, user};
+    return {token, loginAt, user};
   } catch (err) {
     return {error: err};
   }
