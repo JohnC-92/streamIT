@@ -74,6 +74,7 @@ const nativeSignIn = async (email, password, expire) => {
     // check if username exists
     const user = await query('SELECT * FROM users WHERE email = ?', [email]);
     if (user.length === 0) {
+      await commit();
       return {error: 'Invalid Email'};
     };
 
@@ -162,6 +163,7 @@ const facebookSignIn = async (accessToken, expire) => {
       user: user,
     };
   } catch (err) {
+    await rollback();
     return {error: err};
   }
 };
