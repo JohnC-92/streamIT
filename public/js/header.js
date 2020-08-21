@@ -162,7 +162,6 @@ async function signIn() {
       }
       return res.json();
     }).then((res) => {
-      // console.log(res);
       alert(`Signed in Successful!`);
       window.location.reload();
     });
@@ -245,27 +244,31 @@ async function saveProfiletoLocal(token, streamerKeys) {
           sideDiv.classList.remove('hide');
           const sideStreams = document.querySelector('.sideFollowStreams');
           sideStreams.classList.remove('hide');
+
+          // const liveStreamerDiv = document.querySelectorAll('.sideName');
+          // const liveStreamers = liveStreamerDiv.map((div) => {
+          //   return div.innerText;
+          // });
+
+          const sideFollowStreams = document.querySelector('.sideFollowStreams');
+          for (let i = 0; i < res.data.followed.length; i++) {
+            if (streamerKeys.includes(res.data.followed[i].stream_key)) {
+              const sideBarDiv = createSidebarDIV(res.data.followed[i].stream_key, res.data.followed[i].name, res.data.followed[i].stream_title, res.data.followed[i].picture, res.data.followed[i].stream_type, res.data.followed[i].id);
+              sideFollowStreams.appendChild(sideBarDiv);
+            } else {
+              const key = 'notStreaming';
+              const sideBarDiv = createSidebarDIV(key, res.data.followed[i].name, res.data.followed[i].stream_title, res.data.followed[i].picture, res.data.followed[i].stream_type, res.data.followed[i].id);
+              sideFollowStreams.appendChild(sideBarDiv);
+            }
+          }
         } else {
           const sideDiv = document.querySelector('.sideTitle');
           sideDiv.classList.remove('hide');
           const sideStreams = document.querySelector('.sideRecommendStreams');
           sideStreams.classList.remove('hide');
         }
-
-        const sideFollowStreams = document.querySelector('.sideFollowStreams');
-        for (let i = 0; i < res.data.followed.length; i++) {
-          // console.log(res.data.followed[i])
-          if (streamerKeys.includes(res.data.followed[i].stream_key)) {
-            const sideBarDiv = createSidebarDIV(res.data.followed[i].stream_key, res.data.followed[i].name, res.data.followed[i].stream_title, res.data.followed[i].picture, res.data.followed[i].stream_type, res.data.followed[i].id);
-            sideFollowStreams.appendChild(sideBarDiv);
-          } else {
-            const key = 'notStreaming';
-            const sideBarDiv = createSidebarDIV(key, res.data.followed[i].name, res.data.followed[i].stream_title, res.data.followed[i].picture, res.data.followed[i].stream_type, res.data.followed[i].id);
-            sideFollowStreams.appendChild(sideBarDiv);
-          }
-        }
       }
-      });
+    });
   } catch (err) {
     console.log(err);
   }
@@ -445,3 +448,59 @@ function streamNameFilter() {
   }
 };
 
+// ------------------------------FB login logic------------------------------
+window.fbAsyncInit = function() {
+  FB.init({
+    appId: '1888371257966633',
+    cookie: true,
+    xfbml: true,
+    version: 'v8.0',
+  });
+  FB.AppEvents.logPageView();
+};
+
+/**
+ * FaceBook SDK JS CODE
+ */
+(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {
+    return;
+  }
+  js = d.createElement(s); js.id = id;
+  js.src = 'https://connect.facebook.net/en_US/sdk.js';
+  fjs.parentNode.insertBefore(js, fjs);
+} (document, 'script', 'facebook-jssdk'));
+
+/**
+ * Check login status after clicking facebook button
+ */
+function checkLoginState() {
+  FB.getLoginStatus(async function(response) {
+    if (response.status === 'connected') {
+      try {
+        data = {
+          provider: 'facebook',
+          token: response.authResponse.accessToken,
+        };
+        await fetch('/user/signin', {
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }).then((res) => {
+          if (res.status === 403) {
+            alert('Invalid User/Password!');
+          }
+          return res.json();
+        }).then((res) => {
+          alert(`Signed in Successful`);
+          window.location.reload();
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  });
+}

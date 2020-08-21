@@ -4,7 +4,7 @@ describe('followers', async () => {
   it('get followers with specific id', async () => {
     const id = 7;
     const from = 'false';
-    const res = await requester.get(`/user/getFollowers?id=${id}&from=${from}`);
+    const res = await requester.get(`/user/followers?id=${id}&from=${from}`);
     const followers = res.body;
 
     const followers2Expect = [
@@ -18,7 +18,7 @@ describe('followers', async () => {
   it('get followed with specific id', async () => {
     const id = 1;
     const from = 'true';
-    const res = await requester.get(`/user/getFollowers?id=${id}&from=${from}`);
+    const res = await requester.get(`/user/followers?id=${id}&from=${from}`);
     const followed = res.body;
 
     const followed2Expect = [

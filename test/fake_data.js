@@ -121,24 +121,28 @@ const videos = [
     video_url: 'https://streamit-tw.com/video1.mp4',
     img_url: 'https://streamit-tw.com/image1.png',
     time_created: '2020-07-31 02:00:00',
+    stream_title: 'testtitle1',
   },
   {
     stream_key: '11v8TWJGa',
     video_url: 'https://streamit-tw.com/video2.mp4',
     img_url: 'https://streamit-tw.com/image2.png',
     time_created: '2020-07-31 02:00:00',
+    stream_title: 'testtitle2',
   },
   {
     stream_key: '33v8TWJGa',
     video_url: 'https://streamit-tw.com/video3.mp4',
     img_url: 'https://streamit-tw.com/image3.png',
     time_created: '2020-07-31 02:00:00',
+    stream_title: 'testtitle3',
   },
   {
     stream_key: '44v8TWJGa',
     video_url: 'https://streamit-tw.com/video4.mp4',
     img_url: 'https://streamit-tw.com/image4.png',
     time_created: '2020-07-31 02:00:00',
+    stream_title: 'testtitle4',
   },
 ];
 

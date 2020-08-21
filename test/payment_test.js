@@ -10,7 +10,7 @@ describe('payments', async () => {
   });
 
   it('getting payment history with specific id 1', async () => {
-    const res = await requester.post('/payment/records/1');
+    const res = await requester.get('/payment/records?id=1');
     const data = res.body;
 
     const payment2Expect = {

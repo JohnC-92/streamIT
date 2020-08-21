@@ -59,7 +59,7 @@ function initSocket(server) {
   });
 
   // Runs every few seconds to update frontend users count
-  const socketJob = new CronJob('*/5 * * * * *', () => {
+  const socketJob = new CronJob('*/2 * * * * *', () => {
     io.emit('usersCount', {
       usersCount: returnUsersCount(),
     });

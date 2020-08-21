@@ -252,8 +252,8 @@ async function updateProfile() {
     }
 
     // Post updated data to server
-    await fetch('/user/updateProfile', {
-      method: 'POST',
+    await fetch('/user/profile', {
+      method: 'PUT',
       body: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json',
@@ -295,7 +295,7 @@ async function updateProfileImage() {
   });
 
   // Set up our request
-  XHR.open('POST', '/user/updateImg');
+  XHR.open('PUT', '/user/img');
 
   // The data sent is what the user provided in the form
   XHR.send(data);
@@ -312,8 +312,8 @@ async function deleteAccount() {
 
     // Ask user to confirm account deletion to prevent misdeletion
     if (confirm('Are you sure you want to delete your account?')) {
-      await fetch('/user/deleteProfile', {
-        method: 'POST',
+      await fetch('/user/profile', {
+        method: 'DELETE',
         body: JSON.stringify(data),
         headers: {
           'Content-Type': 'application/json',
@@ -327,7 +327,7 @@ async function deleteAccount() {
         }
         alert('Delete Profile Successful');
         signOut();
-        window.location.replace('index');
+        window.location.replace('/');
       });
     }
   } catch (err) {
@@ -411,8 +411,7 @@ function createVodDIV(streamerId, name, key, vod, picture) {
 
   const streamTitle = document.createElement('div');
   streamTitle.setAttribute('class', 'streamTitle');
-  streamTitle.innerText = 'Welcome to ' + name + `'s stream`;
-  // streamTitle.innerText = vod.stream_title;
+  streamTitle.innerText = vod.stream_title || 'Welcome to ' + name + `'s stream`;
 
   const streamName = document.createElement('div');
   streamName.setAttribute('class', 'streamName');
@@ -446,7 +445,7 @@ async function createFollowDIV(followers, followersTime, followed, followedTime)
 
   // Server will return error when there are no followers or no one followed
   // If there are followers, count followers
-  if (!followers.error) {
+  if (followers.length > 0) {
     followersNum.innerText = parseInt(followers.length).toString() + ' 位追蹤者';
   } else {
     // If there no followers, show 0 and remind users there no followers
@@ -457,8 +456,9 @@ async function createFollowDIV(followers, followersTime, followed, followedTime)
     noProfileFollower.innerHTML = '尚未有任何人追蹤你';
     followerDiv.appendChild(noProfileFollower);
   }
+
   // If there are followed streamers, count followed streamers
-  if (!followed.error) {
+  if (followed.length > 0) {
     followedNum.innerText = parseInt(followed.length).toString() + ' 位已追蹤';
   } else {
     // If there no followed streamers, show 0 and remind users there no followed
@@ -593,7 +593,7 @@ function getPayment(id) {
       }
     }
   };
-  request.open('POST', '/payment/records/'+id);
+  request.open('GET', '/payment/records?id='+id);
   request.send();
 };
 

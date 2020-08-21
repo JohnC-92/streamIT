@@ -74,6 +74,7 @@ const nativeSignIn = async (email, password, expire) => {
     // check if username exists
     const user = await query('SELECT * FROM users WHERE email = ?', [email]);
     if (user.length === 0) {
+      await commit();
       return {error: 'Invalid Email'};
     };
 
@@ -125,17 +126,20 @@ const facebookSignIn = async (accessToken, expire) => {
 
     // Create login time, hashed password and JWT token
     const loginAt = new Date();
+    const token = jwt.sign({
+      name: name,
+    }, secret, {expiresIn: expire});
     const user = {
       provider: 'facebook',
       email: email,
-      password: null,
+      password: 'NaN',
       name: name,
       picture: 'https://graph.facebook.com/' + id + '/picture?type=large',
-      description: '',
-      access_token: accessToken,
+      access_token: token,
       access_expired: expire,
       login_at: loginAt,
       stream_key: shortid.generate(),
+      stream_title: 'Welcome to ' + name + `'s world`,
       stream_type: 'Gaming',
     };
 
@@ -148,13 +152,18 @@ const facebookSignIn = async (accessToken, expire) => {
       userId = result.insertId;
     } else {
       userId = nameResult[0].id;
-      await query('UPDATE users SET access_token = ?, access_expired = ?, login_at = ? WHERE id = ?', [accessToken, expire, loginAt, userId]);
+      await query('UPDATE users SET access_token = ?, access_expired = ?, login_at = ? WHERE id = ?', [token, expire, loginAt, userId]);
     }
     user.id = userId;
     await commit();
 
-    return {accessToken, loginAt, user};
+    return {
+      accessToken: token,
+      loginAt: loginAt,
+      user: user,
+    };
   } catch (err) {
+    await rollback();
     return {error: err};
   }
 };

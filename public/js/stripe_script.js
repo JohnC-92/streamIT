@@ -160,8 +160,8 @@ const orderComplete = function(clientSecret) {
 
       // console.log('DATA: ', data);
 
-      fetch('/payment/updatePay', {
-        method: 'POST',
+      fetch('/payment/pay', {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },

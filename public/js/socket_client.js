@@ -125,5 +125,7 @@ function getStreamViewers() {
   const viewers = users[room];
   const streamerclassName = '.streamerViewers';
   const streamerViewCount = document.querySelector(streamerclassName);
-  streamerViewCount.innerText = '觀看人數： '+viewers;
+  if (viewers !== undefined) {
+    streamerViewCount.innerText = '觀看人數： '+viewers;
+  }
 }

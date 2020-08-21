@@ -12,6 +12,7 @@ describe('videos', async () => {
         video_url: 'https://streamit-tw.com/video1.mp4',
         img_url: 'https://streamit-tw.com/image1.png',
         time_created: '2020-07-30T18:00:00.000Z',
+        stream_title: 'testtitle1',
       },
       {
         id: 2,
@@ -19,6 +20,7 @@ describe('videos', async () => {
         video_url: 'https://streamit-tw.com/video2.mp4',
         img_url: 'https://streamit-tw.com/image2.png',
         time_created: '2020-07-30T18:00:00.000Z',
+        stream_title: 'testtitle2',
       },
     ];
 
@@ -36,6 +38,7 @@ describe('videos', async () => {
         video_url: 'https://streamit-tw.com/video4.mp4',
         img_url: 'https://streamit-tw.com/image4.png',
         time_created: '2020-07-30T18:00:00.000Z',
+        stream_title: 'testtitle4',
       },
     ];
 
