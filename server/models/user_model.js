@@ -1,19 +1,23 @@
 const bcrypt = require('bcrypt');
 const shortid = require('shortid');
 const jwt = require('jsonwebtoken');
-const {query, transaction, commit, rollback} = require('../../utils/mysqlcon');
+const {query, connection, connectionQuery, transaction, commit, rollback} = require('../../utils/mysqlcon');
 const {secret, salt} = require('../../utils/config');
 const saltRounds = parseInt(salt);
 const requestPromise = require('request-promise');
 
 const signUp = async (name, password, email, expire) => {
   try {
-    await transaction();
+    const dbConnection = await connection();
+
+    await transaction(dbConnection);
 
     // Check if email exists
-    const emailQuery = await query('SELECT * FROM users WHERE email = ? FOR UPDATE', [email]);
+    const emailQuery = await connectionQuery(dbConnection,
+        'SELECT * FROM users WHERE email = ? FOR UPDATE', [email]);
+
     if (emailQuery.length > 0) {
-      await commit();
+      await commit(dbConnection);
       return {error: 'Email already exists'};
     }
 
@@ -38,8 +42,6 @@ const signUp = async (name, password, email, expire) => {
       password: hashpass,
       name: name,
       picture: 'https://cdn.onlinewebfonts.com/svg/img_297675.png',
-      // picture: 'https://www.dlf.pt/dfpng/middlepng/2-23802_meme-faces-happy-png-transparent-png.png',
-      // picture: 'https://i0.wp.com/pinkupost.com/wp-content/uploads/2019/06/%E6%9C%A8%E6%9D%91%E6%8B%93%E5%93%89_%E9%95%B7%E5%B2%A1%E5%BC%98%E6%A8%B9_%E6%95%99%E5%A0%B4_2020%E5%B9%B4%E7%89%B9%E5%88%A5%E5%8A%87_%E5%AF%8C%E5%A3%AB%E9%9B%BB%E8%A6%96%E5%8F%B0_%E5%B0%8F%E8%AA%AA%E7%9C%9F%E4%BA%BA%E5%8C%96%E6%97%A5%E5%8A%87-2-1.jpg?resize=640%2C792',
       access_token: token,
       access_expired: expire,
       login_at: loginAt,
@@ -49,11 +51,11 @@ const signUp = async (name, password, email, expire) => {
     };
 
     // Insert into user info into database
-    const queryStr = 'INSERT INTO users SET ?';
-
-    const result = await query(queryStr, user);
+    const result = await connectionQuery(dbConnection,
+        'INSERT INTO users SET ?', user);
     user.id = result.insertId;
-    await commit();
+    await commit(dbConnection);
+    dbConnection.release();
 
     return {
       accessToken: token,
@@ -62,25 +64,29 @@ const signUp = async (name, password, email, expire) => {
     };
   } catch (err) {
     // rollback everything and return error msg if error
-    await rollback;
+    await rollback(dbConnection);
+    dbConnection.release();
     return {error: err};
   }
 };
 
 const nativeSignIn = async (email, password, expire) => {
   try {
-    await transaction();
+    const dbConnection = await connection();
+
+    await transaction(dbConnection);
 
     // check if username exists
     const user = await query('SELECT * FROM users WHERE email = ?', [email]);
+
     if (user.length === 0) {
-      await commit();
+      await commit(dbConnection);
       return {error: 'Invalid Email'};
     };
 
     // check if password is correct
     if (!bcrypt.compareSync(password, user[0].password)) {
-      await commit();
+      await commit(dbConnection);
       return {error: 'Invalid Password'};
     }
 
@@ -92,8 +98,9 @@ const nativeSignIn = async (email, password, expire) => {
 
     // update user info
     const queryStr = 'UPDATE users SET access_token = ?, access_expired = ?, login_at = ? WHERE id = ?';
-    await query(queryStr, [token, expire, loginAt, user[0].id]);
-    await commit();
+    await connectionQuery(dbConnection, queryStr, [token, expire, loginAt, user[0].id]);
+    await commit(dbConnection);
+    dbConnection.release();
 
     return {
       accessToken: token,
@@ -102,14 +109,18 @@ const nativeSignIn = async (email, password, expire) => {
     };
   } catch (err) {
     // rollback everything if error
-    await rollback();
+    await rollback(dbConnection);
+    dbConnection.release();
     return {error: err};
   }
 };
 
 const facebookSignIn = async (accessToken, expire) => {
   try {
-    await transaction();
+    const dbConnection = await connection();
+
+    await transaction(dbConnection);
+
     const options = {
       method: 'POST',
       uri: 'https://graph.facebook.com/me?fields=id,name,email&access_token=' + accessToken,
@@ -120,7 +131,7 @@ const facebookSignIn = async (accessToken, expire) => {
 
     // check if user id, name, email exists
     if (!id || !name || !email) {
-      await commit();
+      await commit(dbConnection);
       return {error: 'facebook token can not get id, name or email'};
     }
 
@@ -145,17 +156,20 @@ const facebookSignIn = async (accessToken, expire) => {
 
     // create user if user doesnt exist
     // else update user info
-    const nameResult = await query(`SELECT * FROM users WHERE name = ? AND provider = 'facebook' FOR UPDATE`, [name]);
+    const nameResult = await connectionQuery(dbConnection,
+          `SELECT * FROM users WHERE name = ? AND provider = 'facebook' FOR UPDATE`, [name]);
     let userId;
     if (nameResult.length === 0) {
       const result = await query('INSERT INTO users SET ?', user);
       userId = result.insertId;
     } else {
       userId = nameResult[0].id;
-      await query('UPDATE users SET access_token = ?, access_expired = ?, login_at = ? WHERE id = ?', [token, expire, loginAt, userId]);
+      await connectionQuery(dbConnection,
+          'UPDATE users SET access_token = ?, access_expired = ?, login_at = ? WHERE id = ?', [token, expire, loginAt, userId]);
     }
     user.id = userId;
-    await commit();
+    await commit(dbConnection);
+    dbConnection.release();
 
     return {
       accessToken: token,
@@ -163,7 +177,8 @@ const facebookSignIn = async (accessToken, expire) => {
       user: user,
     };
   } catch (err) {
-    await rollback();
+    await rollback(dbConnection);
+    dbConnection.release();
     return {error: err};
   }
 };
@@ -186,7 +201,6 @@ const getUserProfileToken = async (token) => {
 
 const getProfiles = async (ids) => {
   try {
-    console.log(ids)
     const result = await query('SELECT id, name, picture, stream_key, stream_title, stream_type FROM users WHERE id IN (?)', [ids]);
     return result;
   } catch (err) {
