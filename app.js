@@ -1,24 +1,15 @@
 const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
-const fs = require('fs');
 const nodeMediaServer = require('./server/media_server');
 const thumbnailGenerator = require('./utils/util').job;
 const initSocket = require('./utils/socket');
 const http = require('http');
-const https = require('https');
 const httpPort = 3000;
-// const httpsPort = 3001;
-
 const app = express();
 
 // Http & Https credentials
-const options = {
-  key: fs.readFileSync('private.pem'),
-  cert: fs.readFileSync('certChain.crt'),
-};
 const httpServer = http.createServer(app);
-// const httpsServer = https.createServer(options, app);
 
 // Set views engine and views engine files folder
 app.set('views', './server/views');
@@ -44,10 +35,13 @@ app.use('/', function(req, res, next) {
 // Routes Defining //
 // EJS rendered routes
 app.use(require('./server/routes/static_routes'));
+
 // User logic related routes
 app.use(require('./server/routes/user_routes'));
+
 // Payment logic related routes
 app.use(require('./server/routes/payment_routes'));
+
 // Vods logic related routes
 app.use(require('./server/routes/vod_routes'));
 
@@ -65,10 +59,6 @@ app.get('*', (req, res) => {
 httpServer.listen(httpPort, () => {
   console.log(`HTTP Server is running on port ${httpPort}`);
 });
-
-// httpsServer.listen(httpsPort, () => {
-//   console.log(`HTTPS Server is running on port ${httpsPort}`);
-// });
 
 // Start Node Media Server
 nodeMediaServer.run();

@@ -5,7 +5,7 @@ const profileForm = document.querySelector('.profileForm');
 const profileUpdateBtn = document.querySelector('.profileInfo-Btn');
 const deleteAccountBtn = document.querySelector('.deleteAccount');
 
-const profileStripeTab = document.querySelector('.profileStripe');
+// const profileStripeTab = document.querySelector('.profileStripe');
 
 // Get all profile tabs and profile divs
 const profileTabs = document.querySelectorAll('.profileTab');
@@ -90,24 +90,32 @@ deleteAccountBtn.addEventListener('click', () => {
   deleteAccount();
 });
 
-// Profile page rendering logic
+// Profile page rendering logic //
 const streamerId = window.location.href.split('streamerId=')[1];
+
+// Show profile tabs without payment tab
+for (let i = 0; i < 3; i++) {
+  profileTabs[i].classList.remove('hide');
+}
 
 // Rendering with token
 if (token) {
   // Visitor view of streamer profile
   if (streamerId !== undefined) {
     if (JSON.parse(localStorage.getItem('userInfo')).id === parseInt(streamerId)) {
+      profileTabs[3].classList.remove('hide');
       getProfile(token);
     } else {
       getStreamerProfile(streamerId);
     }
   } else {
   // Streamer's view of own profile
+    profileTabs[3].classList.remove('hide');
     getProfile(token);
   }
 } else if (streamerId !== undefined) {
 // Rendering without token
+  profileTabs[3].classList.remove('hide');
   getStreamerProfile(streamerId);
 } else {
 // Page undefined error
@@ -195,8 +203,8 @@ async function getStreamerProfile(streamerId) {
         profileStreamTitle.value = data.streamTitle || `Welcome to ${data.name}'s stream`;
         profileStreamType.value = data.streamType || `Gaming`;
 
-        // Hide payment tab
-        profileStripeTab.style.display = 'none';
+        // // Hide payment tab
+        // profileStripeTab.style.display = 'none';
 
         // Hide buttons
         const profileImgDesc = document.querySelector('.profileImg-Desc');

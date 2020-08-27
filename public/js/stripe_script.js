@@ -92,6 +92,8 @@ const handleAction = function(clientSecret) {
  * Collect card details and pay for the order
  */
 const pay = function(stripe, card) {
+  changeLoadingState(true);
+
   // Collects card details and creates a PaymentMethod
   stripe
       .createPaymentMethod('card', card)
@@ -168,6 +170,8 @@ const orderComplete = function(clientSecret) {
         body: JSON.stringify(data),
       });
 
+      changeLoadingState(false);
+
       alert('贊助成功! 已贊助實況主 NTD. ' + (paymentIntent.amount/100));
       donateForm.style.display = 'none';
     }
@@ -175,5 +179,20 @@ const orderComplete = function(clientSecret) {
 };
 
 const showError = function(errorMsgText) {
+  changeLoadingState(false);
   alert(errorMsgText);
 };
+
+// Show a spinner on payment submission
+const changeLoadingState = function(isLoading) {
+  if (isLoading) {
+    document.querySelector('.stripeBtn').disabled = true;
+    // document.querySelector('#spinner').classList.remove('hide');
+    document.querySelector('#button-text').classList.add('hide');
+  } else {
+    document.querySelector('.stripeBtn').disabled = false;
+    // document.querySelector('#spinner').classList.add('hide');
+    document.querySelector('#button-text').classList.remove('hide');
+  }
+};
+

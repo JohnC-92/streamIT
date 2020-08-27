@@ -63,7 +63,7 @@ Website URL: https://streamit.website
 <!-- - CI/CD: Docker, Jenkins -->
 
 ### Others
-<!-- - User Login: Facebook SDK -->
+- User Login: Facebook SDK
 - Payment/Donation: Stripe SDK
 
 ## Architecture
