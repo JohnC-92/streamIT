@@ -360,7 +360,6 @@ function deleteAccount() {
     // Ask user to confirm account deletion to prevent misdeletion
     Swal.fire({
       title: 'Are you sure you want to delete your account?',
-      text: `You won't be able to revert this!`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#000',
