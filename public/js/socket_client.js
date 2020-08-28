@@ -39,11 +39,6 @@ socket.on('message', (msg) => {
 chatForm.addEventListener('submit', (e) => {
   e.preventDefault();
 
-  // if (!token) {
-  //   alert('登入以繼續聊天');
-  //   return false;
-  // }
-
   // Get message text
   const msg = e.target.elements.msg.value;
 

@@ -42,6 +42,7 @@ if (document.cookie) {
 // form related events
 loginCloseBtn.addEventListener('click', () => {
   loginForm.style.display = 'none';
+  document.body.classList.remove('noScroll');
 });
 
 // switch sign in sign up tabs event listeners
@@ -56,17 +57,24 @@ signupTab.addEventListener('click', () => {
 signinBtn.addEventListener('click', () => {
   if (!token) {
     loginForm.style.display = 'block';
+    document.body.classList.add('noScroll');
     active(signinTab, signupTab, signinForm, signupForm);
   } else {
-    alert('成功登出');
-    localStorage.clear();
-    signOut();
-    window.location.replace('/');
+    Swal.fire({
+      title: 'Signed Out Successful!',
+      icon: 'success',
+      confirmButtonColor: '#000',
+    }).then(() => {
+      localStorage.clear();
+      signOut();
+      window.location.replace('/');
+    });
   }
 });
 
 signupBtn.addEventListener('click', () => {
   loginForm.style.display = 'block';
+  document.body.classList.add('noScroll');
   active(signupTab, signinTab, signupForm, signinForm);
 });
 
@@ -83,8 +91,14 @@ for (let i = 0; i < showPass.length; i++) {
 
 member.addEventListener('click', () => {
   if (token === '') {
-    alert('Please sign in');
-    loginForm.style.display = 'block';
+    Swal.fire({
+      title: 'Please sign in!',
+      icon: 'warning',
+      confirmButtonColor: '#000',
+    }).then(() => {
+      loginForm.style.display = 'block';
+      document.body.classList.add('noScroll');
+    });
   } else {
     window.location.replace('/profile');
   }
@@ -156,17 +170,28 @@ async function signIn() {
         'Content-Type': 'application/json',
       },
     }).then((res) => {
-      if (res.status === 403) {
-        alert('Invalid Email/Password!');
-        throw err;
+      if (res.status === 403 || res.status === 400) {
+        Swal.fire({
+          title: 'Invalid Email/Password!',
+          icon: 'error',
+          confirmButtonColor: '#000',
+        });
+      } else {
+        Swal.fire({
+          title: 'Signed in Successful!',
+          icon: 'success',
+          confirmButtonColor: '#000',
+        }).then(() => {
+          window.location.reload();
+        });
       }
-      return res.json();
-    }).then((res) => {
-      alert(`Signed in Successful!`);
-      window.location.reload();
     });
   } catch (err) {
-    alert('Sign In Failed!');
+    Swal.fire({
+      title: 'Sign In Failed!',
+      icon: 'error',
+      confirmButtonColor: '#000',
+    });
   }
 };
 
@@ -176,7 +201,11 @@ async function signIn() {
 async function signUp() {
   try {
     if (document.getElementById('passwordUp').value !== document.getElementById('passwordUp2').value) {
-      alert('Password does not match, please check again');
+      Swal.fire({
+        title: 'Password does not match!\nPlease check again!',
+        icon: 'warning',
+        confirmButtonColor: '#000',
+      });
       return false;
     }
 
@@ -195,17 +224,28 @@ async function signUp() {
     }).then((res) => {
       return res.json();
     }).then((res) => {
-      // console.log(res)
       if (res.error) {
-        alert(res.error);
+        Swal.fire({
+          title: res.error,
+          icon: 'error',
+          confirmButtonColor: '#000',
+        });
         return;
       }
-      alert(`Signed up Successful! \r\nTo continue with streaming, get stream key \r\nand edit stream title in profile page`);
-      window.location.reload();
+      Swal.fire({
+        title: 'Signed up Successful!',
+        icon: 'success',
+        confirmButtonColor: '#000',
+      }).then(() => {
+        window.location.reload();
+      });
     });
   } catch (err) {
-    // console.log(err)
-    alert('Sign Up Failed!');
+    Swal.fire({
+      title: 'Sign Up Failed!',
+      icon: 'error',
+      confirmButtonColor: '#000',
+    });
   }
 };
 
@@ -490,16 +530,22 @@ function checkLoginState() {
             'Content-Type': 'application/json',
           },
         }).then((res) => {
-          if (res.status === 403) {
-            alert('Invalid User/Password!');
-          }
           return res.json();
         }).then((res) => {
-          alert(`Signed in Successful`);
-          window.location.reload();
+          Swal.fire({
+            title: 'Signed in Successful!',
+            icon: 'success',
+            confirmButtonColor: '#000',
+          }).then(() => {
+            window.location.reload();
+          });
         });
       } catch (err) {
-        console.log(err);
+        Swal.fire({
+          title: err,
+          icon: 'error',
+          confirmButtonColor: '#000',
+        });
       }
     }
   });
