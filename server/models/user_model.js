@@ -160,7 +160,7 @@ const facebookSignIn = async (accessToken, expire) => {
           `SELECT * FROM users WHERE name = ? AND provider = 'facebook' FOR UPDATE`, [name]);
     let userId;
     if (nameResult.length === 0) {
-      const result = await connectionQuery('INSERT INTO users SET ?', user);
+      const result = await connectionQuery(dbConnection, 'INSERT INTO users SET ?', user);
       userId = result.insertId;
     } else {
       userId = nameResult[0].id;
