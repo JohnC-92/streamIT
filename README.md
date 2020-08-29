@@ -63,11 +63,11 @@ Website URL: https://streamit.website
 <!-- - CI/CD: Docker, Jenkins -->
 
 ### Others
-- User Login: Facebook SDK
+<!-- - User Login: Facebook SDK -->
 - Payment/Donation: Stripe SDK
 
 ## Architecture
-![](https://i.imgur.com/ByAECvk.png)
+![](https://i.imgur.com/ZUq6CYt.png)
 
 ## Database Schema
 ![](https://i.imgur.com/OnErgIb.png)
@@ -128,4 +128,5 @@ Website URL: https://streamit.website
 - By using AWS Cloudfront(CDN), it effectively reduced server bandwidth by making only one request to server and serve them through it's own CDN servers.
 
 ## Contact
+
 Email: xtremeboost92@gmail.com
