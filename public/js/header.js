@@ -285,10 +285,10 @@ async function saveProfiletoLocal(token, streamerKeys) {
           const sideStreams = document.querySelector('.sideFollowStreams');
           sideStreams.classList.remove('hide');
 
-          // const liveStreamerDiv = document.querySelectorAll('.sideName');
-          // const liveStreamers = liveStreamerDiv.map((div) => {
-          //   return div.innerText;
-          // });
+          const sideRecommendDiv = document.querySelector('.sideTitle');
+          sideRecommendDiv.classList.remove('hide');
+          const sideRecommendStreams = document.querySelector('.sideRecommendStreams');
+          sideRecommendStreams.classList.remove('hide');
 
           const sideFollowStreams = document.querySelector('.sideFollowStreams');
           for (let i = 0; i < res.data.followed.length; i++) {
