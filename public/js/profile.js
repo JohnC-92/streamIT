@@ -5,7 +5,7 @@ const profileForm = document.querySelector('.profileForm');
 const profileUpdateBtn = document.querySelector('.profileInfo-Btn');
 const deleteAccountBtn = document.querySelector('.deleteAccount');
 
-const profileStripeTab = document.querySelector('.profileStripe');
+// const profileStripeTab = document.querySelector('.profileStripe');
 
 // Get all profile tabs and profile divs
 const profileTabs = document.querySelectorAll('.profileTab');
@@ -78,7 +78,11 @@ profileImgInputBtn.addEventListener('change', () => {
   if ((fileExt === 'png') || (fileExt === 'jpg') || (fileExt === 'jpeg')) {
     profileImgSubmitBtn.click();
   } else {
-    alert('File chosen is not JPEG or PNG');
+    Swal.fire({
+      title: 'File chosen is not JPEG or PNG!',
+      icon: 'warning',
+      confirmButtonColor: '#000',
+    });
   }
 });
 
@@ -90,24 +94,32 @@ deleteAccountBtn.addEventListener('click', () => {
   deleteAccount();
 });
 
-// Profile page rendering logic
+// Profile page rendering logic //
 const streamerId = window.location.href.split('streamerId=')[1];
+
+// Show profile tabs without payment tab
+for (let i = 0; i < 3; i++) {
+  profileTabs[i].classList.remove('hide');
+}
 
 // Rendering with token
 if (token) {
   // Visitor view of streamer profile
   if (streamerId !== undefined) {
     if (JSON.parse(localStorage.getItem('userInfo')).id === parseInt(streamerId)) {
+      profileTabs[3].classList.remove('hide');
       getProfile(token);
     } else {
       getStreamerProfile(streamerId);
     }
   } else {
   // Streamer's view of own profile
+    profileTabs[3].classList.remove('hide');
     getProfile(token);
   }
 } else if (streamerId !== undefined) {
 // Rendering without token
+  profileTabs[3].classList.remove('hide');
   getStreamerProfile(streamerId);
 } else {
 // Page undefined error
@@ -156,9 +168,14 @@ async function getProfile(token) {
         // Add payment div
         getPayment(res.data.id);
       } else {
-        alert('Token Expired/Invalid, Please sign in again');
-        signOut();
-        window.location.replace('/');
+        Swal.fire({
+          title: 'Token Expired/Invalid!\nPlease sign in again!',
+          icon: 'error',
+          confirmButtonColor: '#000',
+        }).then(() => {
+          signOut();
+          window.location.replace('/');
+        });
       }
     });
   } catch (err) {
@@ -195,8 +212,8 @@ async function getStreamerProfile(streamerId) {
         profileStreamTitle.value = data.streamTitle || `Welcome to ${data.name}'s stream`;
         profileStreamType.value = data.streamType || `Gaming`;
 
-        // Hide payment tab
-        profileStripeTab.style.display = 'none';
+        // // Hide payment tab
+        // profileStripeTab.style.display = 'none';
 
         // Hide buttons
         const profileImgDesc = document.querySelector('.profileImg-Desc');
@@ -222,9 +239,14 @@ async function getStreamerProfile(streamerId) {
         // Add followers/followed div
         createFollowDIV(data.followers, data.followersTime, data.followed, data.followedTime);
       } else {
-        alert('Token Expired/Invalid, Please sign in again');
-        signOut();
-        window.location.replace('/');
+        Swal.fire({
+          title: 'Token Expired/Invalid!\nPlease sign in again!',
+          icon: 'error',
+          confirmButtonColor: '#000',
+        }).then(() => {
+          signOut();
+          window.location.replace('/');
+        });
       }
     });
   } catch (err) {
@@ -247,7 +269,11 @@ async function updateProfile() {
 
     // Must fill in stream type when updating for the first time
     if (data.streamType === '') {
-      alert('Please choose a stream type');
+      Swal.fire({
+        title: 'Please choose a stream type!',
+        icon: 'warning',
+        confirmButtonColor: '#000',
+      });
       return;
     }
 
@@ -262,15 +288,27 @@ async function updateProfile() {
       return res.json();
     }).then((res) => {
       if (res.error) {
-        alert(res.error);
+        Swal.fire({
+          title: res.error,
+          icon: 'error',
+          confirmButtonColor: '#000',
+        });
         return;
       }
-      alert('Update Profile Successful');
-      window.location.reload();
+      Swal.fire({
+        title: 'Update Profile Successful!',
+        icon: 'success',
+        confirmButtonColor: '#000',
+      }).then(() => {
+        window.location.reload();
+      });
     });
   } catch (err) {
-    // console.log(err);
-    alert('Update Profile Failed!');
+    Swal.fire({
+      title: 'Update Profile Failed!',
+      icon: 'error',
+      confirmButtonColor: '#000',
+    });
   }
 };
 
@@ -285,13 +323,22 @@ async function updateProfileImage() {
 
   // Define what happens on successful data submission
   XHR.addEventListener('load', function() {
-    alert('Update Profile Image Successful');
-    window.location.reload();
+    Swal.fire({
+      title: 'Update Profile Image Successful!',
+      icon: 'success',
+      confirmButtonColor: '#000',
+    }).then(() => {
+      window.location.reload();
+    });
   });
 
   // Define what happens in case of error
   XHR.addEventListener('error', function() {
-    alert('Update Profile Image Failed!');
+    Swal.fire({
+      title: 'Update Profile Image Failed!',
+      icon: 'error',
+      confirmButtonColor: '#000',
+    });
   });
 
   // Set up our request
@@ -304,35 +351,56 @@ async function updateProfileImage() {
 /**
  * Function to delete account
  */
-async function deleteAccount() {
+function deleteAccount() {
   try {
     data = {
       email: document.querySelector('.profileEmail').value,
     };
 
     // Ask user to confirm account deletion to prevent misdeletion
-    if (confirm('Are you sure you want to delete your account?')) {
-      await fetch('/user/profile', {
-        method: 'DELETE',
-        body: JSON.stringify(data),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }).then((res) => {
-        return res.json();
-      }).then((res) => {
-        if (res.error) {
-          alert(res.error);
-          return;
-        }
-        alert('Delete Profile Successful');
-        signOut();
-        window.location.replace('/');
-      });
-    }
+    Swal.fire({
+      title: 'Are you sure you want to delete your account?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#000',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then(async (result) => {
+      if (result.value) {
+        await fetch('/user/profile', {
+          method: 'DELETE',
+          body: JSON.stringify(data),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }).then((res) => {
+          return res.json();
+        }).then((res) => {
+          if (res.error) {
+            Swal.fire({
+              title: res.error,
+              icon: 'error',
+              confirmButtonColor: '#000',
+            });
+            return;
+          }
+          Swal.fire({
+            title: 'Delete Profile Successful!',
+            icon: 'success',
+            confirmButtonColor: '#000',
+          }).then(() => {
+            signOut();
+            window.location.replace('/');
+          });
+        });
+      }
+    })
   } catch (err) {
-    // console.log(err);
-    alert('Delete Profile Failed!');
+    Swal.fire({
+      title: 'Delete Profile Failed!',
+      icon: 'error',
+      confirmButtonColor: '#000',
+    });
   }
 }
 

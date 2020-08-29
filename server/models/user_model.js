@@ -7,9 +7,9 @@ const saltRounds = parseInt(salt);
 const requestPromise = require('request-promise');
 
 const signUp = async (name, password, email, expire) => {
-  try {
-    const dbConnection = await connection();
+  const dbConnection = await connection();
 
+  try {
     await transaction(dbConnection);
 
     // Check if email exists
@@ -71,9 +71,9 @@ const signUp = async (name, password, email, expire) => {
 };
 
 const nativeSignIn = async (email, password, expire) => {
-  try {
-    const dbConnection = await connection();
+  const dbConnection = await connection();
 
+  try {
     await transaction(dbConnection);
 
     // check if username exists
@@ -116,9 +116,9 @@ const nativeSignIn = async (email, password, expire) => {
 };
 
 const facebookSignIn = async (accessToken, expire) => {
-  try {
-    const dbConnection = await connection();
+  const dbConnection = await connection();
 
+  try {
     await transaction(dbConnection);
 
     const options = {
@@ -160,7 +160,7 @@ const facebookSignIn = async (accessToken, expire) => {
           `SELECT * FROM users WHERE name = ? AND provider = 'facebook' FOR UPDATE`, [name]);
     let userId;
     if (nameResult.length === 0) {
-      const result = await query('INSERT INTO users SET ?', user);
+      const result = await connectionQuery(dbConnection, 'INSERT INTO users SET ?', user);
       userId = result.insertId;
     } else {
       userId = nameResult[0].id;

@@ -21,6 +21,10 @@ a {
 	text-decoration: none;
 }
 
+.noScroll {
+  overflow: hidden;
+}
+
 /* HEADER */
 
 .header-nav {  
@@ -396,6 +400,11 @@ a {
   color: white;
 }
 
+.signinBtn:hover,
+.signupBtn:hover {
+  opacity: 0.8;
+}
+
 .bodyContainer {
   /* position: relative; */
   content: "";
@@ -560,4 +569,21 @@ a {
 .notFoundBrowseBtn:hover {
   cursor: pointer;
   background: rgba(127, 41, 255, 1.0);
+}
+
+.swal2-popup {
+  /* width: 25em !important; */
+  font-size: 11.5px !important; 
+}
+
+.swal2-container {
+  z-index: 2000 !important;
+}
+
+.swal2-actions button {
+  border: none !important;
+}
+
+.swal2-actions button:hover {
+  opacity: 0.8 !important;
 }

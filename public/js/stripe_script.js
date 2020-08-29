@@ -23,7 +23,11 @@ fetch('/payment/stripe-key')
       form.addEventListener('submit', function(event) {
         event.preventDefault();
         if (!giver.value || !receiver.value || !number.value || !stripeMsg.value) {
-          alert('請填妥所有空格!');
+          Swal.fire({
+            title: 'Please fill in the blanks!',
+            icon: 'warning',
+            confirmButtonColor: '#000',
+          });
         } else {
           pay(stripe, card, clientSecret);
         }
@@ -92,6 +96,8 @@ const handleAction = function(clientSecret) {
  * Collect card details and pay for the order
  */
 const pay = function(stripe, card) {
+  changeLoadingState(true);
+
   // Collects card details and creates a PaymentMethod
   stripe
       .createPaymentMethod('card', card)
@@ -158,8 +164,6 @@ const orderComplete = function(clientSecret) {
         message: message,
       };
 
-      // console.log('DATA: ', data);
-
       fetch('/payment/pay', {
         method: 'PUT',
         headers: {
@@ -168,12 +172,38 @@ const orderComplete = function(clientSecret) {
         body: JSON.stringify(data),
       });
 
-      alert('贊助成功! 已贊助實況主 NTD. ' + (paymentIntent.amount/100));
-      donateForm.style.display = 'none';
+      Swal.fire({
+        title: 'Donate Successful!\n You donated NTD. ' + (paymentIntent.amount/100) + '!',
+        icon: 'success',
+        confirmButtonColor: '#000',
+      }).then(() => {
+        changeLoadingState(false);
+        donateForm.style.display = 'none';
+      });
     }
   });
 };
 
 const showError = function(errorMsgText) {
-  alert(errorMsgText);
+  changeLoadingState(false);
+  Swal.fire({
+    title: errorMsgText,
+    icon: 'error',
+    confirmButtonColor: '#000',
+  });
 };
+
+// Show a spinner on payment submission
+const changeLoadingState = function(isLoading) {
+  console.log('CurrentState: ', isLoading)
+  if (isLoading) {
+    document.querySelector('.stripeBtn').disabled = true;
+    document.querySelector('#spinner').classList.remove('hide');
+    document.querySelector('#button-text').classList.add('hide');
+  } else {
+    document.querySelector('.stripeBtn').disabled = false;
+    document.querySelector('#spinner').classList.add('hide');
+    document.querySelector('#button-text').classList.remove('hide');
+  }
+};
+

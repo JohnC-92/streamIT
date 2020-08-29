@@ -33,7 +33,11 @@ if (localStorage.getItem('userInfo')) {
 donateBtn.addEventListener('click', () => {
   if (token) {
     if (JSON.parse(localStorage.getItem('userInfo')).id === streamerId) {
-      alert(`無法贊助自己`);
+      Swal.fire({
+        title: 'Unable to donate yourself!',
+        icon: 'warning',
+        confirmButtonColor: '#000',
+      });
       return;
     }
   }
@@ -54,13 +58,21 @@ donateCloseBtn.addEventListener('click', () => {
 
 followBtn.addEventListener('click', () => {
   if (!token) {
-    alert('登入以追蹤實況主');
+    Swal.fire({
+      title: 'Sign in to follow streamer!',
+      icon: 'warning',
+      confirmButtonColor: '#000',
+    });
     return;
   }
 
   if (token) {
     if (JSON.parse(localStorage.getItem('userInfo')).id === streamerId) {
-      alert(`無法追蹤自己`);
+      Swal.fire({
+        title: 'Unable to follow yourself!',
+        icon: 'warning',
+        confirmButtonColor: '#000',
+      });
       return;
     }
   }

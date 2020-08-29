@@ -38,7 +38,6 @@ function renderStreams() {
           const div = createStreamDIV(keys[i], keyObj[keys[i]+'-name'], keyObj[keys[i]+'-title'], keyObj[keys[i]+'-picture'], keyObj[keys[i]+'-type'], keyObj[keys[i]+'-id']);
           liveChannels.appendChild(div);
         }
-
       }
       const streamTypes = document.querySelectorAll('.streamType');
       for (i = 0; i < streamTypes.length; i++) {
