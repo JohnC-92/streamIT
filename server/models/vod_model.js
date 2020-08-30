@@ -3,8 +3,8 @@ const {query} = require('../../utils/mysqlcon');
 // get all user VODs with user stream key
 const getUserVODs = async (streamKey) => {
   try {
-    const vods = await query('SELECT * FROM videos WHERE stream_key = ?', [streamKey]);
-    return vods;
+    const vodsQuery = await query('SELECT * FROM videos WHERE stream_key = ?', [streamKey]);
+    return vodsQuery;
   } catch (err) {
     return {error: err};
   }
@@ -13,8 +13,8 @@ const getUserVODs = async (streamKey) => {
 // get single user VOD with video id
 const getUserVOD = async (id) => {
   try {
-    const vods = await query('SELECT * FROM videos WHERE id = ?', [id]);
-    return vods;
+    const vodQuery = await query('SELECT * FROM videos WHERE id = ?', [id]);
+    return vodQuery;
   } catch (err) {
     return {error: err};
   }
