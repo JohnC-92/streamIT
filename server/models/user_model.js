@@ -192,7 +192,7 @@ const getUserProfileToken = async (token) => {
       if (userQuery.length === 0) {
         reject({error: 'No matching token found'});
       }
-      resolve(user[0]);
+      resolve(userQuery[0]);
     });
   });
 };
