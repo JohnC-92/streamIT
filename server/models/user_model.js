@@ -69,22 +69,16 @@ const signUp = async (name, password, email, expire) => {
 };
 
 const nativeSignIn = async (email, password, expire) => {
-  const dbConnection = await connection();
-
   try {
-    await transaction(dbConnection);
-
     // check if username exists
     const userQuery = await query('SELECT * FROM users WHERE email = ?', [email]);
 
     if (userQuery.length === 0) {
-      await commit(dbConnection);
       return {error: 'Invalid Email'};
     };
 
     // check if password is correct
     if (!bcrypt.compareSync(password, userQuery[0].password)) {
-      await commit(dbConnection);
       return {error: 'Invalid Password'};
     }
 
@@ -96,9 +90,7 @@ const nativeSignIn = async (email, password, expire) => {
 
     // update user info
     const queryStr = 'UPDATE users SET access_token = ?, access_expired = ?, login_at = ? WHERE id = ?';
-    await connectionQuery(dbConnection, queryStr, [token, expire, loginAt, userQuery[0].id]);
-    await commit(dbConnection);
-    dbConnection.release();
+    await query(queryStr, [token, expire, loginAt, userQuery[0].id]);
 
     return {
       accessToken: token,
@@ -106,9 +98,6 @@ const nativeSignIn = async (email, password, expire) => {
       user: userQuery[0],
     };
   } catch (err) {
-    // rollback everything if error
-    await rollback(dbConnection);
-    dbConnection.release();
     return {error: err};
   }
 };
