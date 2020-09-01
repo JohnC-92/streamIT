@@ -13,10 +13,10 @@ const signUp = async (name, password, email, expire) => {
     await transaction(dbConnection);
 
     // Check if email exists
-    const emailQuery = await connectionQuery(dbConnection,
+    const userQuery = await connectionQuery(dbConnection,
         'SELECT * FROM users WHERE email = ? FOR UPDATE', [email]);
 
-    if (emailQuery.length > 0) {
+    if (userQuery.length > 0) {
       await commit(dbConnection);
       return {error: 'Email already exists'};
     }
@@ -24,8 +24,6 @@ const signUp = async (name, password, email, expire) => {
     // Create login time, hashed password and JWT token
     const loginAt = new Date();
     const hashpass = bcrypt.hashSync(password, saltRounds);
-    // jwt.sign({payload}, secretKey, {options})
-    // const token = 'Bearer ' + jwt.sign(
     const token = jwt.sign(
         {
           name: name,
@@ -51,9 +49,9 @@ const signUp = async (name, password, email, expire) => {
     };
 
     // Insert into user info into database
-    const result = await connectionQuery(dbConnection,
+    const userInsertQuery = await connectionQuery(dbConnection,
         'INSERT INTO users SET ?', user);
-    user.id = result.insertId;
+    user.id = userInsertQuery.insertId;
     await commit(dbConnection);
     dbConnection.release();
 
@@ -71,46 +69,35 @@ const signUp = async (name, password, email, expire) => {
 };
 
 const nativeSignIn = async (email, password, expire) => {
-  const dbConnection = await connection();
-
   try {
-    await transaction(dbConnection);
-
     // check if username exists
-    const user = await query('SELECT * FROM users WHERE email = ?', [email]);
+    const userQuery = await query('SELECT * FROM users WHERE email = ?', [email]);
 
-    if (user.length === 0) {
-      await commit(dbConnection);
+    if (userQuery.length === 0) {
       return {error: 'Invalid Email'};
     };
 
     // check if password is correct
-    if (!bcrypt.compareSync(password, user[0].password)) {
-      await commit(dbConnection);
+    if (!bcrypt.compareSync(password, userQuery[0].password)) {
       return {error: 'Invalid Password'};
     }
 
     // Create login time, hashed password and JWT token
     const loginAt = new Date();
     const token = jwt.sign({
-      name: user.name,
+      name: userQuery.name,
     }, secret, {expiresIn: expire});
 
     // update user info
     const queryStr = 'UPDATE users SET access_token = ?, access_expired = ?, login_at = ? WHERE id = ?';
-    await connectionQuery(dbConnection, queryStr, [token, expire, loginAt, user[0].id]);
-    await commit(dbConnection);
-    dbConnection.release();
+    await query(queryStr, [token, expire, loginAt, userQuery[0].id]);
 
     return {
       accessToken: token,
       loginAt: loginAt,
-      user: user[0],
+      user: userQuery[0],
     };
   } catch (err) {
-    // rollback everything if error
-    await rollback(dbConnection);
-    dbConnection.release();
     return {error: err};
   }
 };
@@ -143,7 +130,7 @@ const facebookSignIn = async (accessToken, expire) => {
     const user = {
       provider: 'facebook',
       email: email,
-      password: 'NaN',
+      password: 'null',
       name: name,
       picture: 'https://graph.facebook.com/' + id + '/picture?type=large',
       access_token: token,
@@ -156,14 +143,14 @@ const facebookSignIn = async (accessToken, expire) => {
 
     // create user if user doesnt exist
     // else update user info
-    const nameResult = await connectionQuery(dbConnection,
+    const userQuery = await connectionQuery(dbConnection,
           `SELECT * FROM users WHERE name = ? AND provider = 'facebook' FOR UPDATE`, [name]);
     let userId;
-    if (nameResult.length === 0) {
-      const result = await connectionQuery(dbConnection, 'INSERT INTO users SET ?', user);
-      userId = result.insertId;
+    if (userQuery.length === 0) {
+      const userInsertQuery = await connectionQuery(dbConnection, 'INSERT INTO users SET ?', user);
+      userId = userInsertQuery.insertId;
     } else {
-      userId = nameResult[0].id;
+      userId = userQuery[0].id;
       await connectionQuery(dbConnection,
           'UPDATE users SET access_token = ?, access_expired = ?, login_at = ? WHERE id = ?', [token, expire, loginAt, userId]);
     }
@@ -190,19 +177,19 @@ const getUserProfileToken = async (token) => {
       if (err) {
         reject({error: 'Token invalid/ token expired'});
       }
-      const user = await query('SELECT * FROM users WHERE access_token = ?', [token]);
-      if (user.length === 0) {
+      const userQuery = await query('SELECT * FROM users WHERE access_token = ?', [token]);
+      if (userQuery.length === 0) {
         reject({error: 'No matching token found'});
       }
-      resolve(user[0]);
+      resolve(userQuery[0]);
     });
   });
 };
 
 const getProfiles = async (ids) => {
   try {
-    const result = await query('SELECT id, name, picture, stream_key, stream_title, stream_type FROM users WHERE id IN (?)', [ids]);
-    return result;
+    const profileQuery = await query('SELECT id, name, picture, stream_key, stream_title, stream_type FROM users WHERE id IN (?)', [ids]);
+    return profileQuery;
   } catch (err) {
     return {error: err};
   }
@@ -210,8 +197,8 @@ const getProfiles = async (ids) => {
 
 const getAllUsers = async () => {
   try {
-    const result = await query('SELECT id, name, stream_key, stream_title, picture, stream_type FROM users', []);
-    return result;
+    const profilesQuery = await query('SELECT id, name, stream_key, stream_title, picture, stream_type FROM users', []);
+    return profilesQuery;
   } catch (err) {
     return {error: err};
   }
@@ -219,8 +206,8 @@ const getAllUsers = async () => {
 
 const getSingleUser = async (id) => {
   try {
-    const result = await query('SELECT id, name, stream_key, stream_title, stream_type, picture FROM users WHERE id = ?', [id]);
-    return result;
+    const profileQuery = await query('SELECT id, name, stream_key, stream_title, stream_type, picture FROM users WHERE id = ?', [id]);
+    return profileQuery;
   } catch (err) {
     return {error: err};
   }
@@ -228,8 +215,8 @@ const getSingleUser = async (id) => {
 
 const updateUserImg = async (email, imgUrl) => {
   try {
-    const result = await query('UPDATE users SET picture = ? WHERE email = ?', [imgUrl, email]);
-    return result;
+    const imgUpdateQuery = await query('UPDATE users SET picture = ? WHERE email = ?', [imgUrl, email]);
+    return imgUpdateQuery;
   } catch (err) {
     return {error: err};
   }
@@ -237,8 +224,8 @@ const updateUserImg = async (email, imgUrl) => {
 
 const updateUserProfile = async (name, email, streamTitle, streamType) => {
   try {
-    const result = await query('UPDATE users SET name = ?, stream_title = ?, stream_type = ? WHERE email = ?', [name, streamTitle, streamType, email]);
-    return result;
+    const profileUpdateQuery = await query('UPDATE users SET name = ?, stream_title = ?, stream_type = ? WHERE email = ?', [name, streamTitle, streamType, email]);
+    return profileUpdateQuery;
   } catch (err) {
     return {error: err};
   }
@@ -246,8 +233,8 @@ const updateUserProfile = async (name, email, streamTitle, streamType) => {
 
 const deleteUserProfile = async (email) => {
   try {
-    const result = await query('DELETE FROM users WHERE email = ?', [email]);
-    return result;
+    const profileUpdateQuery = await query('DELETE FROM users WHERE email = ?', [email]);
+    return profileUpdateQuery;
   } catch (err) {
     return {error: err};
   }
@@ -256,11 +243,11 @@ const deleteUserProfile = async (email) => {
 const getFollowers = async (id, from) => {
   try {
     if (from === true) {
-      const result = await query('SELECT to_id, followed_at FROM followers WHERE from_id = ?', [id]);
-      return result;
+      const followedQuery = await query('SELECT to_id, followed_at FROM followers WHERE from_id = ?', [id]);
+      return followedQuery;
     } else {
-      const result = await query('SELECT from_id, followed_at FROM followers WHERE to_id = ?', [id]);
-      return result;
+      const followerQuery = await query('SELECT from_id, followed_at FROM followers WHERE to_id = ?', [id]);
+      return followerQuery;
     }
   } catch (err) {
     return {error: err};
@@ -274,8 +261,8 @@ const addfollowUser = async (fromId, toId, followedAt) => {
       to_id: toId,
       followed_at: followedAt,
     };
-    const result = await query('INSERT INTO followers SET ?', [followObj]);
-    return result;
+    const followerInsertQuery = await query('INSERT INTO followers SET ?', [followObj]);
+    return followerInsertQuery;
   } catch (err) {
     return {error: err};
   }
@@ -283,8 +270,8 @@ const addfollowUser = async (fromId, toId, followedAt) => {
 
 const removefollowUser = async (fromId, toId) => {
   try {
-    const result = await query('DELETE FROM followers WHERE from_id = ? AND to_id = ?', [fromId, toId]);
-    return result;
+    const followerRemoveQuery = await query('DELETE FROM followers WHERE from_id = ? AND to_id = ?', [fromId, toId]);
+    return followerRemoveQuery;
   } catch (err) {
     return {error: err};
   }

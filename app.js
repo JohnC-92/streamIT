@@ -23,15 +23,6 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'server')));
 
-// CORS Control
-app.use('/', function(req, res, next) {
-  res.set('Access-Control-Allow-Origin', '*');
-  res.set('Access-Control-Allow-Headers', 'Origin, Content-Type, Accept, Authorization');
-  res.set('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
-  res.set('Access-Control-Allow-Credentials', 'true');
-  next();
-});
-
 // Routes Defining //
 // EJS rendered routes
 app.use(require('./server/routes/static_routes'));

@@ -11,8 +11,8 @@ const updatePayment = async (fromId, fromName, toId, toName, amount, message) =>
       message: message,
       time_created: new Date(),
     };
-    const result = await query('INSERT INTO payment SET ?', [paymentObj]);
-    return result;
+    const paymentInsertQuery = await query('INSERT INTO payment SET ?', [paymentObj]);
+    return paymentInsertQuery;
   } catch (err) {
     console.log(err);
     return {error: err};
@@ -22,11 +22,11 @@ const updatePayment = async (fromId, fromName, toId, toName, amount, message) =>
 const getPayment = async (id, from) => {
   try {
     if (from === true) {
-      const result = await query('SELECT * FROM payment WHERE from_id = ?', [id]);
-      return result;
+      const paymentFromQuery = await query('SELECT * FROM payment WHERE from_id = ?', [id]);
+      return paymentFromQuery;
     } else {
-      const result = await query('SELECT * FROM payment WHERE to_id = ?', [id]);
-      return result;
+      const paymentToQuery = await query('SELECT * FROM payment WHERE to_id = ?', [id]);
+      return paymentToQuery;
     }
   } catch (err) {
     return {error: err};
