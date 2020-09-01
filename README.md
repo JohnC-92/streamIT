@@ -67,7 +67,7 @@ Website URL: https://streamit.website
 - Payment/Donation: Stripe SDK
 
 ## Architecture
-![](https://i.imgur.com/ZUq6CYt.png)
+![](https://i.imgur.com/XV0ghuN.png)
 
 ## Database Schema
 ![](https://i.imgur.com/OnErgIb.png)
