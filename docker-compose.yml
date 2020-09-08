@@ -1,0 +1,35 @@
+version: "3.7"
+
+services:
+    app:
+      image: node:12-alpine
+      command: sh -c "npm install && npm run dev"
+      ports:
+        - 1935:1935
+        - 3000:3000
+        - 8888:8888
+      working_dir: /streamit
+      volumes:
+        - ./:/streamit
+
+    jenkins:
+      image: jenkins/jenkins:lts
+      container_name: jenkins
+      restart: always
+      ports: 
+        - 8080:8080
+        - 50000:50000
+      volumes:
+        - ./jenkins:/var/jenkins_home
+      
+    # nginx:
+    #   restart: always
+    #   image: nginx
+    #   container_name: nginx
+    #   ports:
+    #     - 80:80
+    #     - 443:443
+    #   volumes:
+    #     - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    
+    
