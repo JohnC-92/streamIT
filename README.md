@@ -87,11 +87,11 @@ Website URL: https://streamit.website
 
 ### Streaming Demo
 1. Sign up and create an account
-2. Right click on member icon and go to profile page to acquire stream key
+2. Click on member icon and go to profile page to acquire stream key
 3. Copy stream key
 4. Install OBS and open up OBS
 5. Set up Camera and streaming settings
-6. Type in stream key in settings and set streaming url to rtmp://streamit.website:1935/live
+6. Open settings, click on stream tab, select custom for service, type in stream key and set streaming server url to rtmp://streamit.website:1935/live
 7. Happy streaming
 
 ## Video Pipeline for VOD And Live Streaming
