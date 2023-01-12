@@ -6,28 +6,30 @@
 - Viewers, just sit back, relax, get entertained after a weary work day or interact with your favourite streamer.
 - Start streaming today and be the next billionaire streamer in 2020!
 
-Website URL: https://streamit.website
-
-## Test Account
-    Email: yuyan@mail.com
-    Password: yuyan.123#
-     
-## Test Credit Card
-    Card Number: 4242 4242 4242 4242
-    Expiry Data: Any number
-    CVC: Any number
-    Post no.: Any number
-
 ## Table of Contents
 
+- [Main Features](#Main-Features)
 - [Technologies](#Technologies)
 - [Architecture](#Architecture)
-- [Database Schema](#Database-Schema)
-- [Main Features](#Main-Features)
-- [Streaming Demo](#Streaming-Demo)
 - [Video Pipeline](#Video-Pipeline-for-VOD-And-Live-Streaming)
 - [Server Bandwidth Usage](#Server-Bandwidth-Usage-Analysis)
+- [Database Schema](#Database-Schema)
+- [Streaming Demo](#Streaming-Demo)
 - [Contact](#Contact)
+
+
+## Main Features
+
+- Streaming:
+    - Stream and create your own live content to entertain others
+- Video on Demand (VOD):
+    - VOD is uploaded immediately after every stream ends
+- Follow Feature:
+    - Follow your favourite streamer and get informed if they are online on the sidebar
+- Donate Feature:
+    - Support your favourite streamer by donating to them
+- Chatroom:
+    - Interact with your favourite streamer via live chat
 
 ## Technologies
 
@@ -69,30 +71,6 @@ Website URL: https://streamit.website
 ## Architecture
 ![](https://i.imgur.com/XV0ghuN.png)
 
-## Database Schema
-![](https://i.imgur.com/OnErgIb.png)
-
-## Main Features
-
-- Streaming:
-    - Stream and create your own live content to entertain others
-- Video on Demand (VOD):
-    - VOD is uploaded immediately after every stream ends
-- Follow Feature:
-    - Follow your favourite streamer and get informed if they are online on the sidebar
-- Donate Feature:
-    - Support your favourite streamer by donating to them
-- Chatroom:
-    - Interact with your favourite streamer via live chat
-
-### Streaming Demo
-1. Sign up and create an account
-2. Click on member icon and go to profile page to acquire stream key
-3. Copy stream key
-4. Install OBS and open up OBS
-5. Set up Camera and streaming settings
-6. Open settings, click on stream tab, select custom for service, type in stream key and set streaming server url to rtmp://streamit.website:1935/live
-7. Happy streaming
 
 ## Video Pipeline for VOD And Live Streaming
 ![](https://i.imgur.com/YSEn9Oo.png)
@@ -126,6 +104,18 @@ Website URL: https://streamit.website
 ### Observation
 - As we can see from the bandwidth usage, without using CDN all viewer will request video from server thus increasing server burden on uploading bandwidth.
 - By using AWS Cloudfront(CDN), it effectively reduced server bandwidth by making only one request to server and serve them through it's own CDN servers.
+
+## Database Schema
+![](https://i.imgur.com/OnErgIb.png)
+
+### Streaming Demo
+1. Sign up and create an account
+2. Click on member icon and go to profile page to acquire stream key
+3. Copy stream key
+4. Install OBS and open up OBS
+5. Set up Camera and streaming settings
+6. Open settings, click on stream tab, select custom for service, type in stream key and set streaming server url to rtmp://streamit.website:1935/live
+7. Happy streaming
 
 ## Contact
 
